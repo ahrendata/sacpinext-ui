@@ -1,0 +1,7 @@
+<button type="submit" *ngIf="!sacpiForm.valid" class="btn btn-primary btn-lg" disabled>
+    <span>Log In</span>
+  </button>
+  <button type="submit" (click)="onClickChild($event)" [disabled]="working" *ngIf="sacpiForm.valid" class="btn btn-primary btn-lg">
+    <span [hidden]="!working">Autenticando...</span>
+    <span [hidden]="working">Log In</span>
+  </button>

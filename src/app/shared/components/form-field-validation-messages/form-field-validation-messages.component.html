@@ -1,0 +1,9 @@
+<div *ngIf="!sacpiFormControl.valid && sacpiFormControl.dirty">
+  <span *ngIf="sacpiFormControl.errors.required" class="help-block">Campo requerido</span>
+  <span *ngIf="sacpiFormControl.errors.minlength" class="help-block">Tamaño minimo es de : {{sacpiFormControl.errors.minlength.requiredLength}}</span>
+  <span *ngIf="sacpiFormControl.errors.maxlength" class="help-block">Tamaño maximo es de : {{sacpiFormControl.errors.maxlength.requiredLength}}</span>
+  <span *ngIf="sacpiFormControl.errors.pattern" class="help-block">Valor no valido</span>
+  <ng-content>
+
+  </ng-content>
+</div>

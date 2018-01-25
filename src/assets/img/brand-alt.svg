@@ -1,0 +1,21 @@
+<svg width="250.00000000000003" height="16" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+ <defs>
+  <filter height="200%" width="200%" y="-50%" x="-50%" id="svg_2_blur">
+   <feGaussianBlur stdDeviation="0" in="SourceGraphic"/>
+  </filter>
+ </defs>
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="18" width="252" y="-1" x="-1"/>
+  <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <text font-weight="bold" style="cursor: move;" stroke="#000" transform="matrix(20.869016003089115,0,0,7.826666831970215,-1813.8548828782987,-455.5733443647623) " xml:space="preserve" text-anchor="start" font-family="Euphoria, sans-serif" font-size="14" id="svg_1" y="90" x="87" stroke-width="0" fill="#000000">SACPI</text>
+  <text font-style="normal" filter="url(#svg_2_blur)" font-weight="bold" xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="14" id="svg_2" y="12.400001" x="1.400001" stroke="#ffffff" fill="#ffffff">S A C P I</text>
+  <text stroke-width="0" xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="14" id="svg_4" y="12.299996" x="65.900076" stroke="#ffffff" fill="#ffffff">Next</text>
+ </g>
+</svg>

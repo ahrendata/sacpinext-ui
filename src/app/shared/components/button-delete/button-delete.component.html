@@ -1,0 +1,46 @@
+<div class="modal fade" bsModal #deleteModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <h1>Estas Seguro en eliminar {{typeDisplayName || kind}} '
+            <strong>{{displayName ? displayName : resourceName}}</strong>'?
+          </h1>
+  
+          <p>Este
+            <span *ngIf="isExpedient()">
+          <strong>Eliminará todos los recursos</strong>
+          asociados al expediente {{displayName ? displayName : resourceName}} y
+        </span>
+            <strong>No podra ser recuperado</strong> . ........
+          </p>
+  
+          <div [hidden]="!typeNameToConfirm">
+            <p>{{'type-name-of' }} {{typeDisplayName || kind}} {{'to-confirm' }}.</p>
+            <p>
+              <label class="sr-only">{{typeDisplayName || kind}} to delete</label>
+              <input type="text" [(ngModel)]="confirmName" name="confirmName" class="form-control input-lg" autocorrect="off" autocapitalize="off"
+                     spellcheck="false" autofocus/>
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button [disabled]="typeNameToConfirm && confirmName !== resourceName && confirmName !== displayName" type="button" class="btn btn-lg btn-danger"
+                  (click)="delete()">{{'delete'}}</button>
+          <button type="button" class="btn btn-lg btn-default" (click)="deleteModal.hide()">{{'cancel'}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <a *ngIf="!buttonOnly" href="javascript:void(0);" (click)="deleteModal.show()" [ngClass]="{ 'disabled': disableDelete }">
+    {{(label || 'delete')}}
+  </a>
+  
+  <div *ngIf="buttonOnly" class="actions">
+    <!-- Avoid whitespace inside the link -->
+    <button type="button" (click)="deleteModal.show()" class="btn btn-link" [ngClass]="{ 'disabled': disableDelete }">
+      <i class="fa fa-trash-o"></i>
+      <span class="sr-only">{{'delete'}} {{kind}} {{resourceName}}</span>
+    </button>
+  </div>
+  

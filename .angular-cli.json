@@ -17,9 +17,12 @@
       "test": "test.ts",
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
-      "prefix": "app",
+      "prefix": "sacpi",
       "styles": [
-        "styles.css"
+        "../node_modules/patternfly/dist/css/patternfly.min.css",
+        "../node_modules/patternfly/dist/css/patternfly-additions.min.css",
+        "../node_modules/ng2-toastr/bundles/ng2-toastr.min.css",
+        "styles.scss"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",
@@ -54,7 +57,10 @@
     }
   },
   "defaults": {
-    "styleExt": "css",
-    "component": {}
+    "styleExt": "scss",
+    "component": {
+      "inlineStyle": false,
+      "inlineTemplate": false
+    }
   }
 }

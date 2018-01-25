@@ -7,11 +7,18 @@ import { Expedient } from './../model/expedient.model';
 import { SearchCriteria } from './../model/search-criteria.model';
 import { SearchResults } from './../model/search-results.model';
 import { URLSearchParams } from '@angular/http';
+import { RestangularService } from './restangular.service';
+const requirementIdName = 'Requirement';
+const requirementsPath = 'Requirement';
 
 @Injectable()
 export class RequirementService {
 
-  constructor() { }
+  
+  private restangular: RestangularService;
+  constructor(restangular: RestangularService) {
+    this.restangular = restangular.all(requirementsPath);
+  }
 
   findById(expedient: Expedient, id: number, queryParams?: URLSearchParams): Observable<Requirement> {
     const restangular = expedient.restangular.one('requirements', id);
@@ -23,15 +30,15 @@ export class RequirementService {
       });
   }
 
-  getAll(expedient: Expedient, queryParams?: URLSearchParams): Observable<Requirement[]> {
-    const restangular = expedient.restangular.all('requirements');
+  getAll(queryParams?: URLSearchParams): Observable<Requirement[]> {
+    const restangular = this.restangular.all(requirementsPath);
     return restangular
       .get(queryParams)
       .map(response => {
         const json = response.json();
         const result = new Array<Requirement>();
         json.items.forEach(element => {
-          const requirement = new Requirement(restangular.all(element['id']));
+          const requirement = new Requirement(restangular.all(element[requirementIdName]));
           result.push(Object.assign(requirement, element));
         });
         return result;

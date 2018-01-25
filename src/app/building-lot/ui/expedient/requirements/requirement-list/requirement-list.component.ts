@@ -29,23 +29,26 @@ export class RequirementListComponent implements OnInit {
 
   ngOnInit() {
     this.search();
+    // console.log(this.dataService.users().getEmployeeId());
+    // console.log(this.dataService.expedients().getUserId());
   }
 
-  search(): void {
+  search(): void { 
+    let id=this.dataService.users().getEmployeeId();
     const queryParams: URLSearchParams = new URLSearchParams();
-    queryParams.set('id', '12');
+    queryParams.set('id', id.toString());
     //queryParams.set('max', '5');
 
     this.loading = true;
     this.dataService.requeriments().getAll(queryParams).subscribe((data: any[]) => this.requirements = data,
-      error => () => {
+      error => {
         this.toastr.error('Something went wrong...', 'error');
         this.loading = false;
       },
       () => {
         this.toastr.success('Getting all values complete', 'Complete');
         this.loading = false;
-        //console.log(JSON.stringify(this.requirements));
+        console.log(JSON.stringify(this.requirements));
       });
   }
 

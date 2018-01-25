@@ -23,13 +23,7 @@ export class ExpedientService {
     return new Expedient(this.restangular.one(expedientssPath, id));
   }
 
-  getUserId(): number {
-    return this.token.getUserId();
-  }
-
-  getEmployeeId(): number {
-    return this.token.getEmployeeId();
-  }
+ 
 
 
   findById(id: number): Observable<Expedient> {

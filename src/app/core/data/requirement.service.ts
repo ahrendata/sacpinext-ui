@@ -36,13 +36,25 @@ export class RequirementService {
       .get(queryParams)
       .map(response => {
         const json = response.json();
+        console.log(JSON.stringify(json));
         const result = new Array<Requirement>();
-        json.items.forEach(element => {
-          const requirement = new Requirement(restangular.all(element[requirementIdName]));
-          result.push(Object.assign(requirement, element));
-        });
-        return result;
+        // json.items.forEach(element => {
+        //   const requirement = new Requirement(restangular.one('',element[requirementIdName]));
+        //   result.push(Object.assign(requirement, element));
+        // });
+        return json;
       });
+      // return expedientsRestangular
+      // .get(queryParams)
+      // .map(response => {
+      //   const json = response.json();
+      //   const expedients = new Array<Expedient>();
+      //   json.forEach(element => {
+      //     const expedient = new Expedient(expedientsRestangular.one('', element[expedientIdName]));
+      //     expedients.push(Object.assign(expedient, element));
+      //   });
+      //   return expedients;
+      // });
   }
 
   search(expedient: Expedient, criteria: SearchCriteria): Observable<SearchResults<Requirement>> {

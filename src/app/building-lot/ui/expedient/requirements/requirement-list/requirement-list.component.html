@@ -150,6 +150,9 @@
   <!-- /row -->
 </div>
 <!-- /container -->
+<div *ngFor="let req of requirements">
+  {{ req.IdRequirement }}
+</div>
 
 <div class="container-fluid">
   <div class="list-group list-view-pf list-view-pf-view">
@@ -181,43 +184,41 @@
           </ul>
         </div>
       </div>
-      
-      <form #searchForm="ngForm" (ngSubmit)="search()">
-        <div class="list-view-pf-main-info">
-          <div class="list-view-pf-left">
-            <span class="fa fa-plane list-view-pf-icon-sm"></span>
-          </div>
-          <div class="list-view-pf-body">
-            <div class="list-view-pf-description">
-              <div class="list-group-item-heading">
-                Event One
-              </div>
-              <div class="list-group-item-text">
-                The following snippet of text is
-                <a href="#">rendered as link text</a>.
-              </div>
+      <div class="list-view-pf-main-info">
+        <div class="list-view-pf-left">
+          <span class="fa fa-plane list-view-pf-icon-sm"></span>
+        </div>
+        <div class="list-view-pf-body">
+          <div class="list-view-pf-description">
+            <div class="list-group-item-heading">
+              Event One
             </div>
-            <div class="list-view-pf-additional-info">
-              <div class="list-view-pf-additional-info-item">
-                <span class="pficon pficon-screen"></span>
-                <strong>8</strong> Hosts
-              </div>
-              <div class="list-view-pf-additional-info-item">
-                <span class="pficon pficon-cluster"></span>
-                <strong>6</strong> Clusters
-              </div>
-              <div class="list-view-pf-additional-info-item">
-                <span class="pficon pficon-container-node"></span>
-                <strong>10</strong> Nodes
-              </div>
-              <div class="list-view-pf-additional-info-item">
-                <span class="pficon pficon-image"></span>
-                <strong>8</strong> Images
-              </div>
+            <div class="list-group-item-text">
+              The following snippet of text is
+              <a href="#">rendered as link text</a>.
+            </div>
+          </div>
+          <div class="list-view-pf-additional-info">
+            <div class="list-view-pf-additional-info-item">
+              <span class="pficon pficon-screen"></span>
+              <strong>8</strong> Hosts
+            </div>
+            <div class="list-view-pf-additional-info-item">
+              <span class="pficon pficon-cluster"></span>
+              <strong>6</strong> Clusters
+            </div>
+            <div class="list-view-pf-additional-info-item">
+              <span class="pficon pficon-container-node"></span>
+              <strong>10</strong> Nodes
+            </div>
+            <div class="list-view-pf-additional-info-item">
+              <span class="pficon pficon-image"></span>
+              <strong>8</strong> Images
             </div>
           </div>
         </div>
-      </form>
+      </div>
+
 
 
     </div>

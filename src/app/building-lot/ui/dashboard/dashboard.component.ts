@@ -35,8 +35,8 @@ export class DashboardComponent implements OnInit {
   ) { this.toastr.setRootViewContainerRef(vcr); }
 
   ngOnInit() {
-    console.log(this.dataService.expedients().getEmployeeId());
-    console.log(this.dataService.expedients().getUserId());
+    // console.log(this.dataService.expedients().getEmployeeId());
+    // console.log(this.dataService.expedients().getUserId());
     this.search();
   }
 

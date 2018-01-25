@@ -21,6 +21,14 @@ export class UserService {
     return new User(this.restangular.one(usersPath, id));
   }
 
+  getUserId(): number {
+    return this.token.getUserId();
+  }
+
+  getEmployeeId(): number {
+    return this.token.getEmployeeId();
+  }
+
   search(obj?: any): Observable<User> {    
     const userRestangular = this.restangular.all(usersPath + '/Login');
     return userRestangular

@@ -22,10 +22,10 @@ export class DashboardComponent implements OnInit {
     filterText: undefined
   };
 
-  
+
   dataSubscription: Subscription;
   expedient: Expedient;
-  
+
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -35,44 +35,23 @@ export class DashboardComponent implements OnInit {
   ) { this.toastr.setRootViewContainerRef(vcr); }
 
   ngOnInit() {
+    console.log(this.dataService.expedients().getEmployeeId());
+    console.log(this.dataService.expedients().getUserId());
     this.search();
-    // this.dataSubscription = this.activatedRoute.data.subscribe(
-    //   (data) => {
-    //     this.expedient = data['expedient'];
-    //   }
-    // );
-    // this.loadAllowedExpedients();
   }
+
   search(): void {
     this.loading = true;
-    this.dataService.expedients().getAll().subscribe((data: any[]) =>this.expedients = data,
-    error => () => {
-      this.toastr.error('Something went wrong...', 'error');
-      this.loading = false;
-    },
-    () => {
-      this.toastr.success('Getting all values complete', 'Complete');
-      this.loading = false;
-    });
+    this.dataService.expedients().getAll().subscribe((data: any[]) => this.expedients = data,
+      error => () => {
+        this.toastr.error('Something went wrong...', 'error');
+        this.loading = false;
+      },
+      () => {
+        this.toastr.success('Getting all values complete', 'Complete');
+        this.loading = false;
+      });
   }
-
-  // ngOnDestroy() {
-  //   this.dataSubscription.unsubscribe();
-  // }
-
-  // loadAllowedExpedients() {
-  //   this.dataService.expedients().getAll().subscribe((data: any[]) => this.expedients = data,
-  //     error => () => {
-  //       this.toastr.error('Something went wrong...', 'error');
-  //     },
-  //     () => {
-  //       this.toastr.success('Getting all values complete', 'Complete');
-  //     });
-  // }
-
-  // viewRequerimiento(model) {
-  //   console.log(JSON.stringify(model));
-  // }
 
   viewDetailExpediente(expedient: Expedient): void {
     console.log(expedient);

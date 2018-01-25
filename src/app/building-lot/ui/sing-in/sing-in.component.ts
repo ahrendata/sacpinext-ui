@@ -16,6 +16,7 @@ export class SingInComponent implements OnInit {
 
   form: FormGroup;
   working = false;
+  loading = false;
   user: User;
   returnUrl: string;
 
@@ -27,9 +28,13 @@ export class SingInComponent implements OnInit {
     vcr: ViewContainerRef) { this.toastr.setRootViewContainerRef(vcr); }
 
   ngOnInit() {
-    this.dataService.users().logout();
     this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
-    this.buildForm();
+    if (this.dataService.users().findToken()) {
+      this.router.navigate([this.returnUrl]);
+    } else {
+      this.dataService.users().logout();
+      this.buildForm();
+    }
   }
 
   buildForm() {
@@ -39,17 +44,21 @@ export class SingInComponent implements OnInit {
     });
   }
   login(form: FormGroup): void {
+    this.loading = true;
     this.working = true;
     const userCopy = Object.assign(this.user || {}, form.value);
-    console.log(userCopy);
-    
     this.dataService.users().search(userCopy).subscribe(
       result => {
-        this.toastr.success('Success! login.');
-        //this.router.navigate(['../']);
+        this.toastr.success('Ingresando al sistema...', 'Login');
         this.router.navigate([this.returnUrl]);
       },
+      error => {
+        this.toastr.error('Usuario y/o Contraseña incorrecta', 'Login');
+        this.loading = false;
+        this.working = false;
+      },
       () => {
+        this.loading = false;
         this.working = false;
       }
     );

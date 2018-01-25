@@ -4,16 +4,16 @@ import { User } from './../model/user.model';
 import { SearchCriteria } from './../model/search-criteria.model';
 import { SearchResults } from './../model/search-results.model';
 import { RestangularService } from './restangular.service';
+import { TokenService } from './../guard/token.service';
 
 const usersPath = 'Users';
 
 @Injectable()
 export class UserService {
 
-  public token: string;
   private restangular: RestangularService;
 
-  constructor(restangular: RestangularService) {
+  constructor(restangular: RestangularService, private token: TokenService) {
     this.restangular = restangular.all(usersPath);
   }
 
@@ -21,20 +21,26 @@ export class UserService {
     return new User(this.restangular.one(usersPath, id));
   }
 
-  search(obj?: any): Observable<User> {
-    console.log(obj);
+  search(obj?: any): Observable<User> {    
     const userRestangular = this.restangular.all(usersPath + '/Login');
     return userRestangular
       .post(obj)
-      .map(response => {  
+      .map(response => {
         const user = new User(userRestangular);
-        localStorage.setItem('sacpiuser',JSON.stringify(response.json()));
+        this.token.setToken(response.json());
         return Object.assign(user, response.json());
       });
   }
 
+  findToken() {
+    if (this.token.getToken()) {
+      return true;
+    }
+    return false;
+  }
+
   logout() {
-    localStorage.removeItem('sacpiuser');
+    this.token.removeToken();
   }
 
 }

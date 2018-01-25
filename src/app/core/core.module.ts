@@ -1,4 +1,3 @@
-
 import { ToastsManager } from 'ng2-toastr';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -12,14 +11,15 @@ import { SharedModule } from './../shared/shared.module';
 import { DataService } from './data/data.service';
 import { ExpedientService } from './data/expedient.service';
 import { RequirementService } from './data/requirement.service';
+import { TokenService } from './guard/token.service';
+
 import { ExpedientResolverService } from './resolvers/expedient-resolver.service';
+
 import { RestangularService, CustomInterceptor } from './data/restangular.service';
 
 import { UserService } from './data/user.service';
 import { Configuration } from './../app.constants';
 import { ConfigService } from './../config.service';
-
-// import { AuthGuard } from './guard/auth.guard';
 
 @NgModule({
   imports: [
@@ -40,7 +40,8 @@ import { ConfigService } from './../config.service';
     ExpedientService,
     RequirementService,
     UserService,
-    // AuthGuard,
+    TokenService,
+
     ExpedientResolverService
   ]
 })

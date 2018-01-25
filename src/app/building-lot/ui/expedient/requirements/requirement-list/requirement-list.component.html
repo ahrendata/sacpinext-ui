@@ -109,7 +109,7 @@
       </form>
       <div class="row toolbar-pf-results">
         <div class="col-sm-12">
-          <h5>40 Results</h5>
+          <h5>Mostrando {{requirements.length}} resultados</h5>
           <p>Active filters:</p>
           <ul class="list-inline">
             <li>
@@ -150,11 +150,8 @@
   <!-- /row -->
 </div>
 <!-- /container -->
-<div *ngFor="let req of requirements">
-  {{ req.IdRequirement }}
-</div>
-
-<div class="container-fluid">
+<div >  
+<div *ngFor="let req of requirements" class="container-fluid">
   <div class="list-group list-view-pf list-view-pf-view">
     <div class="list-group-item">
       <div class="list-view-pf-checkbox">
@@ -191,17 +188,17 @@
         <div class="list-view-pf-body">
           <div class="list-view-pf-description">
             <div class="list-group-item-heading">
-              Event One
+              {{ req.CodRequirement }} 
             </div>
             <div class="list-group-item-text">
-              The following snippet of text is
-              <a href="#">rendered as link text</a>.
+              {{ req.Description }}  
+              <a href="#"> {{ req.AliasExpedient }}  </a>.
             </div>
           </div>
           <div class="list-view-pf-additional-info">
             <div class="list-view-pf-additional-info-item">
               <span class="pficon pficon-screen"></span>
-              <strong>8</strong> Hosts
+              <strong>Atencion</strong>  {{ req.AtentionDate }}
             </div>
             <div class="list-view-pf-additional-info-item">
               <span class="pficon pficon-cluster"></span>
@@ -218,9 +215,7 @@
           </div>
         </div>
       </div>
-
-
-
     </div>
   </div>
+</div>
 </div>

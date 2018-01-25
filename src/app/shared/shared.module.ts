@@ -39,9 +39,7 @@ import { ButtonLoginComponent } from './components/button-login/button-login.com
     NgbModule,
     BsDropdownModule,
     ModalModule,
-    //MomentModule,
     JWBootstrapSwitchModule,    
-    //LocalStorageModule,
     ToastModule
   ],
   declarations: [

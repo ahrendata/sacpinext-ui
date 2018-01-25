@@ -15,7 +15,6 @@ import { SharedModule } from './shared/shared.module';
 
 // import { MomentModule } from 'angular2-moment';
 import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
-// import { LocalStorageModule } from 'angular-2-local-storage';
 import { ToastModule } from 'ng2-toastr';
 
 import { ConfigService, configServiceInitializer } from './config.service';
@@ -38,11 +37,7 @@ import { AuthGuard } from './core/guard/auth.guard';
     NgbModule.forRoot(),
     ModalModule.forRoot(),
     // MomentModule,
-    JWBootstrapSwitchModule,
-    // LocalStorageModule.withConfig({
-    //   prefix: 'openfact-pe',
-    //   storageType: 'localStorage'
-    // }),
+    JWBootstrapSwitchModule,   
     ToastModule.forRoot(),
     AppRoutingModule,
     NgbModule.forRoot(), 

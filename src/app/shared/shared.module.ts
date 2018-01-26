@@ -25,6 +25,7 @@ import { FormFieldValidationStateDirective } from './directives/form-field-valid
 import { FormRequiredLabelDirective } from './directives/form-required-label.directive';
 import { NumberMaskDirective } from './directives/number-mask.directive';
 import { ButtonLoginComponent } from './components/button-login/button-login.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 
 
@@ -58,7 +59,8 @@ import { ButtonLoginComponent } from './components/button-login/button-login.com
     FormFieldsStatusComponent,
     FormRequiredLabelDirective,
     NumberMaskDirective,
-    FormFieldValidationStateDirective
+    FormFieldValidationStateDirective,    
+    PaginationComponent
    
   ],
   exports: [   
@@ -91,7 +93,8 @@ import { ButtonLoginComponent } from './components/button-login/button-login.com
 
     NumberMaskDirective,
 
-    LoadingComponent
+    LoadingComponent,
+    PaginationComponent
   ]
 })
 export class SharedModule { }

@@ -27,6 +27,10 @@ export class RequirementListComponent implements OnInit {
     this.toastr.setRootViewContainerRef(vcr);
   }
 
+  total = 0;
+  page = 1;
+  limit = 5;
+
   ngOnInit() {
     this.search();
     // console.log(this.dataService.users().getEmployeeId());
@@ -37,7 +41,8 @@ export class RequirementListComponent implements OnInit {
     let id=this.dataService.users().getEmployeeId();
     const queryParams: URLSearchParams = new URLSearchParams();
     queryParams.set('id', id.toString());
-    //queryParams.set('max', '5');
+    queryParams.set('CurrentPage', this.page.toString());
+    queryParams.set('PageSize', this.limit.toString()); 
 
     this.loading = true;
     this.dataService.requeriments().getAll(queryParams).subscribe((data: any[]) => this.requirements = data,
@@ -51,5 +56,18 @@ export class RequirementListComponent implements OnInit {
         console.log(JSON.stringify(this.requirements));
       });
   }
+  goToPage(n: number): void {
+    this.page = n;
+    this.search();
+  }
 
+  onNext(): void {
+    this.page++;
+    this.search();
+  }
+
+  onPrev(): void {
+    this.page--;
+    this.search();
+  }
 }

@@ -37,11 +37,11 @@ export class RequirementService {
       .map(response => {
         const json = response.json();
         const requirements = new Array<Requirement>();
-        json.forEach(element => {
+        json.data.forEach(element => {
           const requirement = new Requirement(restangular.one('', element[requirementIdName]));
           requirements.push(Object.assign(requirement, element));
         });
-        return requirements;
+        return json;
       });      
   }
 

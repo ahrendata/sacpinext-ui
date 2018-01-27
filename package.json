@@ -29,6 +29,7 @@
     "ng2-select": "^2.0.0",
     "ng2-toastr": "^4.1.2",
     "ngx-bootstrap": "^2.0.1",
+    "ngx-pagination": "^3.0.3",
     "ngx-restangular": "^2.0.2",
     "patternfly": "^3.37.1",
     "rxjs": "^5.5.6",

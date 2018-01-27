@@ -109,7 +109,7 @@
       </form>
       <div class="row toolbar-pf-results">
         <div class="col-sm-12">
-          <h5>Mostrando {{requirements.length}} resultados</h5>
+          <h5>Mostrando {{total}} resultados</h5>
           <p>Active filters:</p>
           <ul class="list-inline">
             <li>
@@ -153,7 +153,7 @@
 <sacpi-loading [loading]="loading">
   <div class="container-fluid">
     <div class="list-group list-view-pf list-view-pf-view">
-      <div *ngFor="let req of requirements" class="list-group-item">
+      <div *ngFor="let req of requirements | paginate: { itemsPerPage: limit, currentPage: page, totalItems: total }" class="list-group-item">
         <div class="list-view-pf-checkbox">
           <input type="checkbox">
         </div>
@@ -216,8 +216,9 @@
           </div>
         </div>
       </div>
-      <sacpi-pagination (goPage)="goToPage($event)" (goNext)="onNext()" (goPrev)="onPrev()" [pagesToShow]="3" [page]="page" [perPage]="limit" [count]="requirements.length">
-      </sacpi-pagination>
+      <pagination-controls (pageChange)="goToPage($event)" style="text-align: right;"></pagination-controls>
+      <!-- <sacpi-pagination (goPage)="goToPage($event)" (goNext)="onNext()" (goPrev)="onPrev()" [pagesToShow]="3" [page]="1" [perPage]="5" [count]="requirements.length">
+      </sacpi-pagination> -->
       <!-- <form class="content-view-pf-pagination table-view-pf-pagination clearfix" id="pagination1">
         <div class="form-group">
           <select class="combobox form-control" style="width: 50px;">            
@@ -242,6 +243,6 @@
           </ul>
         </div>
       </form> -->
-    </div>
+    </div>   
   </div>
 </sacpi-loading>

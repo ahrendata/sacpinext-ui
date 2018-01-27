@@ -21,6 +21,7 @@ import { ConfigService, configServiceInitializer } from './config.service';
 import { AppComponent } from './app.component';
 import { Configuration } from './app.constants';
 import { AuthGuard } from './core/guard/auth.guard';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { AuthGuard } from './core/guard/auth.guard';
     BrowserAnimationsModule,
     NgbModule.forRoot(),
     ModalModule.forRoot(),
+    NgxPaginationModule,
     // MomentModule,
     JWBootstrapSwitchModule,   
     ToastModule.forRoot(),

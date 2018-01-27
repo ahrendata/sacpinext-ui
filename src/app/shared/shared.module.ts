@@ -26,6 +26,7 @@ import { FormRequiredLabelDirective } from './directives/form-required-label.dir
 import { NumberMaskDirective } from './directives/number-mask.directive';
 import { ButtonLoginComponent } from './components/button-login/button-login.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 
@@ -41,7 +42,8 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     BsDropdownModule,
     ModalModule,
     JWBootstrapSwitchModule,    
-    ToastModule
+    ToastModule,
+    NgxPaginationModule
   ],
   declarations: [
     TruncatePipe,
@@ -79,6 +81,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     ButtonSwitchComponent,
     ButtonLoginComponent,
     OnOffSwitchStringComponent,
+    NgxPaginationModule,
 
     TruncatePipe,
     ToDatePipe,

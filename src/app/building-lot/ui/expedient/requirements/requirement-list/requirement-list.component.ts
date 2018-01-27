@@ -14,7 +14,7 @@ import { URLSearchParams } from '@angular/http';
 
 export class RequirementListComponent implements OnInit {
 
-  loading = false;  
+  loading = false;
   requirements: Array<Requirement> = new Array<Requirement>();
   filters: any = {
     filterText: undefined
@@ -37,15 +37,18 @@ export class RequirementListComponent implements OnInit {
     // console.log(this.dataService.expedients().getUserId());
   }
 
-  search(): void { 
-    let id=this.dataService.users().getEmployeeId();
+  search(): void {
+    let id = this.dataService.users().getEmployeeId();
     const queryParams: URLSearchParams = new URLSearchParams();
     queryParams.set('id', id.toString());
-    queryParams.set('CurrentPage', this.page.toString());
-    queryParams.set('PageSize', this.limit.toString()); 
+    queryParams.set('pageNumber', this.page.toString());
+    queryParams.set('PageSize', this.limit.toString());
 
     this.loading = true;
-    this.dataService.requeriments().getAll(queryParams).subscribe((data: any[]) => this.requirements = data,
+    this.dataService.requeriments().getAll(queryParams).subscribe((data: any) => {
+      this.requirements = data.data;
+      this.total = data.count
+    },
       error => {
         this.toastr.error('Something went wrong...', 'error');
         this.loading = false;
@@ -53,7 +56,8 @@ export class RequirementListComponent implements OnInit {
       () => {
         this.toastr.success('Getting all values complete', 'Complete');
         this.loading = false;
-        console.log(JSON.stringify(this.requirements));
+        //this.total = data.count;
+        console.log(JSON.stringify(this.page));
       });
   }
   goToPage(n: number): void {

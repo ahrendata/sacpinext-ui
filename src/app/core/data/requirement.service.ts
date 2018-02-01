@@ -14,7 +14,7 @@ const requirementsPath = 'Requirement';
 @Injectable()
 export class RequirementService {
 
-  
+
   private restangular: RestangularService;
   constructor(restangular: RestangularService) {
     this.restangular = restangular.all(requirementsPath);
@@ -22,7 +22,7 @@ export class RequirementService {
 
   findById(expedient: Expedient, id: number, queryParams?: URLSearchParams): Observable<Requirement> {
     const restangular = expedient.restangular.one('requirements', id);
-    return restangular     
+    return restangular
       .get(queryParams)
       .map(response => {
         const data = response.json();
@@ -37,33 +37,29 @@ export class RequirementService {
       .map(response => {
         const json = response.json();
         const requirements = new Array<Requirement>();
-        json.data.forEach(element => {
+        json.forEach(element => {
           const requirement = new Requirement(restangular.one('', element[requirementIdName]));
           requirements.push(Object.assign(requirement, element));
         });
-        return json;
-      });      
+        return requirements;
+      });
   }
 
-  search(expedient: Expedient, criteria: SearchCriteria): Observable<SearchResults<Requirement>> {
-    const restangular = expedient.restangular.all('requirements');
+  create(requirement: any): Observable<any> {
+    const restangular = this.restangular.all(requirementsPath);
     return restangular
-      .all('search')
-      .post(criteria)
+      .post(requirement)
       .map(response => {
+        if (response.status === 201 || 204) {
+          return undefined;
+        }
         const json = response.json();
-
-        const result = new SearchResults<Requirement>();
-        const items = new Array<Requirement>();
-
-        json.items.forEach(element => {
-          const requirement = new Requirement(restangular.all(element['id']));
-          items.push(Object.assign(requirement, element));
+        const requirements = new Array<Requirement>();
+        json.forEach(element => {
+          const requirement = new Requirement(restangular.one('', element[requirementIdName]));
+          requirements.push(Object.assign(requirement, element));
         });
-
-        result.items = items;
-        result.totalSize = json.totalSize;
-        return result;
+        return requirements;
       });
   }
 

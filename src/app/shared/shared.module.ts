@@ -1,9 +1,9 @@
 import { YesNoPipe } from './pipes/yes-no.pipe';
 import { ToDatePipe } from './pipes/to-date.pipe';
-import { ToastModule } from 'ng2-toastr';
-import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
+//import { ToastModule } from 'ng2-toastr';
+//import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
 import { BsDropdownModule, ModalModule } from 'ngx-bootstrap';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+//import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
@@ -25,8 +25,15 @@ import { FormFieldValidationStateDirective } from './directives/form-field-valid
 import { FormRequiredLabelDirective } from './directives/form-required-label.directive';
 import { NumberMaskDirective } from './directives/number-mask.directive';
 import { ButtonLoginComponent } from './components/button-login/button-login.component';
-import { PaginationComponent } from './components/pagination/pagination.component';
-import { NgxPaginationModule } from 'ngx-pagination';
+
+//import { MomentModule } from 'angular2-moment';
+import { NgSelectModule } from '@ng-select/ng-select';
+//import { SelectModule } from 'ng2-select';
+//import { TextMaskModule } from 'angular2-text-mask';
+import { ButtonAddComponent } from './components/button-add/button-add.component';
+import { ButtonConfirmarComponent } from './components/button-confirmar/button-confirmar.component';
+
+import { ToolbarModule } from 'patternfly-ng/toolbar';
 
 
 
@@ -37,13 +44,16 @@ import { NgxPaginationModule } from 'ngx-pagination';
     HttpModule,
     FormsModule,
     ReactiveFormsModule,
-
-    NgbModule,
+    //NgbModule,
     BsDropdownModule,
     ModalModule,
-    JWBootstrapSwitchModule,    
-    ToastModule,
-    NgxPaginationModule
+    //MomentModule,
+    //JWBootstrapSwitchModule,
+    //ToastModule,
+    //SelectModule,
+    NgSelectModule,
+    ToolbarModule
+    // TextMaskModule
   ],
   declarations: [
     TruncatePipe,
@@ -55,24 +65,28 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ButtonSaveComponent,
     ButtonSwitchComponent,
     ButtonLoginComponent,
+    ButtonAddComponent,
+    ButtonConfirmarComponent,
     LoadingComponent,
     OnOffSwitchStringComponent,
     FormFieldValidationMessagesComponent,
     FormFieldsStatusComponent,
     FormRequiredLabelDirective,
     NumberMaskDirective,
-    FormFieldValidationStateDirective,    
-    PaginationComponent
-   
+    FormFieldValidationStateDirective
+
   ],
-  exports: [   
-    NgbModule,
+  exports: [
+    //NgbModule,
     BsDropdownModule,
     ModalModule,
-    //MomentModule,
-    JWBootstrapSwitchModule,
-    //LocalStorageModule,
-    ToastModule,
+    // MomentModule,
+    //JWBootstrapSwitchModule,
+    NgSelectModule,
+    ToolbarModule,
+    //SelectModule,
+    // ToastModule,
+    // TextMaskModule,
 
     ButtonDeleteComponent,
     ButtonSaveComponent,
@@ -80,24 +94,21 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ButtonResetComponent,
     ButtonSwitchComponent,
     ButtonLoginComponent,
+    ButtonAddComponent,
+    ButtonConfirmarComponent,
     OnOffSwitchStringComponent,
-    NgxPaginationModule,
 
     TruncatePipe,
     ToDatePipe,
     YesNoPipe,
-    
+
     FormFieldValidationMessagesComponent,
     FormFieldsStatusComponent,
-    
+
     NumberMaskDirective,
     FormRequiredLabelDirective,
     FormFieldValidationStateDirective,
-
-    NumberMaskDirective,
-
-    LoadingComponent,
-    PaginationComponent
+    LoadingComponent
   ]
 })
 export class SharedModule { }

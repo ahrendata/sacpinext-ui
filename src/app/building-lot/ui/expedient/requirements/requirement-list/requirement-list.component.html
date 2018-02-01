@@ -105,11 +105,14 @@
               <i class="fa fa-th-list"></i>
             </button>
           </div>
+          <div class="form-group toolbar-pf-view-selector">
+            <button class="btn btn-primary" type="button" (click)="createRequirement()">Nuevo Requerimiento</button>
+          </div>
         </div>
       </form>
       <div class="row toolbar-pf-results">
         <div class="col-sm-12">
-          <h5>Mostrando {{total}} resultados</h5>
+          <h5>40 Results</h5>
           <p>Active filters:</p>
           <ul class="list-inline">
             <li>
@@ -150,99 +153,77 @@
   <!-- /row -->
 </div>
 <!-- /container -->
-<sacpi-loading [loading]="loading">
-  <div class="container-fluid">
-    <div class="list-group list-view-pf list-view-pf-view">
-      <div *ngFor="let req of requirements | paginate: { itemsPerPage: limit, currentPage: page, totalItems: total }" class="list-group-item">
-        <div class="list-view-pf-checkbox">
-          <input type="checkbox">
+<div *ngFor="let req of requirements">
+  {{ req.IdRequirement }}
+</div>
+
+<div class="container-fluid">
+  <div class="list-group list-view-pf list-view-pf-view">
+    <div class="list-group-item">
+      <div class="list-view-pf-checkbox">
+        <input type="checkbox">
+      </div>
+      <div class="list-view-pf-actions">
+        <button class="btn btn-default">Action</button>
+        <div class="dropdown pull-right dropdown-kebab-pf">
+          <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight9" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="true">
+            <span class="fa fa-ellipsis-v"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight9">
+            <li>
+              <a href="#">Action</a>
+            </li>
+            <li>
+              <a href="#">Another Action</a>
+            </li>
+            <li>
+              <a href="#">Something Else Here</a>
+            </li>
+            <li role="separator" class="divider"></li>
+            <li>
+              <a href="#">Separated Link</a>
+            </li>
+          </ul>
         </div>
-        <div class="list-view-pf-actions">
-          <button class="btn btn-default">Action</button>
-          <div class="dropdown pull-right dropdown-kebab-pf">
-            <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight9" data-toggle="dropdown" aria-haspopup="true"
-              aria-expanded="true">
-              <span class="fa fa-ellipsis-v"></span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight9">
-              <li>
-                <a href="#">Action</a>
-              </li>
-              <li>
-                <a href="#">Another Action</a>
-              </li>
-              <li>
-                <a href="#">Something Else Here</a>
-              </li>
-              <li role="separator" class="divider"></li>
-              <li>
-                <a href="#">Separated Link</a>
-              </li>
-            </ul>
-          </div>
+      </div>
+      <div class="list-view-pf-main-info">
+        <div class="list-view-pf-left">
+          <span class="fa fa-plane list-view-pf-icon-sm"></span>
         </div>
-        <div class="list-view-pf-main-info">
-          <div class="list-view-pf-left">
-            <span class="fa fa-plane list-view-pf-icon-sm"></span>
-          </div>
-          <div class="list-view-pf-body">
-            <div class="list-view-pf-description">
-              <div class="list-group-item-heading">
-                {{ req.CodRequirement }}
-              </div>
-              <div class="list-group-item-text">
-                {{ req.Description }}
-                <a href="#"> {{ req.AliasExpedient }} </a>.
-              </div>
+        <div class="list-view-pf-body">
+          <div class="list-view-pf-description">
+            <div class="list-group-item-heading">
+              Event One
             </div>
-            <div class="list-view-pf-additional-info">
-              <div class="list-view-pf-additional-info-item">
-                <span class="pficon pficon-screen"></span>
-                <strong>Atencion</strong> {{ req.AtentionDate }}
-              </div>
-              <div class="list-view-pf-additional-info-item">
-                <span class="pficon pficon-cluster"></span>
-                <strong>6</strong> Clusters
-              </div>
-              <div class="list-view-pf-additional-info-item">
-                <span class="pficon pficon-container-node"></span>
-                <strong>10</strong> Nodes
-              </div>
-              <div class="list-view-pf-additional-info-item">
-                <span class="pficon pficon-image"></span>
-                <strong>8</strong> Images
-              </div>
+            <div class="list-group-item-text">
+              The following snippet of text is
+              <a href="#">rendered as link text</a>.
+            </div>
+          </div>
+          <div class="list-view-pf-additional-info">
+            <div class="list-view-pf-additional-info-item">
+              <span class="pficon pficon-screen"></span>
+              <strong>8</strong> Hosts
+            </div>
+            <div class="list-view-pf-additional-info-item">
+              <span class="pficon pficon-cluster"></span>
+              <strong>6</strong> Clusters
+            </div>
+            <div class="list-view-pf-additional-info-item">
+              <span class="pficon pficon-container-node"></span>
+              <strong>10</strong> Nodes
+            </div>
+            <div class="list-view-pf-additional-info-item">
+              <span class="pficon pficon-image"></span>
+              <strong>8</strong> Images
             </div>
           </div>
         </div>
       </div>
-      <pagination-controls (pageChange)="goToPage($event)" style="text-align: right;"></pagination-controls>
-      <!-- <sacpi-pagination (goPage)="goToPage($event)" (goNext)="onNext()" (goPrev)="onPrev()" [pagesToShow]="3" [page]="1" [perPage]="5" [count]="requirements.length">
-      </sacpi-pagination> -->
-      <!-- <form class="content-view-pf-pagination table-view-pf-pagination clearfix" id="pagination1">
-        <div class="form-group">
-          <select class="combobox form-control" style="width: 50px;">            
-            <option value="10" selected="selected">10</option>
-            <option value="15" >15</option>
-            <option value="25">25</option>            
-          </select>
-          <span> for page</span>
-        </div>
-        <div class="form-group">
-          <span><span class="pagination-pf-items-current">1-15</span> of <span class="pagination-pf-items-total">{{requirements.length}}</span></span>
-          <ul class="pagination pagination-pf-back">
-            <li class="disabled"><a href="#" title="First Page"><span class="i fa fa-angle-double-left"></span></a></li>
-            <li class="disabled"><a href="#" title="Previous Page"><span class="i fa fa-angle-left"></span></a></li>
-          </ul>
-          <label for="pagination1-page" class="sr-only">Current Page</label>
-          <input class="pagination-pf-page" type="text" value="1" id="pagination1-page"/>
-          <span>of <span class="pagination-pf-pages">5</span></span>
-          <ul class="pagination pagination-pf-forward">
-            <li><a href="#" title="Next Page"><span class="i fa fa-angle-right"></span></a></li>
-            <li><a href="#" title="Last Page"><span class="i fa fa-angle-double-right"></span></a></li>
-          </ul>
-        </div>
-      </form> -->
-    </div>   
+
+
+
+    </div>
   </div>
-</sacpi-loading>
+</div>

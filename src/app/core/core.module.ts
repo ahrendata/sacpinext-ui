@@ -1,4 +1,4 @@
-import { ToastsManager } from 'ng2-toastr';
+//import { ToastsManager } from 'ng2-toastr';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Http } from '@angular/http';
@@ -11,6 +11,9 @@ import { SharedModule } from './../shared/shared.module';
 import { DataService } from './data/data.service';
 import { ExpedientService } from './data/expedient.service';
 import { RequirementService } from './data/requirement.service';
+import { UnitCodeService } from './data/unit-code.service';
+import { ProductService } from './data/product.service';
+
 import { TokenService } from './guard/token.service';
 
 import { ExpedientResolverService } from './resolvers/expedient-resolver.service';
@@ -20,6 +23,7 @@ import { RestangularService, CustomInterceptor } from './data/restangular.servic
 import { UserService } from './data/user.service';
 import { Configuration } from './../app.constants';
 import { ConfigService } from './../config.service';
+
 
 @NgModule({
   imports: [
@@ -40,6 +44,8 @@ import { ConfigService } from './../config.service';
     ExpedientService,
     RequirementService,
     UserService,
+    UnitCodeService,
+    ProductService,
     TokenService,
 
     ExpedientResolverService

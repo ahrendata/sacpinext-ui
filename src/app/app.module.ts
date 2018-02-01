@@ -2,26 +2,24 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RestangularModule } from 'ngx-restangular';
+//import { RestangularModule } from 'ngx-restangular';
 import { BsDropdownModule, ModalModule } from 'ngx-bootstrap';
 import { NgModule } from '@angular/core';
 import { Http, HttpModule } from '@angular/http';
-import { APP_INITIALIZER } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+//import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from './shared/shared.module';
 
-// import { MomentModule } from 'angular2-moment';
-import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
-import { ToastModule } from 'ng2-toastr';
+//import { MomentModule } from 'angular2-moment';
+//import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
+//import { ToastModule } from 'ng2-toastr';
 
 import { ConfigService, configServiceInitializer } from './config.service';
 import { AppComponent } from './app.component';
 import { Configuration } from './app.constants';
 import { AuthGuard } from './core/guard/auth.guard';
-import {NgxPaginationModule} from 'ngx-pagination';
 
 
 @NgModule({
@@ -34,21 +32,19 @@ import {NgxPaginationModule} from 'ngx-pagination';
     HttpModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    BrowserAnimationsModule,
-    NgbModule.forRoot(),
+   // NgbModule.forRoot(),
+    BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
-    NgxPaginationModule,
-    // MomentModule,
-    JWBootstrapSwitchModule,   
-    ToastModule.forRoot(),
+   // MomentModule,
+  //  JWBootstrapSwitchModule,   
+  //  ToastModule.forRoot(),
     AppRoutingModule,
-    NgbModule.forRoot(), 
     SharedModule,
     CoreModule
   ],
   providers: [
     Configuration ,
-    AuthGuard   
+    AuthGuard     
   ],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,16 @@
+.sacpi-display-block {
+    display: block;
+  }
+  input[readonly] {
+    background-color: #d1d1d1 !important;
+    color: #363636 !important;
+  }
+  
+  .ng-select.ng-select-sacpi {   
+    max-width: 500px;
+  }
+
+.ng-product-filter{
+  max-width: 350px;
+  min-width: 350px;
+}

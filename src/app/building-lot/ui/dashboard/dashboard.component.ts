@@ -1,8 +1,12 @@
+import { OrderBy } from './../../../core/model/order-by.model';
+import { SearchCriteriaFilter } from './../../../core/model/search-criteria-filter.model';
+import { Paging } from './../../../core/model/paging.model';
+import { SearchCriteria } from './../../../core/model/search-criteria.model';
 import { Component, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { URLSearchParams } from '@angular/http';
-import { ToastsManager } from 'ng2-toastr';
+//import { ToastsManager } from 'ng2-toastr';
 
 import { Expedient } from './../../../core/model/expedient.model';
 import { DataService } from '../../../core/data/data.service';
@@ -18,40 +22,70 @@ export class DashboardComponent implements OnInit {
 
   loading = false;
   expedients: Array<Expedient> = new Array<Expedient>();
-  filters: any = {
-    filterText: undefined
-  };
-
-
-  dataSubscription: Subscription;
   expedient: Expedient;
+
+
+  searchCriteria: SearchCriteria = {
+    filterText: null
+  };
+  filters: Array<SearchCriteriaFilter> = new Array<SearchCriteriaFilter>();
+  orderBy: OrderBy = {
+    name: 'CreatedTime',
+    ascending: false
+  };
+  paging: Paging = {
+    page: 1,
+    pageSize: 10
+  };
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private dataService: DataService,
-    private toastr: ToastsManager,
+    //private toastr: ToastsManager,
     vcr: ViewContainerRef
-  ) { this.toastr.setRootViewContainerRef(vcr); }
+  ) { //this.toastr.setRootViewContainerRef(vcr);
+   }
 
   ngOnInit() {
-    // console.log(this.dataService.expedients().getEmployeeId());
-    // console.log(this.dataService.expedients().getUserId());
     this.search();
   }
 
   search(): void {
     this.loading = true;
-    this.dataService.expedients().getAll().subscribe((data: any[]) => this.expedients = data,
-      error => () => {
-        this.toastr.error('Something went wrong...', 'error');
+    let id = this.dataService.users().getEmployeeId();
+    const queryParams: URLSearchParams = new URLSearchParams();
+    queryParams.set('id', id.toString());
+
+    const criteria: SearchCriteria = {
+      filterText: this.searchCriteria.filterText,
+      filters: this.filters.map(f => {
+        return new SearchCriteriaFilter(f.name, f.value, f.operator, f.type);
+      }),
+      orders: [this.orderBy],
+      paging: this.paging
+    };
+    criteria.filters.push(new SearchCriteriaFilter('id', id.toString(), 'eq'));
+
+//console.log(criteria);
+    this.dataService.expedients().getAll(queryParams).subscribe((data: any[]) => this.expedients = data,
+      error => {
+       // this.toastr.error('Error al obtener expedientes, usuario no tiene asigando ningun expediente.', 'Error');
         this.loading = false;
       },
       () => {
-        this.toastr.success('Getting all values complete', 'Complete');
+    //    this.toastr.success('Getting all values complete', 'Complete');
         this.loading = false;
       });
   }
+
+  changeAscending(){
+    this.orderBy.ascending = !this.orderBy.ascending;
+    this.search();
+  }
+
+
+
 
   viewDetailExpediente(expedient: Expedient): void {
     console.log(expedient);

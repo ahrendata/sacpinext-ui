@@ -21,11 +21,11 @@ const routes: Routes = [
     component: RequirementListComponent
   },
   {
-    path: 'create',
+    path: 'create',canActivate: [AuthGuard],
     component: RequirementCreateComponent 
   },
   {
-    path: ':document',
+    path: ':document',canActivate: [AuthGuard],
     component: RequirementEditComponent
     // resolve: {
     //   document: SacpiResolverService

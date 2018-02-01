@@ -22,10 +22,6 @@ export class ExpedientService {
   build(id: number): Expedient {
     return new Expedient(this.restangular.one(expedientssPath, id));
   }
-
- 
-
-
   findById(id: number): Observable<Expedient> {
     const expedientRestangular = this.restangular.one(expedientssPath, id);
     return expedientRestangular
@@ -33,20 +29,6 @@ export class ExpedientService {
       .map(response => {
         const expedient = new Expedient(expedientRestangular);
         return Object.assign(expedient, response.json());
-      });
-  }
-
-  create(expedient: Expedient): Observable<Expedient> {
-    const expedientRestangular = this.restangular.all(expedientssPath);
-    return expedientRestangular
-      .post(expedient)
-      .map(response => {
-        if (response.status === 201 || 204) {
-          return undefined;
-        }
-        const json = response.json();
-        const result = new Expedient(expedientRestangular.one('', json[expedientIdName]));
-        return Object.assign(result, json);
       });
   }
 
@@ -62,6 +44,27 @@ export class ExpedientService {
           expedients.push(Object.assign(expedient, element));
         });
         return expedients;
+      });
+  }
+  search(criteria: SearchCriteria): Observable<SearchResults<Expedient>> {
+    const restangular = this.restangular.all(expedientssPath);
+    return restangular
+      .all('search')
+      .post(criteria)
+      .map(response => {
+        const json = response.json();
+
+        const result = new SearchResults<Expedient>();
+        const items = new Array<Expedient>();
+
+        json.items.forEach(element => {
+          const document = new Expedient(restangular.all(element['id']));
+          items.push(Object.assign(document, element));
+        });
+
+        result.items = items;
+        result.totalSize = json.totalSize;
+        return result;
       });
   }
 

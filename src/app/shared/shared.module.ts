@@ -34,6 +34,8 @@ import { ButtonAddComponent } from './components/button-add/button-add.component
 import { ButtonConfirmarComponent } from './components/button-confirmar/button-confirmar.component';
 
 import { ToolbarModule } from 'patternfly-ng/toolbar';
+import { ListModule } from 'patternfly-ng/list';
+import { ActionModule } from 'patternfly-ng/action';
 
 
 
@@ -52,7 +54,9 @@ import { ToolbarModule } from 'patternfly-ng/toolbar';
     //ToastModule,
     //SelectModule,
     NgSelectModule,
-    ToolbarModule
+    ToolbarModule,
+    ListModule,
+    ActionModule
     // TextMaskModule
   ],
   declarations: [
@@ -84,6 +88,8 @@ import { ToolbarModule } from 'patternfly-ng/toolbar';
     //JWBootstrapSwitchModule,
     NgSelectModule,
     ToolbarModule,
+    ListModule,
+    ActionModule,
     //SelectModule,
     // ToastModule,
     // TextMaskModule,

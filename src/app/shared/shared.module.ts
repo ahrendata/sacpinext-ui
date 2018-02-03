@@ -36,6 +36,7 @@ import { ButtonConfirmarComponent } from './components/button-confirmar/button-c
 import { ToolbarModule } from 'patternfly-ng/toolbar';
 import { ListModule } from 'patternfly-ng/list';
 import { ActionModule } from 'patternfly-ng/action';
+import { PaginationModule } from 'patternfly-ng/pagination';
 
 
 
@@ -56,7 +57,8 @@ import { ActionModule } from 'patternfly-ng/action';
     NgSelectModule,
     ToolbarModule,
     ListModule,
-    ActionModule
+    ActionModule,
+    PaginationModule
     // TextMaskModule
   ],
   declarations: [
@@ -90,6 +92,7 @@ import { ActionModule } from 'patternfly-ng/action';
     ToolbarModule,
     ListModule,
     ActionModule,
+    PaginationModule,
     //SelectModule,
     // ToastModule,
     // TextMaskModule,

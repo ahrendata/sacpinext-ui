@@ -26,6 +26,9 @@ import { ListEvent } from 'patternfly-ng/list/list-event';
 import { ListConfig } from 'patternfly-ng/list/basic-list//list-config';
 import { cloneDeep } from 'lodash';
 
+//for pagiysntion
+import { PaginationConfig } from 'patternfly-ng/pagination/pagination-config';
+import { PaginationEvent } from 'patternfly-ng/pagination/pagination-event';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -37,10 +40,10 @@ import { cloneDeep } from 'lodash';
 export class RequirementListComponent implements OnInit {
   actionConfig: ActionConfig;
   actionsText: string = '';
-  allItems: any[];
+  allItems: any[]=[];
   filterConfig: FilterConfig;
   filtersText: string = '';
-  items: any[];
+  items: any[]=[];
   isAscendingSort: boolean = true;
   separator: Object;
   sortConfig: SortConfig;
@@ -74,19 +77,20 @@ export class RequirementListComponent implements OnInit {
 
 //for list
   actionsText1: string = '';
-  //allItems1: any[];
   emptyStateConfig: EmptyStateConfig;
-  //items1: any[];
   itemsAvailable: boolean = true;
   listConfig: ListConfig;
   selectType: string = 'checkbox';
+
+  //for pag
+  paginationConfig: PaginationConfig;
 
   total = 0;
   page = 1;
   limit = 5;
 
   loading = false;  
-  requirements : any[];//: Array<Requirement> = new Array<Requirement>();
+  requirements : any[]=[];//: Array<Requirement> = new Array<Requirement>();
   filters: any = {
     filterText: undefined
   };
@@ -137,7 +141,7 @@ export class RequirementListComponent implements OnInit {
       weekDay: 'Thursday',
       weekdayId: 'day5'
     }];
-    this.items = this.allItems;
+    this.items =  cloneDeep(this.allItems); //this.allItems;
 
     this.weekDayQueries = [{
       id: 'day1',
@@ -145,21 +149,6 @@ export class RequirementListComponent implements OnInit {
     }, {
       id: 'day2',
       value: 'Monday'
-    }, {
-      id: 'day3',
-      value: 'Tuesday'
-    }, {
-      id: 'day4',
-      value: 'Wednesday'
-    }, {
-      id: 'day5',
-      value: 'Thursday'
-    }, {
-      id: 'day6',
-      value: 'Friday'
-    }, {
-      id: 'day7',
-      value: 'Saturday'
     }];
 
     this.filterConfig = {
@@ -184,36 +173,6 @@ export class RequirementListComponent implements OnInit {
         }, {
           id: 'month2',
           value: 'February'
-        }, {
-          id: 'month3',
-          value: 'March'
-        }, {
-          id: 'month4',
-          value: 'April'
-        }, {
-          id: 'month5',
-          value: 'May'
-        }, {
-          id: 'month6',
-          value: 'June'
-        }, {
-          id: 'month7',
-          value: 'July'
-        }, {
-          id: 'month8',
-          value: 'August'
-        }, {
-          id: 'month9',
-          value: 'September'
-        }, {
-          id: 'month10',
-          value: 'October'
-        }, {
-          id: 'month11',
-          value: 'November'
-        }, {
-          id: 'month12',
-          value: 'December'
         }]
       }, {
         id: 'weekDay',
@@ -251,13 +210,9 @@ export class RequirementListComponent implements OnInit {
 
     this.actionConfig = {
       primaryActions: [{
-        id: 'action1',
-        title: 'Action 1',
-        tooltip: 'Do the first thing'
-      }, {
-        id: 'action2',
-        title: 'Action 2',
-        tooltip: 'Do something else'
+        id: 'NUEVO',
+        title: 'Nuevo',
+        tooltip: 'Do the first thing'        
       }],
       moreActions: [{
         id: 'moreActions1',
@@ -272,22 +227,6 @@ export class RequirementListComponent implements OnInit {
         id: 'moreActions3',
         title: 'Disabled Action',
         tooltip: 'Unavailable action',
-      }, {
-        id: 'moreActions4',
-        title: 'Something Else',
-        tooltip: 'Do something special'
-      }, {
-        id: 'moreActions5',
-        title: '',
-        separator: true
-      }, {
-        id: 'moreActions6',
-        title: 'Grouped Action 1',
-        tooltip: 'Do something'
-      }, {
-        id: 'moreActions7',
-        title: 'Grouped Action 2',
-        tooltip: 'Do something similar'
       }]
     } as ActionConfig;
 
@@ -306,133 +245,21 @@ export class RequirementListComponent implements OnInit {
       }]
     } as ToolbarConfig;
 
-    //for list
-    // this.allItems1 = [{
-    //   name: 'Fred Flintstone',
-    //   address: '20 Dinosaur Way',
-    //   city: 'Bedrock',
-    //   state: 'Washingstone',
-    //   typeIcon: 'fa-plane',
-    //   clusterCount: 6,
-    //   hostCount: 8,
-    //   imageCount: 8,
-    //   nodeCount: 10
-    // }, {
-    //   name: 'John Smith',
-    //   address: '415 East Main Street',
-    //   city: 'Norfolk',
-    //   state: 'Virginia',
-    //   typeIcon: 'fa-magic',
-    //   hostCount: 8,
-    //   clusterCount: 6,
-    //   nodeCount: 10,
-    //   imageCount: 8,
-    //   hideExpandToggle: true
-    // }, {
-    //   name: 'Frank Livingston',
-    //   address: '234 Elm Street',
-    //   city: 'Pittsburgh',
-    //   state: 'Pennsylvania',
-    //   typeIcon: 'fa-gamepad',
-    //   hostCount: 8,
-    //   clusterCount: 6,
-    //   nodeCount: 10,
-    //   imageCount: 8
-    // }, {
-    //   name: 'Linda McGovern',
-    //   address: '22 Oak Street',
-    //   city: 'Denver',
-    //   state: 'Colorado',
-    //   typeIcon: 'fa-linux',
-    //   hostCount: 8,
-    //   clusterCount: 6,
-    //   nodeCount: 10,
-    //   imageCount: 8
-    // }, {
-    //   name: 'Jim Brown',
-    //   address: '72 Bourbon Way',
-    //   city: 'Nashville',
-    //   state: 'Tennessee',
-    //   typeIcon: 'fa-briefcase',
-    //   hostCount: 8,
-    //   clusterCount: 6,
-    //   nodeCount: 10,
-    //   imageCount: 8
-    // }, {
-    //   name: 'Holly Nichols',
-    //   address: '21 Jump Street',
-    //   city: 'Hollywood',
-    //   state: 'California',
-    //   typeIcon: 'fa-coffee',
-    //   hostCount: 8,
-    //   clusterCount: 6,
-    //   nodeCount: 10,
-    //   imageCount: 8
-    // }, {
-    //   name: 'Marie Edwards',
-    //   address: '17 Cross Street',
-    //   city: 'Boston',
-    //   state: 'Massachusetts',
-    //   typeIcon: 'fa-rebel',
-    //   hostCount: 8,
-    //   clusterCount: 6,
-    //   nodeCount: 10,
-    //   imageCount: 8
-    // }, {
-    //   name: 'Pat Thomas',
-    //   address: '50 Second Street',
-    //   city: 'New York',
-    //   state: 'New York',
-    //   typeIcon: 'fa-linux',
-    //   hostCount: 8,
-    //   clusterCount: 6,
-    //   nodeCount: 10,
-    //   imageCount: 8
-    // }];
-    //this.items1 = cloneDeep(this.allItems1);
-
-    this.emptyStateConfig = {
-      actions: {
-        primaryActions: [{
-          id: 'action1',
-          title: 'Servidor',
-          tooltip: 'Start the server'
-        }],
-        moreActions: [{
-          id: 'action2',
-          title: 'Secondary Action 1',
-          tooltip: 'Do the first thing'
-        }, {
-          id: 'action3',
-          title: 'Secondary Action 2',
-          tooltip: 'Do something else'
-        }, {
-          id: 'action4',
-          title: 'Secondary Action 3',
-          tooltip: 'Do something special'
-        }]
-      } as ActionConfig,
-      iconStyleClass: 'pficon-warning-triangle-o',
-      title: 'No Items Available',
-      info: 'This is the Empty State component. The goal of a empty state pattern is to provide a good first ' +
-        'impression that helps users to achieve their goals. It should be used when a list is empty because no ' +
-        'objects exists and you want to guide the user to perform specific actions.',
-      helpLink: {
-        hypertext: 'List example',
-        text: 'For more information please see the',
-        url: '#/list'
-      }
-    } as EmptyStateConfig;
-
     this.listConfig = {
       dblClick: false,
       emptyStateConfig: this.emptyStateConfig,
       multiSelect: false,
       selectItems: false,
       selectionMatchProp: 'name',
-      showCheckbox: true,
+      showCheckbox: false,
       useExpandItems: false
     } as ListConfig;
+
+    this.paginationConfig = {
+      pageSize: 10,
+      pageNumber: 1,
+      totalItems: this.requirements.length
+    } as PaginationConfig;
   }
 
   search(): void { 
@@ -445,7 +272,7 @@ export class RequirementListComponent implements OnInit {
     this.loading = true;
     this.dataService.requeriments().getAll(queryParams).subscribe((data: any) => {      
       this.requirements = cloneDeep(data.data);// data.data;
-      this.total = data.count;
+      this.total = data.count;     
     },
       error => {
         //this.toastr.error('Something went wrong...', 'error');
@@ -455,7 +282,7 @@ export class RequirementListComponent implements OnInit {
         //this.toastr.success('Getting all values complete', 'Complete');
         this.loading = false;
         //this.total = data.count;
-        console.log(JSON.stringify(this.page));
+        //console.log(JSON.stringify(this.page));
       });
   }
 
@@ -607,13 +434,6 @@ export class RequirementListComponent implements OnInit {
     startButtonTemplate: TemplateRef<any>): ActionConfig {
     let actionConfig = {
       primaryActions: [
-      //   {
-      //   id: 'start',
-      //   styleClass: 'btn-primary',
-      //   title: 'Start click',
-      //   tooltip: 'Start the server',
-      //   template: startButtonTemplate
-      // }, 
       {
         id: 'Editar',
         title: 'Editar',
@@ -623,31 +443,10 @@ export class RequirementListComponent implements OnInit {
         id: 'Editar1',
         title: 'Editar',
         tooltip: 'Editar Requerimiento'
-      }, {
-      //   id: 'moreActions2',
-      //   title: 'Another Action',
-      //   tooltip: 'Do something else'
-      // }, {
-      //   disabled: true,
-      //   id: 'moreActions3',
-      //   title: 'Disabled Action',
-      //   tooltip: 'Unavailable action',
-      // }, {
-      //   id: 'moreActions4',
-      //   title: 'Something Else',
-      //   tooltip: 'Do something special'
-      // }, {
-      //   id: 'moreActions5',
-      //   title: '',
-      //   separator: true
-      // }, {
-      //   id: 'moreActions6',
-      //   title: 'Grouped Action 1',
-      //   tooltip: 'Do something'
-      // }, {
-        id: 'moreActions7',
-        title: 'Grouped Action 2',
-        tooltip: 'Do something similar'
+      }, {   
+        id: 'Delete',
+        title: 'Eliminar',
+        tooltip: 'Eliminar Requerimiento'
       }],
       moreActionsDisabled: false,
       moreActionsVisible: true
@@ -701,16 +500,14 @@ export class RequirementListComponent implements OnInit {
     //this.items1 = (this.itemsAvailable) ? cloneDeep(this.allItems1) : [];
   }
 
-  updateSelectionType(): void {
-    if (this.selectType === 'checkbox') {
-      this.listConfig.selectItems = false;
-      this.listConfig.showCheckbox = true;
-    } else if (this.selectType === 'row') {
-      this.listConfig.selectItems = true;
-      this.listConfig.showCheckbox = false;
-    } else {
-      this.listConfig.selectItems = false;
-      this.listConfig.showCheckbox = false;
-    }
+  
+
+  //for pagination
+  handlePageSize($event: PaginationEvent) {
+    this.actionsText = 'Page Size: ' + $event.pageSize + ' Selected' + '\n' + this.actionsText;
+  }
+
+  handlePageNumber($event: PaginationEvent) {
+    this.actionsText = 'Page Number: ' + $event.pageNumber + ' Selected' + '\n' + this.actionsText;
   }
 }

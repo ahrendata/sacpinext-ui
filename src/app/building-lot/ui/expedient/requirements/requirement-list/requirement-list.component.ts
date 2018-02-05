@@ -43,6 +43,7 @@ export class RequirementListComponent implements OnInit {
   allItems: any[]=[];
   filterConfig: FilterConfig;
   filtersText: string = '';
+  filtersServer:any[]=[];
   items: any[]=[];
   isAscendingSort: boolean = true;
   separator: Object;
@@ -50,32 +51,8 @@ export class RequirementListComponent implements OnInit {
   currentSortField: SortField;
   toolbarConfig: ToolbarConfig;
   weekDayQueries: any[];
-  monthVals: any = {
-    'January': 1,
-    'February': 2,
-    'March': 3,
-    'April': 4,
-    'May': 5,
-    'June': 6,
-    'July': 7,
-    'August': 8,
-    'September': 9,
-    'October': 10,
-    'November': 11,
-    'December': 12
-  };
 
-  weekDayVals: any = {
-    'Sunday': 1,
-    'Monday': 2,
-    'Tuesday': 3,
-    'Wednesday': 4,
-    'Thursday': 5,
-    'Friday': 6,
-    'Saturday': 7
-  };
-
-//for list
+  //for list
   actionsText1: string = '';
   emptyStateConfig: EmptyStateConfig;
   itemsAvailable: boolean = true;
@@ -119,90 +96,43 @@ export class RequirementListComponent implements OnInit {
       birthMonthId: '10',
       weekDay: 'Monday',
       weekdayId: 'day2'
-    }, {
-      name: 'Frank Livingston',
-      address: '234 Elm Street, Pittsburgh, Pennsylvania',
-      birthMonth: 'March',
-      birthMonthId: 'month3',
-      weekDay: 'Tuesday',
-      weekdayId: 'day3'
-    }, {
-      name: 'Judy Green',
-      address: '2 Apple Boulevard, Cincinatti, Ohio',
-      birthMonth: 'December',
-      birthMonthId: 'month12',
-      weekDay: 'Wednesday',
-      weekdayId: 'day4'
-    }, {
-      name: 'Pat Thomas',
-      address: '50 Second Street, New York, New York',
-      birthMonth: 'February',
-      birthMonthId: 'month2',
-      weekDay: 'Thursday',
-      weekdayId: 'day5'
     }];
     this.items =  cloneDeep(this.allItems); //this.allItems;
 
-    this.weekDayQueries = [{
-      id: 'day1',
-      value: 'Sunday'
-    }, {
-      id: 'day2',
-      value: 'Monday'
-    }];
-
     this.filterConfig = {
       fields: [{
-        id: 'name',
-        title: 'Name',
-        placeholder: 'Filter by Name...',
+        id: 'CodRequirement',
+        title: 'CodRequirement',
+        placeholder: 'Filter by CodRequirement',
         type: FilterType.TEXT
       }, {
-        id: 'address',
-        title: 'Address',
-        placeholder: 'Filter by Address...',
+        id: 'AliasExpedient',
+        title: 'AliasExpedient',
+        placeholder: 'Filter by Birth AliasExpedient',
         type: FilterType.TEXT
       }, {
-        id: 'birthMonth',
-        title: 'Birth Month',
-        placeholder: 'Filter by Birth Month...',
-        type: FilterType.SELECT,
-        queries: [{
-          id: 'month1',
-          value: 'January'
-        }, {
-          id: 'month2',
-          value: 'February'
-        }]
-      }, {
-        id: 'weekDay',
-        title: 'Week Day',
-        placeholder: 'Filter by Week Day...',
-        type: FilterType.TYPEAHEAD,
-        queries: [
-          ...this.weekDayQueries
-        ]
+        id: 'AtentionDate',
+        title: 'AtentionDate',
+        placeholder: 'Filter by AtentionDate',
+        type: FilterType.TEXT
       }] as FilterField[],
+
       resultsCount: this.items.length,
       appliedFilters: []
     } as FilterConfig;
 
     this.sortConfig = {
       fields: [{
-        id: 'name',
-        title: 'Name',
+        id: 'CodRequirement',
+        title: 'CodRequirement',
         sortType: 'alpha'
       }, {
-        id: 'address',
-        title: 'Address',
+        id: 'AliasExpedient',
+        title: 'AliasExpedient',
         sortType: 'alpha'
       }, {
-        id: 'birthMonth',
-        title: 'Birth Month',
-        sortType: 'alpha'
-      }, {
-        id: 'weekDay',
-        title: 'Week Day',
+        id: 'AtentionDate',
+        title: 'AtentionDate',
         sortType: 'alpha'
       }],
       isAscending: this.isAscendingSort
@@ -212,23 +142,22 @@ export class RequirementListComponent implements OnInit {
       primaryActions: [{
         id: 'NUEVO',
         title: 'Nuevo',
-        tooltip: 'Do the first thing'
-        
-      }],
-      moreActions: [{
-        id: 'moreActions1',
-        title: 'Action',
-        tooltip: 'Perform an action'
-      }, {
-        id: 'moreActions2',
-        title: 'Another Action',
-        tooltip: 'Do something else'
-      }, {
-        disabled: true,
-        id: 'moreActions3',
-        title: 'Disabled Action',
-        tooltip: 'Unavailable action',
+        tooltip: 'Do the first thing'        
       }]
+      // moreActions: [{
+      //   id: 'moreActions1',
+      //   title: 'Action',
+      //   tooltip: 'Perform an action'
+      // }, {
+      //   id: 'moreActions2',
+      //   title: 'Another Action',
+      //   tooltip: 'Do something else'
+      // }, {
+      //   disabled: true,
+      //   id: 'moreActions3',
+      //   title: 'Disabled Action',
+      //   tooltip: 'Unavailable action',
+      // }]
     } as ActionConfig;
 
     this.toolbarConfig = {
@@ -269,13 +198,18 @@ export class RequirementListComponent implements OnInit {
     queryParams.set('id', id.toString());
     queryParams.set('pageNumber', this.page.toString());
     queryParams.set('PageSize',this.limit.toString());
+    console.log("Apliacnado filtro..." + JSON.stringify(this.filtersServer));
+    // this.allItems.forEach((item) => {
+    //   if (this.matchesFilters(item, filters)) {
+    //     this.items.push(item);
+    //   }
 
     this.loading = true;
     this.dataService.requeriments().getAll(queryParams).subscribe((data: any) => {      
       this.requirements = cloneDeep(data.data);// data.data;
       this.paginationConfig.totalItems = data.count;// this.requirements.length;
       this.paginationConfig.pageSize = this.limit;
-      //this.total = data.count;     
+      this.toolbarConfig.filterConfig.resultsCount =data.count;
     },
       error => {
         //this.toastr.error('Something went wrong...', 'error');
@@ -284,26 +218,18 @@ export class RequirementListComponent implements OnInit {
       () => {
         //this.toastr.success('Getting all values complete', 'Complete');
         this.loading = false;
-        //this.total = data.count;
-        //console.log(JSON.stringify(this.page));
       });
   }
 
-  createRequirement(){
-    this.router.navigate(['./create'], { relativeTo: this.activatedRoute });
-  }
- 
   //button create requi
   handleAction(action: Action){
     console.log(JSON.stringify(action));
     this.router.navigate(['./create'], { relativeTo: this.activatedRoute });
   }
-
-
   // Actions
-
   doAdd(): void {
     this.actionsText = 'Add Action\n' + this.actionsText;
+   // console.log('Add Action\n' + this.actionsText);
   }
 
   //button editar requerimimiento.
@@ -311,12 +237,12 @@ export class RequirementListComponent implements OnInit {
     this.actionsText = action.title + '\n' + this.actionsText;
     //validar si se puede editar el requerimiento.
 
-    //console.log(JSON.stringify(item));
     this.router.navigate(['./',item.IdRequirement], { relativeTo: this.activatedRoute });
   }
 
   optionSelected(option: number): void {
     this.actionsText = 'Option ' + option + ' selected\n' + this.actionsText;
+    //console.log(this.actionsText);
   }
 
   // Filter
@@ -337,10 +263,18 @@ export class RequirementListComponent implements OnInit {
 
   // Handle filter changes
   filterChanged($event: FilterEvent): void {
+   
     this.filtersText = '';
     $event.appliedFilters.forEach((filter) => {
+      this.filtersServer.push({field:filter.field.title,value:filter.value});
       this.filtersText += filter.field.title + ' : ' + filter.value + '\n';
     });
+    
+
+
+
+    this.search();
+
     this.applyFilters($event.appliedFilters);
     this.filterFieldSelected($event);
   }
@@ -407,11 +341,13 @@ export class RequirementListComponent implements OnInit {
       compValue = item1.name.localeCompare(item2.name);
     } else if (this.currentSortField.id === 'address') {
       compValue = item1.address.localeCompare(item2.address);
-    } else if (this.currentSortField.id === 'birthMonth') {
-      compValue = this.monthVals[item1.birthMonth] - this.monthVals[item2.birthMonth];
-    } else if (this.currentSortField.id === 'weekDay') {
-      compValue = this.weekDayVals[item1.weekDay] - this.weekDayVals[item2.weekDay];
-    }
+    } 
+    // else if (this.currentSortField.id === 'birthMonth') {
+    //   compValue = this.monthVals[item1.birthMonth] - this.monthVals[item2.birthMonth];
+    // }
+    //  else if (this.currentSortField.id === 'weekDay') {
+    //   compValue = this.weekDayVals[item1.weekDay] - this.weekDayVals[item2.weekDay];
+    // }
 
     if (!this.isAscendingSort) {
       compValue = compValue * -1;
@@ -453,9 +389,9 @@ export class RequirementListComponent implements OnInit {
         tooltip: 'Editar Requerimiento'
       }],
       moreActions: [{
-        id: 'Editar1',
-        title: 'Editar',
-        tooltip: 'Editar Requerimiento'
+        id: 'Confirm',
+        title: 'Confirmar',
+        tooltip: 'Confirmar Requerimiento'
       }, {   
         id: 'Delete',
         title: 'Eliminar',
@@ -485,23 +421,6 @@ export class RequirementListComponent implements OnInit {
     }
     return actionConfig;
   }
-
-
-  // handleSelectionChange($event: ListEvent): void {
-  //   this.actionsText1 = $event.selectedItems.length + ' items selected\r\n' + this.actionsText1;
-  //   console.log($event.selectedItems.length + ' items selected\r\n' + this.actionsText1);
-  // }
-
-  // handleClick($event: ListEvent): void {
-  //   this.actionsText1 = $event.item.CodRequirement + ' clicked\r\n' + this.actionsText1;
-  //   console.log(  $event.item.CodRequirement + ' clicked\r\n' + this.actionsText1);
-  // }
-
-  // handleDblClick($event: ListEvent): void {
-  //   this.actionsText1 = $event.item.CodRequirement + ' double clicked\r\n' + this.actionsText1;
-  //   console.log( $event.item.CodRequirement + ' double clicked\r\n' + this.actionsText1);
-  // }
-
 
   //for pagination
   handlePageSize($event: PaginationEvent) {   

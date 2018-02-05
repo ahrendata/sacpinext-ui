@@ -212,7 +212,8 @@ export class RequirementListComponent implements OnInit {
       primaryActions: [{
         id: 'NUEVO',
         title: 'Nuevo',
-        tooltip: 'Do the first thing'        
+        tooltip: 'Do the first thing'
+        
       }],
       moreActions: [{
         id: 'moreActions1',
@@ -291,6 +292,13 @@ export class RequirementListComponent implements OnInit {
   createRequirement(){
     this.router.navigate(['./create'], { relativeTo: this.activatedRoute });
   }
+ 
+  //button create requi
+  handleAction(action: Action){
+    console.log(JSON.stringify(action));
+    this.router.navigate(['./create'], { relativeTo: this.activatedRoute });
+  }
+
 
   // Actions
 
@@ -298,8 +306,13 @@ export class RequirementListComponent implements OnInit {
     this.actionsText = 'Add Action\n' + this.actionsText;
   }
 
-  handleAction(action: Action): void {
+  //button editar requerimimiento.
+  handleActionGrid(action: Action, item:any): void {
     this.actionsText = action.title + '\n' + this.actionsText;
+    //validar si se puede editar el requerimiento.
+
+    //console.log(JSON.stringify(item));
+    this.router.navigate(['./',item.IdRequirement], { relativeTo: this.activatedRoute });
   }
 
   optionSelected(option: number): void {

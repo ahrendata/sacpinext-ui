@@ -1,4 +1,3 @@
-//import { ToastsManager } from 'ng2-toastr';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Http } from '@angular/http';
@@ -24,7 +23,6 @@ import { RestangularService, CustomInterceptor } from './data/restangular.servic
 import { UserService } from './data/user.service';
 import { Configuration } from './../app.constants';
 import { ConfigService } from './../config.service';
-import { LoadingComponent } from './loading/loading.component';
 import { LoadingService } from './loading/loading.service';
 
 
@@ -34,12 +32,10 @@ import { LoadingService } from './loading/loading.service';
     SharedModule
   ],
   declarations: [
-    LoadingComponent
   ],
   entryComponents: [
   ],
   exports: [
-    LoadingComponent
   ],
   providers: [
     DataService,

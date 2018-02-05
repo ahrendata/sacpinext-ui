@@ -48,7 +48,6 @@ import { PaginationModule } from 'patternfly-ng/pagination';
     ListModule,
     ActionModule,
     PaginationModule
-    // TextMaskModule
   ],
   declarations: [
     TruncatePipe,
@@ -78,11 +77,7 @@ import { PaginationModule } from 'patternfly-ng/pagination';
     ToolbarModule,
     ListModule,
     ActionModule,
-    PaginationModule,
-    //SelectModule,
-    // ToastModule,
-    // TextMaskModule,
-
+    PaginationModule,    
     ButtonDeleteComponent,
     ButtonSaveComponent,
     ButtonCancelComponent,

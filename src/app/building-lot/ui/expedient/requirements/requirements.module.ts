@@ -12,8 +12,7 @@ import { ShellComponentModule } from './../../../shell/shell.module';
 import { RequirementCreateComponent } from './requirement-create/requirement-create.component';
 import { RequirementEditComponent } from './requirement-edit/requirement-edit.component';
 import { RequirementListComponent } from './requirement-list/requirement-list.component';
-
-//import { SacpiResolverService } from '../../../../core/resolvers/sacpi-resolver.service';
+import { RequirementViewComponent } from './requirement-view/requirement-view.component';
 
 const routes: Routes = [
   {
@@ -25,11 +24,12 @@ const routes: Routes = [
     component: RequirementCreateComponent 
   },
   {
-    path: ':document',canActivate: [AuthGuard],
-    component: RequirementEditComponent
-    // resolve: {
-    //   document: SacpiResolverService
-    // }
+    path: ':id',canActivate: [AuthGuard],
+    component: RequirementEditComponent    
+  },
+  {
+    path: 'view/:id',canActivate: [AuthGuard],
+    component: RequirementViewComponent    
   }
 ];
 
@@ -47,7 +47,8 @@ const routes: Routes = [
   declarations: [
     RequirementCreateComponent, 
     RequirementEditComponent, 
-    RequirementListComponent
+    RequirementListComponent, 
+    RequirementViewComponent
   ]
 })
 export class RequirementModule { }

@@ -1,6 +1,5 @@
 import { GenericType } from './../../../../../core/model/genericType.model';
 import { DataService } from './../../../../../core/data/data.service';
-//import { ToastsManager } from 'ng2-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, NgModule, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
@@ -20,7 +19,8 @@ import { Subscription } from 'rxjs/Subscription';
 export class RequirementCreateComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
-
+  Codigo: string;
+  loading = false;
   working = false;
 
   requirementType: any[] = [];
@@ -72,9 +72,11 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
   }
 
   loadDataForm() {
+    this.loading = true;
     this.loadExpedients();
     this.loadUnitCodes();
     this.loadRequirementType();
+    this.loading = false;
   }
 
   addDetalleFormControl(): void {
@@ -149,6 +151,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
           Details: details
         };
         this.dataService.requeriments().create(requerimiento).subscribe(response => {
+          this.Codigo = response.CodRequirement;
           this.form.patchValue({
             CodRequirement: response.CodRequirement,
             IdRequirement: response.IdRequirement

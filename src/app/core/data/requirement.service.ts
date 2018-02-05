@@ -20,8 +20,8 @@ export class RequirementService {
     this.restangular = restangular.all(requirementsPath);
   }
 
-  findById(expedient: Expedient, id: number, queryParams?: URLSearchParams): Observable<Requirement> {
-    const restangular = expedient.restangular.one('requirements', id);
+  findById(id: number, queryParams?: URLSearchParams): Observable<Requirement> {
+    const restangular = this.restangular.one(requirementsPath, id);
     return restangular
       .get(queryParams)
       .map(response => {
@@ -30,6 +30,15 @@ export class RequirementService {
       });
   }
 
+  viewById(id: number, queryParams?: URLSearchParams): Observable<Requirement> {
+    const restangular = this.restangular.one(requirementsPath + '/Print', id);
+    return restangular
+      .post(queryParams)
+      .map(response => {
+        const data = response.json();
+        return Object.assign(new Requirement(restangular), data);
+      });
+  }
   getAll(queryParams?: URLSearchParams): Observable<Requirement[]> {
     const restangular = this.restangular.all(requirementsPath);
     return restangular
@@ -55,10 +64,10 @@ export class RequirementService {
       });
   }
 
-  delete(id: number): Observable<any> {
+  delete(id: number, queryParams?: URLSearchParams): Observable<any> {
     const restangular = this.restangular.one(requirementsPath, id);
     return restangular
-      .delete();
+      .deleteQuery(queryParams);
   }
 
   deletedetail(id: number, queryParams?: URLSearchParams): Observable<any> {
@@ -75,6 +84,6 @@ export class RequirementService {
         const json = response.json();
         return Object.assign(new Requirement(restangular), json);
       });
-  } 
+  }
 
 }

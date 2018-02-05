@@ -266,13 +266,15 @@ export class RequirementListComponent implements OnInit {
     let id = this.dataService.users().getEmployeeId();
     const queryParams: URLSearchParams = new URLSearchParams();
     queryParams.set('id', id.toString());
-    queryParams.set('pageNumber', "1");//this.page.toString());
-    queryParams.set('PageSize',"5" );//this.limit.toString());
+    queryParams.set('pageNumber', this.page.toString());
+    queryParams.set('PageSize',this.limit.toString());
 
     this.loading = true;
     this.dataService.requeriments().getAll(queryParams).subscribe((data: any) => {      
       this.requirements = cloneDeep(data.data);// data.data;
-      this.total = data.count;     
+      this.paginationConfig.totalItems = data.count;// this.requirements.length;
+      this.paginationConfig.pageSize = this.limit;
+      //this.total = data.count;     
     },
       error => {
         //this.toastr.error('Something went wrong...', 'error');
@@ -289,8 +291,6 @@ export class RequirementListComponent implements OnInit {
   createRequirement(){
     this.router.navigate(['./create'], { relativeTo: this.activatedRoute });
   }
-
-
 
   // Actions
 
@@ -473,41 +473,32 @@ export class RequirementListComponent implements OnInit {
     return actionConfig;
   }
 
-  // Actions
 
-  // handleAction($event: Action, item: any): void {
-  //   if ($event.id === 'start' && item !== null) {
-  //     item.started = true;
-  //   }
-  //   this.actionsText = $event.title + ' selected\r\n' + this.actionsText;
+  // handleSelectionChange($event: ListEvent): void {
+  //   this.actionsText1 = $event.selectedItems.length + ' items selected\r\n' + this.actionsText1;
+  //   console.log($event.selectedItems.length + ' items selected\r\n' + this.actionsText1);
   // }
 
-  handleSelectionChange($event: ListEvent): void {
-    this.actionsText1 = $event.selectedItems.length + ' items selected\r\n' + this.actionsText1;
-  }
+  // handleClick($event: ListEvent): void {
+  //   this.actionsText1 = $event.item.CodRequirement + ' clicked\r\n' + this.actionsText1;
+  //   console.log(  $event.item.CodRequirement + ' clicked\r\n' + this.actionsText1);
+  // }
 
-  handleClick($event: ListEvent): void {
-    this.actionsText1 = $event.item.name + ' clicked\r\n' + this.actionsText1;
-  }
+  // handleDblClick($event: ListEvent): void {
+  //   this.actionsText1 = $event.item.CodRequirement + ' double clicked\r\n' + this.actionsText1;
+  //   console.log( $event.item.CodRequirement + ' double clicked\r\n' + this.actionsText1);
+  // }
 
-  handleDblClick($event: ListEvent): void {
-    this.actionsText1 = $event.item.name + ' double clicked\r\n' + this.actionsText1;
-  }
-
-  // Row selection
-
-  updateItemsAvailable(): void {
-    //this.items1 = (this.itemsAvailable) ? cloneDeep(this.allItems1) : [];
-  }
-
-  
 
   //for pagination
-  handlePageSize($event: PaginationEvent) {
-    this.actionsText = 'Page Size: ' + $event.pageSize + ' Selected' + '\n' + this.actionsText;
+  handlePageSize($event: PaginationEvent) {   
+     this.limit = $event.pageSize;
+     this.search();
   }
 
   handlePageNumber($event: PaginationEvent) {
-    this.actionsText = 'Page Number: ' + $event.pageNumber + ' Selected' + '\n' + this.actionsText;
+    this.page = $event.pageNumber;
+    //this.limit = 5;
+    this.search();
   }
 }

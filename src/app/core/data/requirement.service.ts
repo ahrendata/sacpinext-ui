@@ -42,7 +42,7 @@ export class RequirementService {
           requirements.push(Object.assign(requirement, element));
         });
         return json;
-      });  
+      });
   }
 
   create(requirement: any): Observable<any> {
@@ -61,20 +61,20 @@ export class RequirementService {
       .delete();
   }
 
-  deletedetail(queryParams?: URLSearchParams): Observable<any> {
-    const restangular = this.restangular.all('RequirementDetails');
+  deletedetail(id: number, queryParams?: URLSearchParams): Observable<any> {
+    const restangular = this.restangular.one('RequirementDetails', id);
     return restangular
       .deleteQuery(queryParams);
   }
 
   confirmar(queryParams?: URLSearchParams): Observable<any> {
-    const restangular = this.restangular.all(requirementsPath);
+    const restangular = this.restangular.all(requirementsPath + 'Confirm');
     return restangular
       .postQuery(queryParams)
       .map(response => {
         const json = response.json();
         return Object.assign(new Requirement(restangular), json);
       });
-  }
+  } 
 
 }

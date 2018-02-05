@@ -99,7 +99,7 @@ export class RestangularService {
         requestOptionsArgs = Object.assign(requestOptionsArgs, options);
       }
     }
-    return this.http.post(this.actionUrl, requestOptionsArgs);
+    return this.http.post(this.actionUrl,{}, requestOptionsArgs);
   }
 
   // public getAll<T>(path: string): Observable<T> {

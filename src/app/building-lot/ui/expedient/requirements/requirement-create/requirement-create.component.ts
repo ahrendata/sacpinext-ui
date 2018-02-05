@@ -168,9 +168,8 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
     let iduser: any = this.dataService.users().getUserId();
     if (id) {
       const queryParams: URLSearchParams = new URLSearchParams();
-      queryParams.set('id', id);
       queryParams.set('idUser', iduser);
-      this.dataService.requeriments().deletedetail(queryParams).subscribe((data) => {
+      this.dataService.requeriments().deletedetail(id, queryParams).subscribe((data) => {
         this.detalle.removeAt(index);
         //toast...
       });
@@ -187,7 +186,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
     let iduser: any = this.dataService.users().getUserId();
     this.working = true;
     const queryParams: URLSearchParams = new URLSearchParams();
-    queryParams.set('id', form.value.IdRequirement);
+    queryParams.set('idRequeriment', form.value.IdRequirement);
     queryParams.set('idUser', iduser);
     this.dataService.requeriments().confirmar(queryParams).subscribe(
       response => {

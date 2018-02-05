@@ -66,6 +66,41 @@ export class RestangularService {
     return this.http.delete(this.actionUrl);
   }
 
+  /*Alternatives with QueryParam */
+
+  public deleteQuery(queryParams?: URLSearchParams, options?: RequestOptionsArgs): Observable<Response> {
+    let requestOptionsArgs;
+    if (queryParams || options) {
+      requestOptionsArgs = {
+        headers: new Headers()
+      };
+
+      if (queryParams) {
+        requestOptionsArgs.search = queryParams;
+      }
+      if (options) {
+        requestOptionsArgs = Object.assign(requestOptionsArgs, options);
+      }
+    }
+    return this.http.delete(this.actionUrl, requestOptionsArgs);
+  }
+
+  public postQuery(queryParams?: URLSearchParams, options?: RequestOptionsArgs): Observable<Response> {
+    let requestOptionsArgs;
+    if (queryParams || options) {
+      requestOptionsArgs = {
+        headers: new Headers()
+      };
+
+      if (queryParams) {
+        requestOptionsArgs.search = queryParams;
+      }
+      if (options) {
+        requestOptionsArgs = Object.assign(requestOptionsArgs, options);
+      }
+    }
+    return this.http.post(this.actionUrl, requestOptionsArgs);
+  }
 
   // public getAll<T>(path: string): Observable<T> {
   //   return this.http.get<T>(this.actionUrl + '/' + path);

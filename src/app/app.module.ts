@@ -2,14 +2,12 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-//import { RestangularModule } from 'ngx-restangular';
 import { BsDropdownModule, ModalModule } from 'ngx-bootstrap';
 import { NgModule } from '@angular/core';
 import { Http, HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
 
-//import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from './shared/shared.module';
 
 //import { MomentModule } from 'angular2-moment';
@@ -31,20 +29,16 @@ import { AuthGuard } from './core/guard/auth.guard';
     FormsModule,
     HttpModule,
     HttpClientModule,
-    BrowserAnimationsModule,
-   // NgbModule.forRoot(),
+    BrowserAnimationsModule,  
     BsDropdownModule.forRoot(),
-    ModalModule.forRoot(),
-   // MomentModule,
-  //  JWBootstrapSwitchModule,   
-  //  ToastModule.forRoot(),
+    ModalModule.forRoot(),  
     AppRoutingModule,
     SharedModule,
     CoreModule
   ],
   providers: [
-    Configuration ,
-    AuthGuard     
+    Configuration,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

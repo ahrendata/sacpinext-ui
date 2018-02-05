@@ -4,6 +4,7 @@ import { RequirementService } from './requirement.service';
 import { UserService } from './user.service';
 import { UnitCodeService } from './unit-code.service';
 import { ProductService } from './product.service';
+import { RequirementTypeService } from './requirement-type.service';
 
 @Injectable()
 export class DataService {
@@ -12,8 +13,9 @@ export class DataService {
     private expedientService: ExpedientService,
     private requirementService: RequirementService,
     private userService: UserService,
-    private unitCodeService:UnitCodeService,
-    private productService:ProductService
+    private unitCodeService: UnitCodeService,
+    private productService: ProductService,
+    private requirementtype: RequirementTypeService
   ) { }
 
   expedients(): ExpedientService {
@@ -28,11 +30,14 @@ export class DataService {
     return this.userService;
   }
 
-  products():ProductService{
+  products(): ProductService {
     return this.productService;
   }
 
-  unitcodes():UnitCodeService{
+  unitcodes(): UnitCodeService {
     return this.unitCodeService;
+  }
+  requerimenttype(): RequirementTypeService {
+    return this.requirementtype;
   }
 }

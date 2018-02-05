@@ -3,10 +3,10 @@ import { Observable } from 'rxjs/Observable';
 import { RestangularService } from './../data/restangular.service';
 import { URLSearchParams } from '@angular/http';
 
-export class UnitCode extends Model {
+export class ContainerTypeCode extends Model {
   
-  build(): UnitCode {
-    return new UnitCode(this.restangular);
+  build(): ContainerTypeCode {
+    return new ContainerTypeCode(this.restangular);
   }
 
   IdContenedor: number;

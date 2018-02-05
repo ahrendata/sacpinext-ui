@@ -1,4 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'sacpi-button-confirmar',
@@ -7,17 +9,20 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 })
 export class ButtonConfirmarComponent implements OnInit {
 
+  @Input()
+  sacpiForm: FormGroup;
 
-  @Output()
-  sacpiConfirmar: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input()
+  working = false;
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  confirmar() {
-    this.sacpiConfirmar.emit(true);
+  onClickChild(event) {
+    if (!this.sacpiForm.valid) {
+      event.preventDefault();
+    }
   }
-
 }

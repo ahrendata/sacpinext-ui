@@ -8,29 +8,17 @@
       <li>Crear Requerimiento</li>
     </ol>
 
-    <h1>Creacion de requerimiento</h1>
+    <h1>Creacion de requerimiento </h1>
 
-    <form [formGroup]="form" (ngSubmit)="save(form)">
+    <form [formGroup]="form" (ngSubmit)="confirmar(form)">
       <sacpi-form-fields-status [sacpiForm]="form"></sacpi-form-fields-status>
-      <div class="row">
-        <div>
-          <div class="form-group" [sacpiFormFieldValidationState]="form.get('IdRequirement')">
-            <input type="hidden" #IdRequirement [value]="IdRequirement" />
-            <sacpi-form-field-validation-messages [sacpiFormControl]="form.get('IdRequirement')">
-            </sacpi-form-field-validation-messages>
-          </div>
-        </div>
+      <div class="row">     
         <div class="col-md-2">
           <div class="form-group" [sacpiFormFieldValidationState]="form.get('AtentionDate')">
-            <label class="control-label" [sacpiFormRequiredLabel]="form.get('AtentionDate')">Fecha Atencion
+            <label class="control-label" [sacpiFormRequiredLabel]="form.get('AtentionDate')">Nivel Requerimiento
               <i class="fa fa-question-circle text-muted" ngbTooltip="Fecha atencion del requiremiento" placement="right"></i>
             </label>
-            <div class="input-group of-float-right">
-              <!-- <input formControlName="AtentionDate" class="form-control text-left" placeholder="dd-mm-yyyy" ngbDatepicker #d1="ngbDatepicker"> -->
-              <div class="input-group-addon" (click)="d1.toggle()">
-                <span class="glyphicon glyphicon-calendar"></span>
-              </div>
-            </div>
+            <ng-select formControlName="AtentionDate" class="ng-select-sacpi" [items]="requirementType" bindLabel="Descryption" bindValue="IdContenedor" placeholder="Seleccione expediente"></ng-select>
             <sacpi-form-field-validation-messages [sacpiFormControl]="form.get('AtentionDate')">
             </sacpi-form-field-validation-messages>
           </div>
@@ -40,11 +28,22 @@
             <label class="control-label" [sacpiFormRequiredLabel]="form.get('IdExpedient')">Centro de Costo
               <i class="fa fa-question-circle text-muted" ngbTooltip="Expediente" placement="right"></i>
             </label>
-            <ng-select formControlName="IdExpedient" class="ng-select-sacpi" [items]="expedients"  bindLabel="Alias" bindValue="IdExpediente" placeholder="Seleccione expediente"></ng-select>
+            <ng-select formControlName="IdExpedient" class="ng-select-sacpi" [items]="expedients" bindLabel="Alias" bindValue="IdExpediente"
+              placeholder="Seleccione expediente"></ng-select>
             <sacpi-form-field-validation-messages [sacpiFormControl]="form.get('IdExpedient')">
             </sacpi-form-field-validation-messages>
           </div>
-        </div>
+        </div>    
+        <div class="col-md-2">
+          <div class="form-group" [sacpiFormFieldValidationState]="form.get('CodRequirement')">
+            <label class="control-label" [sacpiFormRequiredLabel]="form.get('CodRequirement')">Nro Requerimiento
+              <i class="fa fa-question-circle text-muted" ngbTooltip="Expediente" placement="right"></i>
+            </label>
+            <input formControlName="CodRequirement" type="text" class="form-control text-right" readonly>
+            <sacpi-form-field-validation-messages [sacpiFormControl]="form.get('CodRequirement')">
+            </sacpi-form-field-validation-messages>
+          </div>
+        </div>     
       </div>
 
       <!--/Entidad-->
@@ -54,10 +53,10 @@
             <thead>
               <tr>
                 <td class="text-center">#</td>
-                <td class="text-left td-siacpi" >Producto</td>
+                <td class="text-left td-siacpi">Producto</td>
                 <td class="text-center">Unidad Medida</td>
-                <td class="text-right">Quantity</td>
-                <td class="text-left">Observation</td>
+                <td class="text-right">Cantidad</td>
+                <td class="text-left">Descripcion</td>
                 <td colspan="2" rowspan="1" class="text-center">Acciones</td>
                 <td class="text-right">Acomulado</td>
               </tr>
@@ -67,12 +66,14 @@
                 <tr [formGroupName]="i">
                   <td class="text-center">{{i+1}}</td>
                   <td [sacpiFormFieldValidationState]="item.get('IdProduct')" class="ng-product-filter">
-                    <ng-select formControlName="IdProduct" class="ng-select-sacpi"  bindLabel="Denominacion" bindValue="IdProducto" [typeahead]="search" [items]="products" placeholder="Seleccione algun producto"></ng-select>
+                    <ng-select formControlName="IdProduct" class="ng-select-sacpi" bindLabel="Denominacion" [typeahead]="search" [items]="products"
+                      placeholder="Seleccione algun producto"></ng-select>
                     <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('IdProduct')">
                     </sacpi-form-field-validation-messages>
                   </td>
                   <td [sacpiFormFieldValidationState]="item.get('IdUnidCode')">
-                    <ng-select formControlName="IdUnidCode" class="ng-select-sacpi"   bindLabel="Denominacion" bindValue="IdContenedor" [items]="units" placeholder="Seleccione una marca"></ng-select>
+                    <ng-select formControlName="IdUnidCode" class="ng-select-sacpi" bindLabel="Denominacion" bindValue="IdContenedor" [items]="units"
+                      placeholder="Seleccione una marca"></ng-select>
                     <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('IdUnidCode')">
                     </sacpi-form-field-validation-messages>
                   </td>
@@ -88,30 +89,28 @@
                   </td>
                   <td class="table-view-pf-actions">
                     <div class="table-view-pf-btn">
-                      <button type="button" *ngIf="!form.valid" class="btn btn-default" disabled>
-                        <span> Guardar</span>
+                      <button class="btn btn-default" type="button" (click)="removeDetalleFormControl(item,i)">
+                        <span class="fa fa-trash"></span>
+                        Eliminar
                       </button>
-                      <button type="button" (click)="save(form,item)" [disabled]="itemworking" *ngIf="form.valid" class="btn btn-default">
-                        <span [hidden]="!itemworking">Guardando...</span>
-                        <span [hidden]="itemworking">Guardar</span>
-                      </button>
-                    </div>                 
+                    </div>
                   </td>
                   <td class="table-view-pf-actions">
                     <div class="dropdown dropdown-kebab-pf">
-                      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        <span class="fa fa-ellipsis-v"></span>
+                      <button class="btn btn-default" type="button" *ngIf="item.get('Status').value==1">
+                        <span class="pficon pficon-ok"></span>
                       </button>
-                      <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight">
-                        <li>
-                          <a href="#" (onclick)="removeDetalleFormControl(i)">Eliminar</a>
-                        </li>
-                      </ul>
+                      <button class="btn btn-default" type="button" *ngIf="item.get('Status').value==2">
+                        <span class="pficon pficon-warning-triangle-o"></span>
+                      </button>
+                      <button class="btn btn-default" type="button" *ngIf="item.get('Status').value==0">
+                        <span class="pficon pficon-error-circle-o"></span>
+                      </button>
                     </div>
                   </td>
-                  <td [sacpiFormFieldValidationState]="item.get('Acomulate')">
-                    <input formControlName="Acomulate" [sacpiNumberMask]="numberMask" type="text" class="form-control text-right" readonly>
-                    <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('Acomulate')">
+                  <td [sacpiFormFieldValidationState]="item.get('Accumulate')">
+                    <input formControlName="Accumulate" [sacpiNumberMask]="numberMask" type="text" class="form-control text-right" readonly>
+                    <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('Accumulate')">
                     </sacpi-form-field-validation-messages>
                   </td>
                 </tr>
@@ -130,7 +129,7 @@
         </div>
       </div>
       <br>
-      <sacpi-button-confirmar (sacpiConfirmar)="confirmar()"></sacpi-button-confirmar>
+      <sacpi-button-confirmar [sacpiForm]="form" [working]="working"></sacpi-button-confirmar>
       <sacpi-button-cancel (sacpiOnCancel)="cancel()"></sacpi-button-cancel>
     </form>
     <br>

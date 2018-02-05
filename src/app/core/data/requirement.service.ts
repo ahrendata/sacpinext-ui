@@ -50,16 +50,30 @@ export class RequirementService {
     return restangular
       .post(requirement)
       .map(response => {
-        if (response.status === 201 || 204) {
-          return undefined;
-        }
         const json = response.json();
-        const requirements = new Array<Requirement>();
-        json.forEach(element => {
-          const requirement = new Requirement(restangular.one('', element[requirementIdName]));
-          requirements.push(Object.assign(requirement, element));
-        });
-        return requirements;
+        return Object.assign(new Requirement(restangular), json);
+      });
+  }
+
+  delete(id: number): Observable<any> {
+    const restangular = this.restangular.one(requirementsPath, id);
+    return restangular
+      .delete();
+  }
+
+  deletedetail(queryParams?: URLSearchParams): Observable<any> {
+    const restangular = this.restangular.all('RequirementDetails');
+    return restangular
+      .deleteQuery(queryParams);
+  }
+
+  confirmar(queryParams?: URLSearchParams): Observable<any> {
+    const restangular = this.restangular.all(requirementsPath);
+    return restangular
+      .postQuery(queryParams)
+      .map(response => {
+        const json = response.json();
+        return Object.assign(new Requirement(restangular), json);
       });
   }
 

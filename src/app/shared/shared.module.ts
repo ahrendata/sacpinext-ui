@@ -1,9 +1,6 @@
 import { YesNoPipe } from './pipes/yes-no.pipe';
 import { ToDatePipe } from './pipes/to-date.pipe';
-//import { ToastModule } from 'ng2-toastr';
-//import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
 import { BsDropdownModule, ModalModule } from 'ngx-bootstrap';
-//import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
@@ -26,10 +23,7 @@ import { FormRequiredLabelDirective } from './directives/form-required-label.dir
 import { NumberMaskDirective } from './directives/number-mask.directive';
 import { ButtonLoginComponent } from './components/button-login/button-login.component';
 
-//import { MomentModule } from 'angular2-moment';
 import { NgSelectModule } from '@ng-select/ng-select';
-//import { SelectModule } from 'ng2-select';
-//import { TextMaskModule } from 'angular2-text-mask';
 import { ButtonAddComponent } from './components/button-add/button-add.component';
 import { ButtonConfirmarComponent } from './components/button-confirmar/button-confirmar.component';
 
@@ -44,16 +38,10 @@ import { ToolbarModule } from 'patternfly-ng/toolbar';
     HttpModule,
     FormsModule,
     ReactiveFormsModule,
-    //NgbModule,
     BsDropdownModule,
     ModalModule,
-    //MomentModule,
-    //JWBootstrapSwitchModule,
-    //ToastModule,
-    //SelectModule,
     NgSelectModule,
     ToolbarModule
-    // TextMaskModule
   ],
   declarations: [
     TruncatePipe,
@@ -77,17 +65,10 @@ import { ToolbarModule } from 'patternfly-ng/toolbar';
 
   ],
   exports: [
-    //NgbModule,
     BsDropdownModule,
-    ModalModule,
-    // MomentModule,
-    //JWBootstrapSwitchModule,
+    ModalModule,    
     NgSelectModule,
-    ToolbarModule,
-    //SelectModule,
-    // ToastModule,
-    // TextMaskModule,
-
+    ToolbarModule,   
     ButtonDeleteComponent,
     ButtonSaveComponent,
     ButtonCancelComponent,

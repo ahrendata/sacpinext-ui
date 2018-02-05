@@ -1,1 +1,7 @@
-  <button type="button" (click)="confirmar()" class="btn btn-primary">  <span class="fa fa-check"></span> Enviar</button>
+<button type="submit" *ngIf="!sacpiForm.valid" class="btn btn-primary" disabled>
+  <span class="fa fa-check"></span> <span>Confirmar</span>
+</button>
+<button type="submit" (click)="onClickChild($event)" [disabled]="working" *ngIf="sacpiForm.valid" class="btn btn-primary">
+  <span class="fa fa-check"></span> <span [hidden]="!working">Confirmando...</span>
+  <span [hidden]="working">Confirmar</span>
+</button>

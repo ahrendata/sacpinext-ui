@@ -6,19 +6,19 @@ import { SearchCriteria } from './../model/search-criteria.model';
 import { SearchResults } from './../model/search-results.model';
 import { URLSearchParams } from '@angular/http';
 import { RestangularService } from './restangular.service';
-const unitcodeIdName = 'UnidCode';
-const unitcodesPath = 'UnidCode';
+const typerequirementIdName = 'TypeRequirement';
+const typerequirementsPath = 'TypeRequirement';
 
 @Injectable()
-export class UnitCodeService {
+export class RequirementTypeService {
 
     private restangular: RestangularService;
     constructor(restangular: RestangularService) {
-        this.restangular = restangular.all(unitcodesPath);
+        this.restangular = restangular.all(typerequirementsPath);
     }
 
     findById(id: number, queryParams?: URLSearchParams): Observable<ContainerTypeCode> {
-        const restangular = this.restangular.one(unitcodesPath, id);
+        const restangular = this.restangular.one(typerequirementsPath, id);
         return restangular
             .get(queryParams)
             .map(response => {
@@ -28,22 +28,22 @@ export class UnitCodeService {
     }
 
     getAll(queryParams?: URLSearchParams): Observable<ContainerTypeCode[]> {
-        const restangular = this.restangular.all(unitcodesPath);
+        const restangular = this.restangular.all(typerequirementsPath);
         return restangular
             .get(queryParams)
             .map(response => {
                 const json = response.json();
-                const unitcodes = Array<ContainerTypeCode>();
+                const typerequirements = Array<ContainerTypeCode>();
                 json.forEach(element => {                  
-                    const unitcode = new ContainerTypeCode(restangular.one('', element[unitcodeIdName]));
-                    unitcodes.push(Object.assign(unitcode, element));
+                    const typerequirement = new ContainerTypeCode(restangular.one('', element[typerequirementIdName]));
+                    typerequirements.push(Object.assign(typerequirement, element));
                 });
-                return unitcodes;
+                return typerequirements;
             });
     }
 
     search(criteria: SearchCriteria): Observable<SearchResults<ContainerTypeCode>> {
-        const restangular = this.restangular.all(unitcodesPath);
+        const restangular = this.restangular.all(typerequirementsPath);
         return restangular
             .all('search')
             .post(criteria)
@@ -54,8 +54,8 @@ export class UnitCodeService {
                 const items = new Array<ContainerTypeCode>();
 
                 json.items.forEach(element => {
-                    const unitcode = new ContainerTypeCode(restangular.all(element['id']));
-                    items.push(Object.assign(unitcode, element));
+                    const typerequirement = new ContainerTypeCode(restangular.all(element['id']));
+                    items.push(Object.assign(typerequirement, element));
                 });
 
                 result.items = items;

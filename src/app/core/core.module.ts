@@ -13,6 +13,7 @@ import { ExpedientService } from './data/expedient.service';
 import { RequirementService } from './data/requirement.service';
 import { UnitCodeService } from './data/unit-code.service';
 import { ProductService } from './data/product.service';
+import { RequirementTypeService } from './data/requirement-type.service';
 
 import { TokenService } from './guard/token.service';
 
@@ -23,6 +24,8 @@ import { RestangularService, CustomInterceptor } from './data/restangular.servic
 import { UserService } from './data/user.service';
 import { Configuration } from './../app.constants';
 import { ConfigService } from './../config.service';
+import { LoadingComponent } from './loading/loading.component';
+import { LoadingService } from './loading/loading.service';
 
 
 @NgModule({
@@ -31,7 +34,12 @@ import { ConfigService } from './../config.service';
     SharedModule
   ],
   declarations: [
-
+    LoadingComponent
+  ],
+  entryComponents: [
+  ],
+  exports: [
+    LoadingComponent
   ],
   providers: [
     DataService,
@@ -41,11 +49,13 @@ import { ConfigService } from './../config.service';
       useClass: CustomInterceptor,
       multi: true,
     },
+    LoadingService,
     ExpedientService,
     RequirementService,
     UserService,
     UnitCodeService,
     ProductService,
+    RequirementTypeService,
     TokenService,
 
     ExpedientResolverService

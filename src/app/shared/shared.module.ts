@@ -28,6 +28,9 @@ import { ButtonAddComponent } from './components/button-add/button-add.component
 import { ButtonConfirmarComponent } from './components/button-confirmar/button-confirmar.component';
 
 import { ToolbarModule } from 'patternfly-ng/toolbar';
+import { ListModule } from 'patternfly-ng/list';
+import { ActionModule } from 'patternfly-ng/action';
+import { PaginationModule } from 'patternfly-ng/pagination';
 
 
 
@@ -41,7 +44,11 @@ import { ToolbarModule } from 'patternfly-ng/toolbar';
     BsDropdownModule,
     ModalModule,
     NgSelectModule,
-    ToolbarModule
+    ToolbarModule,
+    ListModule,
+    ActionModule,
+    PaginationModule
+    // TextMaskModule
   ],
   declarations: [
     TruncatePipe,
@@ -68,7 +75,14 @@ import { ToolbarModule } from 'patternfly-ng/toolbar';
     BsDropdownModule,
     ModalModule,    
     NgSelectModule,
-    ToolbarModule,   
+    ToolbarModule,
+    ListModule,
+    ActionModule,
+    PaginationModule,
+    //SelectModule,
+    // ToastModule,
+    // TextMaskModule,
+
     ButtonDeleteComponent,
     ButtonSaveComponent,
     ButtonCancelComponent,

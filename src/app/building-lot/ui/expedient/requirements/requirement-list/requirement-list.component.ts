@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef, TemplateRef,ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { Requirement } from '../../../../../core/model/requirement.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DataService } from '../../../../../core/data/data.service';
@@ -40,11 +40,11 @@ import { PaginationEvent } from 'patternfly-ng/pagination/pagination-event';
 export class RequirementListComponent implements OnInit {
   actionConfig: ActionConfig;
   actionsText: string = '';
-  allItems: any[]=[];
+  allItems: any[] = [];
   filterConfig: FilterConfig;
   filtersText: string = '';
-  filtersServer:any[]=[];
-  items: any[]=[];
+  filtersServer: any[] = [];
+  items: any[] = [];
   isAscendingSort: boolean = true;
   separator: Object;
   sortConfig: SortConfig;
@@ -66,17 +66,17 @@ export class RequirementListComponent implements OnInit {
   page = 1;
   limit = 5;
 
-  loading = false;  
-  requirements : any[]=[];//: Array<Requirement> = new Array<Requirement>();
+  loading = false;
+  requirements: any[] = [];//: Array<Requirement> = new Array<Requirement>();
   filters: any = {
     filterText: undefined
   };
   constructor(private router: Router,
     private activatedRoute: ActivatedRoute,
     private dataService: DataService,
-    
+
     vcr: ViewContainerRef) {
-   // this.toastr.setRootViewContainerRef(vcr);
+    // this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit() {
@@ -97,7 +97,7 @@ export class RequirementListComponent implements OnInit {
       weekDay: 'Monday',
       weekdayId: 'day2'
     }];
-    this.items =  cloneDeep(this.allItems); //this.allItems;
+    this.items = cloneDeep(this.allItems); //this.allItems;
 
     this.filterConfig = {
       fields: [{
@@ -142,22 +142,8 @@ export class RequirementListComponent implements OnInit {
       primaryActions: [{
         id: 'NUEVO',
         title: 'Nuevo',
-        tooltip: 'Do the first thing'        
+        tooltip: 'Do the first thing'
       }]
-      // moreActions: [{
-      //   id: 'moreActions1',
-      //   title: 'Action',
-      //   tooltip: 'Perform an action'
-      // }, {
-      //   id: 'moreActions2',
-      //   title: 'Another Action',
-      //   tooltip: 'Do something else'
-      // }, {
-      //   disabled: true,
-      //   id: 'moreActions3',
-      //   title: 'Disabled Action',
-      //   tooltip: 'Unavailable action',
-      // }]
     } as ActionConfig;
 
     this.toolbarConfig = {
@@ -192,12 +178,12 @@ export class RequirementListComponent implements OnInit {
     } as PaginationConfig;
   }
 
-  search(): void { 
+  search(): void {
     let id = this.dataService.users().getEmployeeId();
     const queryParams: URLSearchParams = new URLSearchParams();
     queryParams.set('id', id.toString());
     queryParams.set('pageNumber', this.page.toString());
-    queryParams.set('PageSize',this.limit.toString());
+    queryParams.set('PageSize', this.limit.toString());
     console.log("Apliacnado filtro..." + JSON.stringify(this.filtersServer));
     // this.allItems.forEach((item) => {
     //   if (this.matchesFilters(item, filters)) {
@@ -205,11 +191,11 @@ export class RequirementListComponent implements OnInit {
     //   }
 
     this.loading = true;
-    this.dataService.requeriments().getAll(queryParams).subscribe((data: any) => {      
+    this.dataService.requeriments().getAll(queryParams).subscribe((data: any) => {
       this.requirements = cloneDeep(data.data);// data.data;
       this.paginationConfig.totalItems = data.count;// this.requirements.length;
       this.paginationConfig.pageSize = this.limit;
-      this.toolbarConfig.filterConfig.resultsCount =data.count;
+      this.toolbarConfig.filterConfig.resultsCount = data.count;
     },
       error => {
         //this.toastr.error('Something went wrong...', 'error');
@@ -222,22 +208,29 @@ export class RequirementListComponent implements OnInit {
   }
 
   //button create requi
-  handleAction(action: Action){
+  handleAction(action: Action) {
     console.log(JSON.stringify(action));
     this.router.navigate(['./create'], { relativeTo: this.activatedRoute });
   }
   // Actions
   doAdd(): void {
     this.actionsText = 'Add Action\n' + this.actionsText;
-   // console.log('Add Action\n' + this.actionsText);
+    // console.log('Add Action\n' + this.actionsText);
   }
 
   //button editar requerimimiento.
-  handleActionGrid(action: Action, item:any): void {
-    this.actionsText = action.title + '\n' + this.actionsText;
+  handleActionGrid(action: Action, item: any): void {
+    //this.actionsText = action.title + '\n' + this.actionsText;
     //validar si se puede editar el requerimiento.
-
-    this.router.navigate(['./',item.IdRequirement], { relativeTo: this.activatedRoute });
+    console.log("Edit requirement .... " + action.title);
+    if (action.title == "Confirmar")
+      alert("Desarrollando la confirmacion");
+    else if (action.title == "Eliminar")
+      alert("Desarrollando la Eliminacion");
+    else if (action.title == "Ver")
+      this.router.navigate(['./View', item.IdRequirement], { relativeTo: this.activatedRoute });
+    else
+      this.router.navigate(['./', item.IdRequirement], { relativeTo: this.activatedRoute });
   }
 
   optionSelected(option: number): void {
@@ -263,32 +256,32 @@ export class RequirementListComponent implements OnInit {
 
   // Handle filter changes
   filterChanged($event: FilterEvent): void {
-   
+
     this.filtersText = '';
     $event.appliedFilters.forEach((filter) => {
-      this.filtersServer.push({field:filter.field.title,value:filter.value});
+      this.filtersServer.push({ field: filter.field.title, value: filter.value });
       this.filtersText += filter.field.title + ' : ' + filter.value + '\n';
     });
-    
+
 
 
 
     this.search();
 
     this.applyFilters($event.appliedFilters);
-    this.filterFieldSelected($event);
+    //this.filterFieldSelected($event);
   }
 
   // Reset filtered queries
-  filterFieldSelected($event: FilterEvent): void {
-    this.filterConfig.fields.forEach((field) => {
-      if (field.id === 'weekDay') {
-        field.queries = [
-          ...this.weekDayQueries
-        ];
-      }
-    });
-  }
+  // filterFieldSelected($event: FilterEvent): void {
+  //   this.filterConfig.fields.forEach((field) => {
+  //     if (field.id === 'weekDay') {
+  //       field.queries = [
+  //         ...this.weekDayQueries
+  //       ];
+  //     }
+  //   });
+  // }
 
   matchesFilter(item: any, filter: Filter): boolean {
     let match = true;
@@ -320,6 +313,8 @@ export class RequirementListComponent implements OnInit {
     const index = (this.filterConfig.fields as any).findIndex((i: any) => i.id === $event.field.id);
     let val = $event.value.trim();
 
+    console.log("metothd filterQueries");
+
     if (this.filterConfig.fields[index].id === 'weekDay') {
       this.filterConfig.fields[index].queries = [
         ...this.weekDayQueries.filter((item: any) => {
@@ -341,7 +336,7 @@ export class RequirementListComponent implements OnInit {
       compValue = item1.name.localeCompare(item2.name);
     } else if (this.currentSortField.id === 'address') {
       compValue = item1.address.localeCompare(item2.address);
-    } 
+    }
     // else if (this.currentSortField.id === 'birthMonth') {
     //   compValue = this.monthVals[item1.birthMonth] - this.monthVals[item2.birthMonth];
     // }
@@ -383,19 +378,23 @@ export class RequirementListComponent implements OnInit {
     startButtonTemplate: TemplateRef<any>): ActionConfig {
     let actionConfig = {
       primaryActions: [
-      {
-        id: 'Editar',
-        title: 'Editar',
-        tooltip: 'Editar Requerimiento'
-      }],
+        {
+          id: 'Editar',
+          title: 'Editar',
+          tooltip: 'Editar Requerimiento'
+        }],
       moreActions: [{
         id: 'Confirm',
         title: 'Confirmar',
         tooltip: 'Confirmar Requerimiento'
-      }, {   
+      }, {
         id: 'Delete',
         title: 'Eliminar',
         tooltip: 'Eliminar Requerimiento'
+      }, {
+        id: 'Print',
+        title: 'Ver',
+        tooltip: 'Ver Requerimiento'
       }],
       moreActionsDisabled: false,
       moreActionsVisible: true
@@ -423,9 +422,9 @@ export class RequirementListComponent implements OnInit {
   }
 
   //for pagination
-  handlePageSize($event: PaginationEvent) {   
-     this.limit = $event.pageSize;
-     this.search();
+  handlePageSize($event: PaginationEvent) {
+    this.limit = $event.pageSize;
+    this.search();
   }
 
   handlePageNumber($event: PaginationEvent) {

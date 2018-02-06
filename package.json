@@ -24,6 +24,7 @@
     "@ng-select/ng-select": "^0.16.0",
     "core-js": "^2.4.1",
     "install": "^0.10.4",
+    "ng2-toastr": "^4.1.2",
     "ngx-bootstrap": "^1.9.3",
     "npm": "^5.6.0",
     "patternfly": "^3.38.0",

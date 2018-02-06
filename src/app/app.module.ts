@@ -7,7 +7,7 @@ import { NgModule } from '@angular/core';
 import { Http, HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
-
+import { ToastModule } from 'ng2-toastr';
 import { SharedModule } from './shared/shared.module';
 
 import { ConfigService, configServiceInitializer } from './config.service';
@@ -27,13 +27,14 @@ import { AuthGuard } from './core/guard/auth.guard';
     BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
+    ToastModule.forRoot(),
     AppRoutingModule,
     SharedModule,
     CoreModule
   ],
   providers: [
     Configuration,
-    AuthGuard    
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

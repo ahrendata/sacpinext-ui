@@ -6,6 +6,7 @@ import { Expedient } from '../../core/model/expedient.model';
 import { DataService } from '../../core/data/data.service';
 
 
+
 @Component({
   selector: 'sacpi-ui',
   templateUrl: './ui.component.html',
@@ -18,9 +19,6 @@ export class SacpiUIComponent implements OnInit, OnDestroy {
   expedients: Array<Expedient>;
 
 
-  
-  
-
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -30,9 +28,9 @@ export class SacpiUIComponent implements OnInit, OnDestroy {
       }
     );
     this.loadAllowedexpedients();
-   
+
   }
-  
+
   ngOnDestroy() {
     this.dataSubscription.unsubscribe();
   }

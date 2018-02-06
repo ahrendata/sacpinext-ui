@@ -6,12 +6,11 @@ import { Component, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { URLSearchParams } from '@angular/http';
-//import { ToastsManager } from 'ng2-toastr';
+import { ToastsManager } from 'ng2-toastr';
 
 import { Expedient } from './../../../core/model/expedient.model';
 import { DataService } from '../../../core/data/data.service';
 import { TruncatePipe } from '../../../shared/pipes/truncate.pipe';
-import { NotificationsService } from '../../../shared/notification/notifications.service';
 
 
 @Component({
@@ -24,7 +23,6 @@ export class DashboardComponent implements OnInit {
   loading = false;
   expedients: Array<Expedient> = new Array<Expedient>();
   expedient: Expedient;
-
 
   searchCriteria: SearchCriteria = {
     filterText: null
@@ -43,10 +41,11 @@ export class DashboardComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private dataService: DataService,
-    private notifications: NotificationsService,
-    vcr: ViewContainerRef
-  ) { //this.toastr.setRootViewContainerRef(vcr);
-   }
+    private notification: ToastsManager,
+    private viewContainerRef: ViewContainerRef
+  ) {
+    this.notification.setRootViewContainerRef(viewContainerRef);
+  }
 
   ngOnInit() {
     this.search();
@@ -68,19 +67,21 @@ export class DashboardComponent implements OnInit {
     };
     criteria.filters.push(new SearchCriteriaFilter('id', id.toString(), 'eq'));
 
-//console.log(criteria);
-    this.dataService.expedients().getAll(queryParams).subscribe((data: any[]) => this.expedients = data,
+    this.dataService.expedients().getAll(queryParams).subscribe((data: any[]) => {
+      this.expedients = data;
+      this.notification.info('Error al obtener expedientes, usuario no tiene asigando ningun expediente.', 'Error');
+    },
       error => {
-       // this.toastr.error('Error al obtener expedientes, usuario no tiene asigando ningun expediente.', 'Error');
+         this.notification.error('Error al obtener expedientes, usuario no tiene asigando ningun expediente.', 'Error');
         this.loading = false;
       },
       () => {
-    //    this.toastr.success('Getting all values complete', 'Complete');
+        //    this.toastr.success('Getting all values complete', 'Complete');
         this.loading = false;
       });
   }
 
-  changeAscending(){
+  changeAscending() {
     this.orderBy.ascending = !this.orderBy.ascending;
     this.search();
   }

@@ -31,11 +31,6 @@ import { ToolbarModule } from 'patternfly-ng/toolbar';
 import { ListModule } from 'patternfly-ng/list';
 import { ActionModule } from 'patternfly-ng/action';
 import { PaginationModule } from 'patternfly-ng/pagination';
-import { NotificationModule } from 'patternfly-ng/notification';
-//import { NotificationsService } from './notification/notifications.service';
-// import { NotificationService } from 'patternfly-ng/notification';
-
-
 
 @NgModule({
   imports: [
@@ -50,8 +45,7 @@ import { NotificationModule } from 'patternfly-ng/notification';
     ToolbarModule,
     ListModule,
     ActionModule,
-    PaginationModule,
-    NotificationModule
+    PaginationModule
   ],
   declarations: [
     TruncatePipe,
@@ -72,17 +66,15 @@ import { NotificationModule } from 'patternfly-ng/notification';
     FormRequiredLabelDirective,
     NumberMaskDirective,
     FormFieldValidationStateDirective
-
   ],
   exports: [
     BsDropdownModule,
-    ModalModule,    
+    ModalModule,
     NgSelectModule,
     ToolbarModule,
     ListModule,
     ActionModule,
-    PaginationModule,    
-    NotificationModule,
+    PaginationModule,
     ButtonDeleteComponent,
     ButtonSaveComponent,
     ButtonCancelComponent,
@@ -92,7 +84,6 @@ import { NotificationModule } from 'patternfly-ng/notification';
     ButtonAddComponent,
     ButtonConfirmarComponent,
     OnOffSwitchStringComponent,
-
     TruncatePipe,
     ToDatePipe,
     YesNoPipe,
@@ -104,11 +95,6 @@ import { NotificationModule } from 'patternfly-ng/notification';
     FormRequiredLabelDirective,
     FormFieldValidationStateDirective,
     LoadingComponent
-   // NotificationsService
-  ],
-  providers:[
-    // NotificationService,
-    //NotificationsService
   ]
 })
 export class SharedModule { }

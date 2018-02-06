@@ -47,7 +47,7 @@ const routes: Routes = [
     SingInComponent
   ],
   providers: [
-    AuthGuard
+    AuthGuard    
   ]
 })
 export class SacpiUIModule { }

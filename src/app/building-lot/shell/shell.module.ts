@@ -10,7 +10,6 @@ import { ShellHeaderComponent } from './shell-header/shell-header.component';
 import { ShellSidebarComponent } from './shell-sidebar/shell-sidebar.component';
 import { ShellFooterComponent } from './shell-footer/shell-footer.component';
 
-
 @NgModule({
   imports: [
     CommonModule,

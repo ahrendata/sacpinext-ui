@@ -13,13 +13,6 @@ const routes: Routes = [
     path: 'requirements',
     loadChildren: 'app/building-lot/ui/expedient/requirements/requirements.module#RequirementModule'
   }  
-  // {
-  //   path: ':document/send-events',
-  //   component: DocumentSendEventsComponent,
-  //   resolve: {
-  //     document: DocumentResolverService
-  //   }
-  // },  
 ];
 
 @NgModule({

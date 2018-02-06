@@ -217,7 +217,7 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
       (error) => {
         this.notification.error('Error al eliminar producto del requerimiento.', 'Error');
       });
-
+      
     } else {
       this.detalle.removeAt(index);
     }

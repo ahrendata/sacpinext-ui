@@ -69,7 +69,7 @@ export class DashboardComponent implements OnInit {
 
     this.dataService.expedients().getAll(queryParams).subscribe((data: any[]) => {
       this.expedients = data;      
-    },
+    },    
       error => {
          this.notification.error('Error al obtener expedientes, usuario no tiene asigando ningun expediente.', 'Error');
         this.loading = false;

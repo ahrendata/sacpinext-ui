@@ -11,7 +11,7 @@ export class AuthGuard implements CanActivate {
 
         if (this.token.getToken()) {
             return true;
-        }        
+        }                
         this.router.navigate(['/sacpi/login'], { queryParams: { returnUrl: state.url } });       
         return false;
     }

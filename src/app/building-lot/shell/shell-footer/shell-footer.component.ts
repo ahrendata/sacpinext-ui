@@ -11,5 +11,4 @@ export class ShellFooterComponent implements OnInit {
 
   ngOnInit() {
   }
-
 }

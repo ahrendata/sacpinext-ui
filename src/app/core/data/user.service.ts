@@ -24,7 +24,7 @@ export class UserService {
   getUserId(): number {
     return this.token.getUserId();
   }
-
+  
   getUser(): string {
     return this.token.getFullName();
   }

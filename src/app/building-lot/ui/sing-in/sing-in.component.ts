@@ -14,7 +14,7 @@ import { User } from '../../../core/model/user.model';
 })
 export class SingInComponent implements OnInit {
 
-  form: FormGroup;
+  form: FormGroup;  
   working = false;
   loading = false;
   user: User;

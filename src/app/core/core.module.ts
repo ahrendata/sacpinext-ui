@@ -26,8 +26,6 @@ import { ConfigService } from './../config.service';
 import { LoadingService } from './loading/loading.service';
 import { BsModalService } from 'ngx-bootstrap';
 
-
-
 @NgModule({
   imports: [
     CommonModule,

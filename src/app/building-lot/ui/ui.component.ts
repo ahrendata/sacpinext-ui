@@ -18,7 +18,6 @@ export class SacpiUIComponent implements OnInit, OnDestroy {
   expedient: Expedient;
   expedients: Array<Expedient>;
 
-
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {

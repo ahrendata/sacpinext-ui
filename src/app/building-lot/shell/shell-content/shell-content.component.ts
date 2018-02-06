@@ -11,5 +11,5 @@ export class ShellContentComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  
 }

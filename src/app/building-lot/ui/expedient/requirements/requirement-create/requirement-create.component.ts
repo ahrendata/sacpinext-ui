@@ -33,6 +33,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
 
   numberMask = { allowDecimal: true, decimalLimit: 2 };
 
+  
   constructor(private router: Router, private route: ActivatedRoute,
     private formBuilder: FormBuilder, private dataService: DataService,
     private notification: ToastsManager,

@@ -5,7 +5,7 @@ import { Subject } from 'rxjs/Subject';
 @Component({
   selector: 'sacpi-confirmation-modal',
   templateUrl: './confirmation-modal.component.html',
-  styleUrls: ['./confirmation-modal.component.scss']
+  styleUrls: ['./confirmation-modal.component.scss']  
 })
 export class ConfirmationModalComponent implements OnInit {
 

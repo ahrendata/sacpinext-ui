@@ -90,7 +90,6 @@ import { ConfirmationModalComponent } from './components/confirmation-modal/conf
     TruncatePipe,
     ToDatePipe,
     YesNoPipe,
-
     FormFieldValidationMessagesComponent,
     FormFieldsStatusComponent,
 

@@ -10,35 +10,30 @@ import { CoreModule } from './core/core.module';
 
 import { SharedModule } from './shared/shared.module';
 
-//import { MomentModule } from 'angular2-moment';
-//import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
-//import { ToastModule } from 'ng2-toastr';
-
 import { ConfigService, configServiceInitializer } from './config.service';
 import { AppComponent } from './app.component';
 import { Configuration } from './app.constants';
 import { AuthGuard } from './core/guard/auth.guard';
-
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
-    BrowserModule,
     FormsModule,
+    BrowserModule,
     HttpModule,
     HttpClientModule,
-    BrowserAnimationsModule,  
+    BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
-    ModalModule.forRoot(),  
+    ModalModule.forRoot(),
     AppRoutingModule,
     SharedModule,
     CoreModule
   ],
   providers: [
     Configuration,
-    AuthGuard
+    AuthGuard    
   ],
   bootstrap: [AppComponent]
 })

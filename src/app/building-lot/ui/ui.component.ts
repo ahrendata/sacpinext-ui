@@ -14,9 +14,12 @@ import { DataService } from '../../core/data/data.service';
 export class SacpiUIComponent implements OnInit, OnDestroy {
 
   dataSubscription: Subscription;
-
   expedient: Expedient;
   expedients: Array<Expedient>;
+
+
+  
+  
 
   constructor(private route: ActivatedRoute) { }
 
@@ -27,8 +30,9 @@ export class SacpiUIComponent implements OnInit, OnDestroy {
       }
     );
     this.loadAllowedexpedients();
+   
   }
-
+  
   ngOnDestroy() {
     this.dataSubscription.unsubscribe();
   }
@@ -40,4 +44,5 @@ export class SacpiUIComponent implements OnInit, OnDestroy {
     //   }
     // );
   }
+
 }

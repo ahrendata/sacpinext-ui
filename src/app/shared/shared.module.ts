@@ -31,6 +31,9 @@ import { ToolbarModule } from 'patternfly-ng/toolbar';
 import { ListModule } from 'patternfly-ng/list';
 import { ActionModule } from 'patternfly-ng/action';
 import { PaginationModule } from 'patternfly-ng/pagination';
+import { NotificationModule } from 'patternfly-ng/notification';
+//import { NotificationsService } from './notification/notifications.service';
+// import { NotificationService } from 'patternfly-ng/notification';
 
 
 
@@ -47,7 +50,8 @@ import { PaginationModule } from 'patternfly-ng/pagination';
     ToolbarModule,
     ListModule,
     ActionModule,
-    PaginationModule
+    PaginationModule,
+    NotificationModule
   ],
   declarations: [
     TruncatePipe,
@@ -78,6 +82,7 @@ import { PaginationModule } from 'patternfly-ng/pagination';
     ListModule,
     ActionModule,
     PaginationModule,    
+    NotificationModule,
     ButtonDeleteComponent,
     ButtonSaveComponent,
     ButtonCancelComponent,
@@ -99,6 +104,11 @@ import { PaginationModule } from 'patternfly-ng/pagination';
     FormRequiredLabelDirective,
     FormFieldValidationStateDirective,
     LoadingComponent
+   // NotificationsService
+  ],
+  providers:[
+    // NotificationService,
+    //NotificationsService
   ]
 })
 export class SharedModule { }

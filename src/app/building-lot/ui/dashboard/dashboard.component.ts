@@ -11,6 +11,7 @@ import { URLSearchParams } from '@angular/http';
 import { Expedient } from './../../../core/model/expedient.model';
 import { DataService } from '../../../core/data/data.service';
 import { TruncatePipe } from '../../../shared/pipes/truncate.pipe';
+import { NotificationsService } from '../../../shared/notification/notifications.service';
 
 
 @Component({
@@ -42,7 +43,7 @@ export class DashboardComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private dataService: DataService,
-    //private toastr: ToastsManager,
+    private notifications: NotificationsService,
     vcr: ViewContainerRef
   ) { //this.toastr.setRootViewContainerRef(vcr);
    }
@@ -88,11 +89,8 @@ export class DashboardComponent implements OnInit {
 
 
   viewDetailExpediente(expedient: Expedient): void {
-    console.log(expedient);
-    this.router.navigate(['/expedients', expedient.IdExpediente]);
   }
 
   viewRequerimiento(expedient: Expedient) {
-    this.router.navigate(['/expedients', expedient.IdExpediente]);
   }
 }

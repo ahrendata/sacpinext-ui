@@ -21,25 +21,26 @@
             </div>
             <div class="list-pf-content-wrapper">
               <div class="list-pf-main-content">
-                <div class="list-pf-title">{{item.CodRequirement}}</div>
+                <div class="list-pf-title">
+                    {{item.CodRequirement}}<span class="pficon pficon-ok"></span></div>
                 <div class="list-pf-description text-overflow-pf">{{item.AliasExpedient}}</div>
               </div>
               <div class="list-pf-additional-content">
                 <div>
-                  <span class="pficon pficon-screen"></span>
+                  <span class="pficon pficon-messages"></span>
                   <strong>Plazo </strong> {{item.AtentionDate| date:"dd/MM/yy"}}
                 </div>
                 <div>
-                  <span class="pficon pficon-cluster"></span>
-                  <strong>8</strong> Comprado
+                  <span class="pficon pficon-orders"></span>
+                  <strong>{{item.PercentSold|number:'1.2-2'}} % </strong> Comprado
                 </div>
                 <div>
-                  <span class="pficon pficon-container-node"></span>
-                  <strong>4</strong> Enviado
+                  <span class="pficon pficon-service"></span>
+                  <strong> {{item.PercentSend|number:'1.2-2'}} % </strong> Enviado
                 </div>
                 <div>
-                  <span class="pficon pficon-image"></span>
-                  <strong>Creacion </strong> {{item.CreateDate| date:"dd/MM/yy"}}
+                  <span class="pficon pficon-save"></span>
+                  <strong>Creado </strong> {{item.CreateDate| date:"dd/MM/yy"}}
                 </div>
               </div>
             </div>

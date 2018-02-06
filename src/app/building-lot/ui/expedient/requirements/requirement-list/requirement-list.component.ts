@@ -224,11 +224,26 @@ export class RequirementListComponent implements OnInit {
     //validar si se puede editar el requerimiento.
     console.log("Edit requirement .... " + action.title);
     if (action.title == "Confirmar")
-      alert("Desarrollando la confirmacion");
+      {
+        let iduser: any = this.dataService.users().getUserId();
+        const queryParams: URLSearchParams = new URLSearchParams();
+        queryParams.set('idRequeriment', item.IdRequirement);
+        queryParams.set('idUser', iduser);
+        console.log("Confirmando el requerimiento");
+        this.dataService.requeriments().confirmar(queryParams).subscribe(
+          response => {            
+            this.router.navigate(['../'], { relativeTo: this.activatedRoute });
+            this.search();
+          },
+          error => {
+            
+          }
+        );
+      }
     else if (action.title == "Eliminar")
       alert("Desarrollando la Eliminacion");
     else if (action.title == "Ver")
-      this.router.navigate(['./View', item.IdRequirement], { relativeTo: this.activatedRoute });
+      this.router.navigate(['./view', item.IdRequirement], { relativeTo: this.activatedRoute });
     else
       this.router.navigate(['./', item.IdRequirement], { relativeTo: this.activatedRoute });
   }
@@ -337,13 +352,6 @@ export class RequirementListComponent implements OnInit {
     } else if (this.currentSortField.id === 'address') {
       compValue = item1.address.localeCompare(item2.address);
     }
-    // else if (this.currentSortField.id === 'birthMonth') {
-    //   compValue = this.monthVals[item1.birthMonth] - this.monthVals[item2.birthMonth];
-    // }
-    //  else if (this.currentSortField.id === 'weekDay') {
-    //   compValue = this.weekDayVals[item1.weekDay] - this.weekDayVals[item2.weekDay];
-    // }
-
     if (!this.isAscendingSort) {
       compValue = compValue * -1;
     }
@@ -366,6 +374,7 @@ export class RequirementListComponent implements OnInit {
 
 
 
+
   /**
    * Get the ActionConfig properties for each row
    *
@@ -382,6 +391,7 @@ export class RequirementListComponent implements OnInit {
           id: 'Editar',
           title: 'Editar',
           tooltip: 'Editar Requerimiento'
+          
         }],
       moreActions: [{
         id: 'Confirm',

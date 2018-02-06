@@ -22,8 +22,9 @@
             <div class="list-pf-content-wrapper">
               <div class="list-pf-main-content">
                 <div class="list-pf-title">
-                    {{item.CodRequirement}}<span class="pficon pficon-ok"></span></div>
+                    {{item.CodRequirement}}  <span *ngIf=item.Status class="pficon pficon-ok"></span></div>
                 <div class="list-pf-description text-overflow-pf">{{item.AliasExpedient}}</div>
+                <div class="list-pf-description text-overflow-pf">{{item.TypeRequirement}}</div>
               </div>
               <div class="list-pf-additional-content">
                 <div>
@@ -32,7 +33,7 @@
                 </div>
                 <div>
                   <span class="pficon pficon-orders"></span>
-                  <strong>{{item.PercentSold|number:'1.2-2'}} % </strong> Comprado
+                  <strong> {{item.PercentSold|number:'1.2-2'}} % </strong> Comprado
                 </div>
                 <div>
                   <span class="pficon pficon-service"></span>

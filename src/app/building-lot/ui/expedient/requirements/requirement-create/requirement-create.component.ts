@@ -67,6 +67,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
       CodRequirement: [null, Validators.compose([Validators.maxLength(50)])],
       AtentionDate: [null, Validators.compose([Validators.required])],
       IdExpedient: [null, Validators.compose([Validators.required])],
+      IdTypeRequirement: [null, Validators.compose([Validators.required])],
       detalle: this.formBuilder.array([], Validators.compose([]))
     });
   }
@@ -146,6 +147,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
         let requerimiento = {
           AtentionDate: new Date(),
           IdExpedient: this.form.value.IdExpedient,
+          IdTypeRequirement: this.form.value.IdTypeRequirement,
           IdRequirement: this.form.value.IdRequirement,
           IdUser: iduser,
           Details: details

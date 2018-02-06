@@ -70,7 +70,8 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
           CodRequirement: data.CodRequirement,
           IdRequirement: data.IdRequirement,
           AtentionDate: data.AtentionDate,
-          IdExpedient: data.IdExpedient
+          IdExpedient: data.IdExpedient,
+          IdTypeRequirement: data.IdTypeRequirement
         });
         let detalle = data.RequirementDetails || [];
         detalle.forEach(item => {
@@ -99,10 +100,23 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
       CodRequirement: [null, Validators.compose([Validators.maxLength(50)])],
       AtentionDate: [null, Validators.compose([Validators.required])],
       IdExpedient: [null, Validators.compose([Validators.required])],
+      IdTypeRequirement: [null, Validators.compose([Validators.required])],
       detalle: this.formBuilder.array([], Validators.compose([]))
     });
   }
-
+  addDetalleFormControl(): void {
+    const formGroup = this.formBuilder.group({
+      IdRequirementDetails: [null, Validators.compose([Validators.maxLength(150)])],
+      IdProduct: [null, Validators.compose([Validators.required, Validators.minLength(1)])],
+      IdUnidCode: [null, Validators.compose([Validators.required, Validators.minLength(1)])],
+      Quantity: [null, Validators.compose([Validators.required, Validators.minLength(1)])],
+      Observation: [null, Validators.compose([Validators.maxLength(150)])],
+      Accumulate: [null, Validators.compose([Validators.maxLength(150)])],
+      Status: [2]
+    });
+    this.addObservableControl(formGroup);
+    this.detalle.push(formGroup);
+  }
   loadDataForm() {
     this.loadExpedients();
     this.loadUnitCodes();
@@ -162,6 +176,7 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
         let requerimiento = {
           AtentionDate: new Date(),
           IdExpedient: this.form.value.IdExpedient,
+          IdTypeRequirement: this.form.value.IdTypeRequirement,
           IdRequirement: this.form.value.IdRequirement,
           IdUser: iduser,
           Details: details

@@ -12,6 +12,8 @@ import 'rxjs/add/operator/switchMap';
 import { Subscription } from 'rxjs/Subscription';
 import { ActionConfig } from 'patternfly-ng/action';
 import { ToolbarConfig } from 'patternfly-ng/toolbar';
+import { ConfirmationModalComponent } from '../../../../../shared/components/confirmation-modal/confirmation-modal.component';
+import { BsModalService } from 'ngx-bootstrap/modal/bs-modal.service';
 
 @Component({
   selector: 'sacpi-requirement-view',
@@ -28,7 +30,8 @@ export class RequirementViewComponent implements OnInit {
   requirement: Observable<any>;
 
   constructor(private router: Router, private route: ActivatedRoute,
-    private formBuilder: FormBuilder, private dataService: DataService) {
+    private formBuilder: FormBuilder, private dataService: DataService,
+    private bsModalService: BsModalService) {
   }
   ngAfterViewInit() {
 
@@ -87,13 +90,34 @@ export class RequirementViewComponent implements OnInit {
     );
   }
   eliminar(requirement: any) {
-    let id = requirement.IdRequirement;
-    let iduser: any = this.dataService.users().getUserId();
-    const queryParams: URLSearchParams = new URLSearchParams();
-    queryParams.set('idUser', iduser);
-    this.dataService.requeriments().delete(id, queryParams).subscribe((data) => {
-      this.router.navigate(['../../'], { relativeTo: this.route });
+    let modal = this.bsModalService.show(ConfirmationModalComponent, { keyboard: false, backdrop: 'static' });
+    (<ConfirmationModalComponent>modal.content).showConfirmationModal(
+      'Estas Seguro de Eliminar el requerimiento N° ',
+      requirement.CodRequirement
+    );
+    (<ConfirmationModalComponent>modal.content).onClose.subscribe(result => {
+      if (result === true) {
+        console.log('si');
+      } else if (result === false) {
+        console.log('no');
+      } else {
+        console.log('else');
+        // When closing the modal without no or yes
+      }
     });
+
+
+
+
+
+
+    // let id = requirement.IdRequirement;
+    // let iduser: any = this.dataService.users().getUserId();
+    // const queryParams: URLSearchParams = new URLSearchParams();
+    // queryParams.set('idUser', iduser);
+    // this.dataService.requeriments().delete(id, queryParams).subscribe((data) => {
+    //   this.router.navigate(['../../'], { relativeTo: this.route });
+    // });
   }
 
   cancel() {

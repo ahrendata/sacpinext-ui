@@ -15,7 +15,7 @@ export class ShellHeaderComponent implements OnInit {
 
   @Input()
   expedients: Array<Expedient>;
-
+  public isCollapsed: boolean = false;
   user: any = {
     username: ''
   };
@@ -32,6 +32,9 @@ export class ShellHeaderComponent implements OnInit {
     console.log("accountManagement");
   }
 
+  collapsed() {
+    this.isCollapsed = true;
+  }
   logout() {
     this.dataService.users().logout();
     this.router.navigate(['./login'], { relativeTo: this.route });

@@ -31,6 +31,7 @@ import { ToolbarModule } from 'patternfly-ng/toolbar';
 import { ListModule } from 'patternfly-ng/list';
 import { ActionModule } from 'patternfly-ng/action';
 import { PaginationModule } from 'patternfly-ng/pagination';
+import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 
 @NgModule({
   imports: [
@@ -65,7 +66,8 @@ import { PaginationModule } from 'patternfly-ng/pagination';
     FormFieldsStatusComponent,
     FormRequiredLabelDirective,
     NumberMaskDirective,
-    FormFieldValidationStateDirective
+    FormFieldValidationStateDirective,
+    ConfirmationModalComponent
   ],
   exports: [
     BsDropdownModule,
@@ -84,6 +86,7 @@ import { PaginationModule } from 'patternfly-ng/pagination';
     ButtonAddComponent,
     ButtonConfirmarComponent,
     OnOffSwitchStringComponent,
+    ConfirmationModalComponent,
     TruncatePipe,
     ToDatePipe,
     YesNoPipe,

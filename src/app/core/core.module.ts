@@ -14,18 +14,18 @@ import { UnitCodeService } from './data/unit-code.service';
 import { ProductService } from './data/product.service';
 import { RequirementTypeService } from './data/requirement-type.service';
 
-// import { ToastsManager } from 'ng2-toastr';
-
 import { TokenService } from './guard/token.service';
 
 import { ExpedientResolverService } from './resolvers/expedient-resolver.service';
-
+import { ConfirmationModalComponent } from '../shared/components/confirmation-modal/confirmation-modal.component';
 import { RestangularService, CustomInterceptor } from './data/restangular.service';
 
 import { UserService } from './data/user.service';
 import { Configuration } from './../app.constants';
 import { ConfigService } from './../config.service';
 import { LoadingService } from './loading/loading.service';
+import { BsModalService } from 'ngx-bootstrap';
+
 
 
 @NgModule({
@@ -36,6 +36,7 @@ import { LoadingService } from './loading/loading.service';
   declarations: [
   ],
   entryComponents: [
+    ConfirmationModalComponent
   ],
   exports: [
   ],
@@ -55,6 +56,7 @@ import { LoadingService } from './loading/loading.service';
     ProductService,
     RequirementTypeService,
     TokenService,
+    BsModalService,
 
     ExpedientResolverService
   ]

@@ -25,11 +25,19 @@ export class UserService {
     return this.token.getUserId();
   }
 
+  getUser(): string {
+    return this.token.getFullName();
+  }
+
+  getUserName(): string {
+    return this.token.getUserName();
+  }
+
   getEmployeeId(): number {
     return this.token.getEmployeeId();
   }
 
-  search(obj?: any): Observable<User> {    
+  search(obj?: any): Observable<User> {
     const userRestangular = this.restangular.all(usersPath + '/Login');
     return userRestangular
       .post(obj)

@@ -2,6 +2,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, Input } from '@angular/core';
 
 import { Expedient } from './../../../core/model/expedient.model';
+import { DataService } from '../../../core/data/data.service';
 
 @Component({
   selector: 'sacpi-shell-header',
@@ -15,27 +16,24 @@ export class ShellHeaderComponent implements OnInit {
   @Input()
   expedients: Array<Expedient>;
 
-  authz: any;
   user: any = {
     username: ''
   };
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private dataService: DataService) { }
 
   ngOnInit() {
-    this.user.username='';
+    this.user.username = this.dataService.users().getUser();
   }
   accountManagement() {
-   console.log("accountManagement");
+    console.log("accountManagement");
   }
 
   logout() {
-    console.log("logout");
-  }
-
-  about() {
-    console.log("about");
+    this.dataService.users().logout();
+    this.router.navigate(['./login'], { relativeTo: this.route });
   }
 }

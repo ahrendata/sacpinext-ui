@@ -47,7 +47,7 @@ import { ConfirmationModalComponent } from './components/confirmation-modal/conf
     NgSelectModule,
     ToolbarModule,
     ListModule,
-    ActionModule,
+    ActionModule,    
     PaginationModule
   ],
   declarations: [
@@ -98,7 +98,7 @@ import { ConfirmationModalComponent } from './components/confirmation-modal/conf
     NumberMaskDirective,
     FormRequiredLabelDirective,
     FormFieldValidationStateDirective,
-    LoadingComponent
+    LoadingComponent    
   ]
 })
 export class SharedModule { }

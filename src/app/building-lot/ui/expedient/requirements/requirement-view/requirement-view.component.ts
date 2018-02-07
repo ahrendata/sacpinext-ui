@@ -9,20 +9,25 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/switchMap';
+import { DatePipe, CurrencyPipe } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 import { ActionConfig } from 'patternfly-ng/action';
 import { ToolbarConfig } from 'patternfly-ng/toolbar';
 import { ToastsManager } from 'ng2-toastr/src/toast-manager';
 
+import 'jspdf-autotable';
+import * as jsPDF from 'jspdf'
+
+
 @Component({
   selector: 'sacpi-requirement-view',
   templateUrl: './requirement-view.component.html',
-  styleUrls: ['./requirement-view.component.scss']
+  styleUrls: ['./requirement-view.component.scss'],
+  providers: [DatePipe, CurrencyPipe]
 })
 export class RequirementViewComponent implements OnInit {
 
   toolbarConfig: ToolbarConfig;
-
   loading = false;
 
   routingSub: Subscription;
@@ -35,7 +40,10 @@ export class RequirementViewComponent implements OnInit {
     private formBuilder: FormBuilder,
     private dataService: DataService,
     private notification: ToastsManager,
-    private viewContainerRef: ViewContainerRef) {
+    private viewContainerRef: ViewContainerRef,
+    private datePipe: DatePipe,
+    private number: CurrencyPipe
+  ) {
     this.notification.setRootViewContainerRef(viewContainerRef);
   }
 
@@ -106,13 +114,64 @@ export class RequirementViewComponent implements OnInit {
         this.notification.success('El requerimiento fue eliminado correctamente.', 'Informacion');
         this.router.navigate(['../../'], { relativeTo: this.route });
       },
-    (error)=>{
-      this.notification.error('Error al eliminar el requerimiento, por favor intente de nuevo.', 'Error');
-    });
-    } 
+        (error) => {
+          this.notification.error('Error al eliminar el requerimiento, por favor intente de nuevo.', 'Error');
+        });
+    }
   }
 
-  imprimir(requirement: any) {
+  imprimir() {
+
+    let columns = [
+      { title: "#", dataKey: "Id" },
+      { title: "Producto", dataKey: "Product" },
+      { title: "Unidad Medida", dataKey: "UnidCode" },
+      { title: "Cantidad", dataKey: "Quantity" },
+      { title: "Descripcion", dataKey: "Observation" }
+    ];
+    let rows: any[] = [];
+    let i: number = 0;
+    this.requirement.RequirementDetails.forEach(element => {
+      i++;
+      rows.push({
+        Id: i,
+        Product: element.Product,
+        UnidCode: element.UnidCode, 
+        Quantity: this.number.transform(element.Quantity,' ', true, '1.2-2'),
+        Observation: element.Observation || ''
+      });
+    });;
+    var doc = new jsPDF();
+    doc.setFontSize(12);
+    doc.setFontStyle('bold');
+    doc.text(70, 20, 'REQUERIMIENTO N° ' + this.requirement.CodRequirement);
+    doc.setFontSize(8);
+    doc.setFontStyle('normal');
+    doc.text(10, 30, 'Fecha creación');
+    doc.text(35, 30, ':');
+    doc.text(40, 30, this.datePipe.transform(this.requirement.CreateDate, 'dd/MM/yyyy HH:mm:ss'));
+    doc.text(100, 30, 'Tipo Requerimiento');
+    doc.text(135, 30, ':');
+    doc.text(140, 30, this.requirement.TypeRequirement || '');
+    doc.text(10, 35, 'Fecha Atención');
+    doc.text(35, 35, ':');
+    doc.text(40, 35, this.datePipe.transform(this.requirement.AtentionDate, 'dd/MM/yyyy'));
+    doc.text(100, 35, 'Centro de Costo');
+    doc.text(135, 35, ':');
+    doc.text(140, 35, this.requirement.AliasExpedient);
+    doc.text(10, 40, 'Estado');
+    doc.text(35, 40, ':');
+    doc.text(40, 40, this.requirement.Status ? 'Confirmado' : 'Sin Confirmar');
+    doc.autoTable(columns, rows, {
+      headerStyles: { fillColor: [114, 118, 123] },
+      columnStyles: {
+        Id: { halign: 'right' },
+        Quantity: { halign: 'right' }
+      },
+      styles: { columnWidth: 'auto', fillColor: [209, 209, 209], cellPadding: 0.7, fontSize: 8 },
+      margin: { top: 45, right: 10, left: 10 }
+    });
+    doc.save('Req-' + this.requirement.CodRequirement + '.pdf');
 
   }
   cancel() {

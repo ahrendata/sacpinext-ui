@@ -29,7 +29,7 @@
                 <span class="fa fa-trash-o"></span>
                 Eliminar
               </button>
-              <button class="btn btn-default primary-action" type="button" (click)="imprimir()">
+              <button *ngIf="requirement.Status" class="btn btn-default primary-action" type="button" (click)="imprimir()">
                 <span class="fa fa-print"></span>
                 Imprimir
               </button>
@@ -37,90 +37,92 @@
             </ng-template>
           </pfng-toolbar>
         </div>
-        <div class="row">
-          <div class="col-md-6">
-            <fieldset>
-              <legend>
-                <h3>
-                  <span class="fa fa-info-circle"></span> Información</h3>
-              </legend>
-            </fieldset>
-            <dl class="dl-horizontal left">
-              <dt> Fecha Creación
-                <span ngbTooltip="Fecha Creación" placement="right" class="pficon pficon-help text-muted small"></span>
-              </dt>
-              <dd *ngIf="requirement.CreateDate">{{requirement.CreateDate | toDate | date: 'dd/MM/y HH:mm:ss'}}</dd>
-              <dd *ngIf="!requirement.CreateDate">
-                <em>No Registrado</em>
-              </dd>
-              <dt> Fecha Atención
-                <span ngbTooltip="Fecha Atención" placement="right" class="pficon pficon-help text-muted small"></span>
-              </dt>
-              <dd *ngIf="requirement.AtentionDate">{{requirement.AtentionDate | toDate | date: 'dd/MM/y HH:mm:ss'}}</dd>
-              <dd *ngIf="!requirement.AtentionDate">
-                <em>No Registrado</em>
-              </dd>
-              <dt> Tipo Requerimiento
-                <span ngbTooltip="Tipo Requerimiento" placement="right" class="pficon pficon-help text-muted small"></span>
-              </dt>
-              <dd *ngIf="requirement.TypeRequirement">{{requirement.TypeRequirement}}</dd>
-              <dd *ngIf="!requirement.TypeRequirement">
-                <em>No Registrado</em>
-              </dd>
-              <dt> Centro de Costo
-                <span ngbTooltip="Centro de Costo" placement="right" class="pficon pficon-help text-muted small"></span>
-              </dt>
-              <dd *ngIf="requirement.AliasExpedient">{{requirement.AliasExpedient}}</dd>
-              <dd *ngIf="!requirement.AliasExpedient">
-                <em>No Registrado</em>
-              </dd>
-            </dl>
+        <div id="printSectionId">
+          <div class="row">
+            <div class="col-md-6">
+              <fieldset>
+                <legend>
+                  <h3>
+                    <span class="fa fa-info-circle"></span> Información</h3>
+                </legend>
+              </fieldset>
+              <dl class="dl-horizontal left">
+                <dt> Fecha Creación
+                  <span ngbTooltip="Fecha Creación" placement="right" class="pficon pficon-help text-muted small"></span>
+                </dt>
+                <dd *ngIf="requirement.CreateDate">{{requirement.CreateDate | toDate | date: 'dd/MM/y HH:mm:ss'}}</dd>
+                <dd *ngIf="!requirement.CreateDate">
+                  <em>No Registrado</em>
+                </dd>
+                <dt> Fecha Atención
+                  <span ngbTooltip="Fecha Atención" placement="right" class="pficon pficon-help text-muted small"></span>
+                </dt>
+                <dd *ngIf="requirement.AtentionDate">{{requirement.AtentionDate | toDate | date: 'dd/MM/y HH:mm:ss'}}</dd>
+                <dd *ngIf="!requirement.AtentionDate">
+                  <em>No Registrado</em>
+                </dd>
+                <dt> Tipo Requerimiento
+                  <span ngbTooltip="Tipo Requerimiento" placement="right" class="pficon pficon-help text-muted small"></span>
+                </dt>
+                <dd *ngIf="requirement.TypeRequirement">{{requirement.TypeRequirement}}</dd>
+                <dd *ngIf="!requirement.TypeRequirement">
+                  <em>No Registrado</em>
+                </dd>
+                <dt> Centro de Costo
+                  <span ngbTooltip="Centro de Costo" placement="right" class="pficon pficon-help text-muted small"></span>
+                </dt>
+                <dd *ngIf="requirement.AliasExpedient">{{requirement.AliasExpedient}}</dd>
+                <dd *ngIf="!requirement.AliasExpedient">
+                  <em>No Registrado</em>
+                </dd>
+              </dl>
+            </div>
+            <div class="col-md-6">
+              <fieldset>
+                <legend>
+                  <h3>
+                    <span class="fa fa-building"></span> Requerimiento </h3>
+                </legend>
+              </fieldset>
+              <dl class="dl-horizontal">
+                <dd *ngIf="requirement.CodRequirement" class="sacpi-req">{{requirement.CodRequirement}}</dd>
+                <dd *ngIf="!requirement.CodRequirement" class="sacpi-req">
+                  <em>No Registrado</em>
+                </dd>
+                <dd *ngIf="requirement.Status" class="sacpi-status-confirmado">
+                  <em>Confirmado</em>
+                </dd>
+                <dd *ngIf="!requirement.Status" class="sacpi-status-no-confirmado">
+                  <em>Sin Confirmar</em>
+                </dd>
+              </dl>
+            </div>
           </div>
-          <div class="col-md-6">
-            <fieldset>
-              <legend>
-                <h3>
-                  <span class="fa fa-building"></span> Requerimiento </h3>
-              </legend>
-            </fieldset>
-            <dl class="dl-horizontal">
-              <dd *ngIf="requirement.CodRequirement" class="sacpi-req">{{requirement.CodRequirement}}</dd>
-              <dd *ngIf="!requirement.CodRequirement" class="sacpi-req">
-                <em>No Registrado</em>
-              </dd>
-              <dd *ngIf="requirement.Status" class="sacpi-status-confirmado">
-                <em>Confirmado</em>
-              </dd>
-              <dd *ngIf="!requirement.Status" class="sacpi-status-no-confirmado">
-                <em>Sin Confirmar</em>
-              </dd>
-            </dl>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <table class="table table-striped table-bordered table-hover dataTable no-footer">
-              <thead>
-                <tr>
-                  <td class="text-center">#</td>
-                  <td class="text-left td-siacpi">Producto</td>
-                  <td class="text-center">Unidad Medida</td>
-                  <td class="text-right">Cantidad</td>
-                  <td class="text-left">Descripcion</td>
-                  <td class="text-right">Cantidad Comprada</td>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of requirement.RequirementDetails; let i = index">
-                  <td class="text-center">{{i+1}}</td>
-                  <td>{{item.Product}}</td>
-                  <td class="text-center">{{item.UnidCode}} </td>
-                  <td class="text-right">{{item.Quantity| number:'1.2-2'}}</td>
-                  <td>{{item.Observation}}</td>
-                  <td class="text-right">{{item.Accumulate| number:'1.2-2'}}</td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="row">
+            <div class="col-md-12">
+              <table class="table table-striped table-bordered table-hover dataTable no-footer">
+                <thead>
+                  <tr>
+                    <td class="text-center">#</td>
+                    <td class="text-left td-siacpi">Producto</td>
+                    <td class="text-center">Unidad Medida</td>
+                    <td class="text-right">Cantidad</td>
+                    <td class="text-left">Descripcion</td>
+                    <td class="text-right">Cantidad Comprada</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of requirement.RequirementDetails; let i = index">
+                    <td class="text-center">{{i+1}}</td>
+                    <td>{{item.Product}}</td>
+                    <td class="text-center">{{item.UnidCode}} </td>
+                    <td class="text-right">{{item.Quantity| number:'1.2-2'}}</td>
+                    <td>{{item.Observation}}</td>
+                    <td class="text-right">{{item.Accumulate| number:'1.2-2'}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
         <br>

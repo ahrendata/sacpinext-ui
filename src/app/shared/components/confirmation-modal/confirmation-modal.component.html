@@ -1,18 +1,18 @@
 <form (ngSubmit)="onConfirm()" *ngIf="active">
-  <div class="sacpi-confirm">
-    <div class="modal-content">
-      <div class="modal-body text-center">
-        <div class="modal-body">
-          <p>¿{{body}}
-            <b>{{data}}</b>.?</p>
-        </div>
-        <div class="text-right">
-          <button type="submit" class="btn btn-default">
-            <span class="fa fa-thumbs-o-up"></span> Confirmar</button>
-          <button type="button" class="btn btn-primary" (click)="onCancel()">
-            <span class="fa fa-ban"></span> Cancelar</button>
-        </div>
-      </div>
-    </div>
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">Eliminacion</h4>
+  </div>
+  <div class="modal-body">
+    <p>¿{{body}}
+      <b>{{data}}</b>.?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-default">
+      <span class="fa fa-info"></span> Aceptar</button>
+    <button type="button" class="btn btn-primary" (click)="onCancel()">
+      <span class="fa fa-ban"></span> Cancelar</button>
   </div>
 </form>

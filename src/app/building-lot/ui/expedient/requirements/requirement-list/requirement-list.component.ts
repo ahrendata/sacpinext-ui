@@ -76,7 +76,7 @@ export class RequirementListComponent implements OnInit {
   filters: any = {
     filterText: undefined
   };
-  
+
   @ViewChild('autoShownModal') autoShownModal: ModalDirective;
   isModalShown: boolean = false;
 
@@ -229,37 +229,39 @@ export class RequirementListComponent implements OnInit {
             this.search();
           },
           error => {
-
+            this.toastr.error('Ocurrio un error al confirmar este requerimiento, intentelo nuevamente.', 'Error');
           }
         );
       }
     }
-    else if (action.title == "Eliminar") {      
-      //this.isModalShown = true;
-      let modal = this.bsModalService.show(ConfirmationModalComponent, { keyboard: false, backdrop: 'static' });
-      (<ConfirmationModalComponent>modal.content).showConfirmationModal(
-        'Estas Seguro de Eliminar el requerimiento N° ',
-        item.CodRequirement
-      );
-      (<ConfirmationModalComponent>modal.content).onClose.subscribe(result => {
-        if (result === true) {
-          console.log('si');
-        } else if (result === false) {
-          console.log('no');
-        } else {
-          console.log('else');
-          // When closing the modal without no or yes
-        }
-      });
+    else if (action.title == "Eliminar") {
+      if (item.StatusDelete) {
+        let modal = this.bsModalService.show(ConfirmationModalComponent, { keyboard: false, backdrop: 'static' });
+        (<ConfirmationModalComponent>modal.content).showConfirmationModal(
+          'Estas Seguro de Eliminar el requerimiento N° ',
+          item.CodRequirement
+        );
+        (<ConfirmationModalComponent>modal.content).onClose.subscribe(result => {
+          if (result === true) {
+
+            console.log('si');
+          } else if (result === false) {
+            console.log('no');
+          } else {
+            console.log('else');
+            // When closing the modal without no or yes
+          }
+        });
+      }else{
+        this.toastr.warning('El requerimiento no se puede eliminar, ya se hicieron la compra de algunos productos.', 'Alerta');//
+      }
     }
     else if (action.title == "Ver")
       this.router.navigate(['./view', item.IdRequirement], { relativeTo: this.activatedRoute });
     else {
       let customFormat: string = "yyyyMMdd";
       console.log(new Date(item.CreateDate.toString()).getMonth() + "===" + new Date().getMonth())
-      if (new Date(item.CreateDate.toString()).getFullYear() === new Date().getFullYear()
-        && new Date(item.CreateDate.toString()).getMonth() === new Date().getMonth()
-        && new Date(item.CreateDate.toString()).getDay() === new Date().getDay()) {
+      if (item.StatusEdit) {
         this.router.navigate(['./', item.IdRequirement], { relativeTo: this.activatedRoute });
       } else {
         this.toastr.warning('El requerimiento no se puede editar, las fechas no coincidden. Solo se pueden editar requerimientos generados el mismo dia.', 'Alerta');//

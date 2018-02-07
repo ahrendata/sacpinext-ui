@@ -243,7 +243,19 @@ export class RequirementListComponent implements OnInit {
         );
         (<ConfirmationModalComponent>modal.content).onClose.subscribe(result => {
           if (result === true) {
-
+            let iduser: any = this.dataService.users().getUserId();
+            const queryParams: URLSearchParams = new URLSearchParams();            
+            queryParams.set('idUser', iduser);
+            console.log("Confirmando el requerimiento");
+            this.dataService.requeriments().delete(item.IdRequirement,queryParams).subscribe(
+              response => {
+                this.toastr.success('El requerimiento fue eliminado correctamente.', 'Informacion');
+                this.search();
+              },
+              error => {
+                this.toastr.error('Ocurrio un error al eliminar este requerimiento, intentelo nuevamente.', 'Error');
+              }
+            );
             console.log('si');
           } else if (result === false) {
             console.log('no');

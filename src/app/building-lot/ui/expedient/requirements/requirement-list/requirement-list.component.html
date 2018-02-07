@@ -12,9 +12,7 @@
   <div class="row">
     <div class="col-sm-12">
       <div class="form-group">
-        <pfng-list [actionTemplate]="actionTemplate" [config]="listConfig" [items]="requirements"
-          [itemTemplate]="itemTemplate"
-          >
+        <pfng-list [actionTemplate]="actionTemplate" [config]="listConfig" [items]="requirements" [itemTemplate]="itemTemplate">
           <ng-template #itemTemplate let-item="item" let-index="index">
             <div class="list-pf-left">
               <span class="fa fa-list-alt  list-pf-icon list-pf-icon-bordered list-pf-icon-small"></span>
@@ -22,7 +20,9 @@
             <div class="list-pf-content-wrapper">
               <div class="list-pf-main-content">
                 <div class="list-pf-title">
-                    {{item.CodRequirement}}  <span *ngIf=item.Status class="pficon pficon-ok"></span></div>
+                  {{item.CodRequirement}}
+                  <span *ngIf=item.Status class="pficon pficon-ok"></span>
+                </div>
                 <div class="list-pf-description text-overflow-pf">{{item.AliasExpedient}}</div>
                 <div class="list-pf-description text-overflow-pf">{{item.TypeRequirement}}</div>
               </div>

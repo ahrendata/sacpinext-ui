@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewContainerRef, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, TemplateRef, ViewEncapsulation, ViewChild } from '@angular/core';
 import { Requirement } from '../../../../../core/model/requirement.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DataService } from '../../../../../core/data/data.service';
-// import { ToastsManager } from 'ng2-toastr';
+import { ToastsManager } from 'ng2-toastr';
 import { Expedient } from '../../../../../core/model/expedient.model';
 import { URLSearchParams } from '@angular/http';
 
@@ -30,6 +30,11 @@ import { cloneDeep } from 'lodash';
 import { PaginationConfig } from 'patternfly-ng/pagination/pagination-config';
 import { PaginationEvent } from 'patternfly-ng/pagination/pagination-event';
 
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal';
+import { ModalDirective } from 'ngx-bootstrap';
+import { ConfirmationModalComponent } from '../../../../../shared/components/confirmation-modal/confirmation-modal.component';
+
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'sacpi-requirement-list',
@@ -40,7 +45,7 @@ import { PaginationEvent } from 'patternfly-ng/pagination/pagination-event';
 export class RequirementListComponent implements OnInit {
   actionConfig: ActionConfig;
   actionsText: string = '';
-  allItems: any[] = [];
+  //allItems: any[] = [];
   filterConfig: FilterConfig;
   filtersText: string = '';
   filtersServer: any[] = [];
@@ -71,34 +76,23 @@ export class RequirementListComponent implements OnInit {
   filters: any = {
     filterText: undefined
   };
+  
+  @ViewChild('autoShownModal') autoShownModal: ModalDirective;
+  isModalShown: boolean = false;
+
   constructor(private router: Router,
     private activatedRoute: ActivatedRoute,
     private dataService: DataService,
-
+    private toastr: ToastsManager,
+    private bsModalService: BsModalService,
     vcr: ViewContainerRef) {
-    // this.toastr.setRootViewContainerRef(vcr);
+    this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit() {
     this.search();
     // console.log(this.dataService.users().getEmployeeId());
     // console.log(this.dataService.expedients().getUserId());
-    this.allItems = [{
-      name: 'Fred Flintstone',
-      address: '20 Dinosaur Way, Bedrock, Washingstone',
-      birthMonth: 'February',
-      birthMonthId: 'month2',
-      weekDay: 'Sunday',
-      weekdayId: 'day1'
-    }, {
-      name: 'John Smith', address: '415 East Main Street, Norfolk, Virginia',
-      birthMonth: 'October',
-      birthMonthId: '10',
-      weekDay: 'Monday',
-      weekdayId: 'day2'
-    }];
-    this.items = cloneDeep(this.allItems); //this.allItems;
-
     this.filterConfig = {
       fields: [{
         id: 'CodRequirement',
@@ -185,10 +179,6 @@ export class RequirementListComponent implements OnInit {
     queryParams.set('pageNumber', this.page.toString());
     queryParams.set('PageSize', this.limit.toString());
     console.log("Apliacnado filtro..." + JSON.stringify(this.filtersServer));
-    // this.allItems.forEach((item) => {
-    //   if (this.matchesFilters(item, filters)) {
-    //     this.items.push(item);
-    //   }
 
     this.loading = true;
     this.dataService.requeriments().getAll(queryParams).subscribe((data: any) => {
@@ -198,11 +188,11 @@ export class RequirementListComponent implements OnInit {
       this.toolbarConfig.filterConfig.resultsCount = data.count;
     },
       error => {
-        //this.toastr.error('Something went wrong...', 'error');
+        this.toastr.error('Something went wrong...', 'error');
         this.loading = false;
       },
       () => {
-        //this.toastr.success('Getting all values complete', 'Complete');
+        //this.toastr.success('Getting all values complete', 'Complete');//
         this.loading = false;
       });
   }
@@ -223,29 +213,58 @@ export class RequirementListComponent implements OnInit {
     //this.actionsText = action.title + '\n' + this.actionsText;
     //validar si se puede editar el requerimiento.
     console.log("Edit requirement .... " + action.title);
-    if (action.title == "Confirmar")
-      {
+    if (action.title == "Confirmar") {
+      if (item.Status) {
+        this.toastr.warning('Este requerimiento ya esta confirmnado..', 'Alerta');
+      }
+      else {
         let iduser: any = this.dataService.users().getUserId();
         const queryParams: URLSearchParams = new URLSearchParams();
         queryParams.set('idRequeriment', item.IdRequirement);
         queryParams.set('idUser', iduser);
         console.log("Confirmando el requerimiento");
         this.dataService.requeriments().confirmar(queryParams).subscribe(
-          response => {            
+          response => {
             this.router.navigate(['../'], { relativeTo: this.activatedRoute });
             this.search();
           },
           error => {
-            
+
           }
         );
       }
-    else if (action.title == "Eliminar")
-      alert("Desarrollando la Eliminacion");
+    }
+    else if (action.title == "Eliminar") {      
+      //this.isModalShown = true;
+      let modal = this.bsModalService.show(ConfirmationModalComponent, { keyboard: false, backdrop: 'static' });
+      (<ConfirmationModalComponent>modal.content).showConfirmationModal(
+        'Estas Seguro de Eliminar el requerimiento N° ',
+        item.CodRequirement
+      );
+      (<ConfirmationModalComponent>modal.content).onClose.subscribe(result => {
+        if (result === true) {
+          console.log('si');
+        } else if (result === false) {
+          console.log('no');
+        } else {
+          console.log('else');
+          // When closing the modal without no or yes
+        }
+      });
+    }
     else if (action.title == "Ver")
       this.router.navigate(['./view', item.IdRequirement], { relativeTo: this.activatedRoute });
-    else
-      this.router.navigate(['./', item.IdRequirement], { relativeTo: this.activatedRoute });
+    else {
+      let customFormat: string = "yyyyMMdd";
+      console.log(new Date(item.CreateDate.toString()).getMonth() + "===" + new Date().getMonth())
+      if (new Date(item.CreateDate.toString()).getFullYear() === new Date().getFullYear()
+        && new Date(item.CreateDate.toString()).getMonth() === new Date().getMonth()
+        && new Date(item.CreateDate.toString()).getDay() === new Date().getDay()) {
+        this.router.navigate(['./', item.IdRequirement], { relativeTo: this.activatedRoute });
+      } else {
+        this.toastr.warning('El requerimiento no se puede editar, las fechas no coincidden. Solo se pueden editar requerimientos generados el mismo dia.', 'Alerta');//
+      }
+    }
   }
 
   optionSelected(option: number): void {
@@ -255,19 +274,19 @@ export class RequirementListComponent implements OnInit {
 
   // Filter
 
-  applyFilters(filters: Filter[]): void {
-    this.items = [];
-    if (filters && filters.length > 0) {
-      this.allItems.forEach((item) => {
-        if (this.matchesFilters(item, filters)) {
-          this.items.push(item);
-        }
-      });
-    } else {
-      this.items = this.allItems;
-    }
-    this.toolbarConfig.filterConfig.resultsCount = this.items.length;
-  }
+  // applyFilters(filters: Filter[]): void {
+  //   this.items = [];
+  //   if (filters && filters.length > 0) {
+  //     this.allItems.forEach((item) => {
+  //       if (this.matchesFilters(item, filters)) {
+  //         this.items.push(item);
+  //       }
+  //     });
+  //   } else {
+  //     this.items = this.allItems;
+  //   }
+  //   this.toolbarConfig.filterConfig.resultsCount = this.items.length;
+  // }
 
   // Handle filter changes
   filterChanged($event: FilterEvent): void {
@@ -283,7 +302,7 @@ export class RequirementListComponent implements OnInit {
 
     this.search();
 
-    this.applyFilters($event.appliedFilters);
+    //this.applyFilters($event.appliedFilters);
     //this.filterFieldSelected($event);
   }
 
@@ -391,7 +410,7 @@ export class RequirementListComponent implements OnInit {
           id: 'Editar',
           title: 'Editar',
           tooltip: 'Editar Requerimiento'
-          
+
         }],
       moreActions: [{
         id: 'Confirm',

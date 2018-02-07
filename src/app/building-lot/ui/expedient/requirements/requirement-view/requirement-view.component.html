@@ -1,7 +1,6 @@
 <sacpi-loading [loading]="loading">
   <div *ngIf="!requirement">
     <div class="spinner"></div>
-    <!-- "'¿Estas Seguro de eliminar.?'{{requirement.CodRequirement}}" -->
   </div>
   <div *ngIf="requirement">
     <sacpi-dialog #modal (onAction)="eliminar($event)" [title]="'Eliminación'" [action]="'delete'" [message]="'Estas seguro de eliminar el requerimiento N° '"

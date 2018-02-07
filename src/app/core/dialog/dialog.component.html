@@ -1,0 +1,23 @@
+<ng-template #modal>
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">{{title}}</h4>
+  </div>
+  <div *ngIf="action == 'confirm'" class="modal-body">
+    {{message}}
+  </div>
+  <div *ngIf="action == 'delete'" class="modal-body">
+    ¿{{message}}
+    <b>{{data||''}}</b>?
+  </div>
+  <div class="modal-footer">
+    <button *ngIf="action == 'confirm'" type="button" class="btn btn-primary" (click)="aceptar('save')">
+      <span class="fa fa-info"></span> Aceptar</button>
+    <button *ngIf="action == 'delete'" type="button" class="btn btn-danger" (click)="eliminar('delete')">
+      <span class="fa fa-trash-o"></span> Eliminar</button>
+    <button type="button" class="btn btn-default" (click)="cancelar()">
+      <span class="fa fa-ban"></span> Cancelar</button>
+  </div>
+</ng-template>

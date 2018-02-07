@@ -1,8 +1,12 @@
 <sacpi-loading [loading]="loading">
   <div *ngIf="!requirement">
     <div class="spinner"></div>
+    <!-- "'¿Estas Seguro de eliminar.?'{{requirement.CodRequirement}}" -->
   </div>
   <div *ngIf="requirement">
+    <sacpi-dialog #modal (onAction)="eliminar($event)" [title]="'Eliminación'" [action]="'delete'" [message]="'Estas seguro de eliminar el requerimiento N° '"
+      [data]='codigo'>
+    </sacpi-dialog>
     <div class="row">
       <div class="col-md-12">
         <ol class="breadcrumb">
@@ -14,18 +18,23 @@
         <div>
           <pfng-toolbar [config]="toolbarConfig" [actionTemplate]="actionTemplate">
             <ng-template #actionTemplate>
-              <button *ngIf="!requirement.Status" class="btn btn-default primary-action" type="button" (click)="editar(requirement)">
+              <button *ngIf="requirement.StatusEdit" class="btn btn-default primary-action" type="button" (click)="editar()">
                 <span class="fa fa-pencil"></span>
                 Editar
               </button>
-              <button *ngIf="!requirement.Status" class="btn btn-default primary-action" type="button" (click)="confirmar(requirement)">
+              <button *ngIf="!requirement.Status" class="btn btn-default primary-action" type="button" (click)="confirmar()">
                 <span class="fa fa-thumbs-o-up"></span>
                 Confirmar
               </button>
-              <button class="btn btn-default primary-action" type="button" (click)="eliminar(requirement)">
+              <button *ngIf="requirement.StatusDelete" class="btn btn-default primary-action" type="button" (click)="modal.openModal()">
                 <span class="fa fa-trash-o"></span>
                 Eliminar
               </button>
+              <button class="btn btn-default primary-action" type="button" (click)="imprimir()">
+                <span class="fa fa-print"></span>
+                Imprimir
+              </button>
+              <sacpi-button-cancel (sacpiOnCancel)="cancel()"></sacpi-button-cancel>
             </ng-template>
           </pfng-toolbar>
         </div>
@@ -71,7 +80,7 @@
           <div class="col-md-6">
             <fieldset>
               <legend>
-                <h3>                  
+                <h3>
                   <span class="fa fa-building"></span> Requerimiento </h3>
               </legend>
             </fieldset>
@@ -99,17 +108,17 @@
                   <td class="text-center">Unidad Medida</td>
                   <td class="text-right">Cantidad</td>
                   <td class="text-left">Descripcion</td>
-                  <td class="text-right">Acumulado</td>
+                  <td class="text-right">Cantidad Comprada</td>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let item of requirement.RequirementDetails; let i = index">
                   <td class="text-center">{{i+1}}</td>
                   <td>{{item.Product}}</td>
-                  <td>{{item.UnidCode}} </td>
-                  <td class="text-right">{{item.Quantity}}</td>
+                  <td class="text-center">{{item.UnidCode}} </td>
+                  <td class="text-right">{{item.Quantity| number:'1.2-2'}}</td>
                   <td>{{item.Observation}}</td>
-                  <td>{{item.Accumulate}}</td>
+                  <td class="text-right">{{item.Accumulate| number:'1.2-2'}}</td>
                 </tr>
               </tbody>
             </table>
@@ -117,6 +126,7 @@
         </div>
         <br>
         <sacpi-button-cancel (sacpiOnCancel)="cancel()"></sacpi-button-cancel>
+        <br>
         <br>
       </div>
     </div>

@@ -5,8 +5,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Expedient } from '../../core/model/expedient.model';
 import { DataService } from '../../core/data/data.service';
 
-
-
 @Component({
   selector: 'sacpi-ui',
   templateUrl: './ui.component.html',
@@ -34,12 +32,7 @@ export class SacpiUIComponent implements OnInit, OnDestroy {
     this.dataSubscription.unsubscribe();
   }
 
-  loadAllowedexpedients() {
-    // this.dataService.expedients().getAll().subscribe(
-    //   (data) => {
-    //     this.expedients = data;
-    //   }
-    // );
+  loadAllowedexpedients() {  
   }
 
 }

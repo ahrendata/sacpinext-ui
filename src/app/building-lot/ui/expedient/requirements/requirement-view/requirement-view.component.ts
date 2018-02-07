@@ -1,7 +1,7 @@
 import { GenericType } from './../../../../../core/model/genericType.model';
 import { DataService } from './../../../../../core/data/data.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, NgModule, OnInit } from '@angular/core';
+import { Component, NgModule, OnInit, ViewContainerRef } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 
@@ -12,8 +12,7 @@ import 'rxjs/add/operator/switchMap';
 import { Subscription } from 'rxjs/Subscription';
 import { ActionConfig } from 'patternfly-ng/action';
 import { ToolbarConfig } from 'patternfly-ng/toolbar';
-import { ConfirmationModalComponent } from '../../../../../shared/components/confirmation-modal/confirmation-modal.component';
-import { BsModalService } from 'ngx-bootstrap/modal/bs-modal.service';
+import { ToastsManager } from 'ng2-toastr/src/toast-manager';
 
 @Component({
   selector: 'sacpi-requirement-view',
@@ -27,14 +26,20 @@ export class RequirementViewComponent implements OnInit {
   loading = false;
 
   routingSub: Subscription;
-  requirement: Observable<any>;
+  requirement: any;
+  codigo: string;
 
-  constructor(private router: Router, private route: ActivatedRoute,
-    private formBuilder: FormBuilder, private dataService: DataService,
-    private bsModalService: BsModalService) {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder,
+    private dataService: DataService,
+    private notification: ToastsManager,
+    private viewContainerRef: ViewContainerRef) {
+    this.notification.setRootViewContainerRef(viewContainerRef);
   }
-  ngAfterViewInit() {
 
+  ngAfterViewInit() {
   }
 
   ngOnInit() {
@@ -44,6 +49,7 @@ export class RequirementViewComponent implements OnInit {
       let id = +params['id'];
       this.dataService.requeriments().viewById(id).subscribe((data: any) => {
         this.requirement = data;
+        this.codigo = this.requirement.CodRequirement;
         this.loading = false;
       },
         (error) => {
@@ -70,14 +76,14 @@ export class RequirementViewComponent implements OnInit {
     } as ToolbarConfig;
   }
 
-  editar(requirement: any) {
-    this.router.navigate(['../../', requirement.IdRequirement], { relativeTo: this.route });
+  editar() {
+    this.router.navigate(['../../', this.requirement.IdRequirement], { relativeTo: this.route });
   }
-  confirmar(requirement: any) {
+  confirmar() {
     let iduser: any = this.dataService.users().getUserId();
     this.loading = true;
     const queryParams: URLSearchParams = new URLSearchParams();
-    queryParams.set('idRequeriment', requirement.IdRequirement);
+    queryParams.set('idRequeriment', this.requirement.IdRequirement);
     queryParams.set('idUser', iduser);
     this.dataService.requeriments().confirmar(queryParams).subscribe(
       response => {
@@ -89,38 +95,26 @@ export class RequirementViewComponent implements OnInit {
       }
     );
   }
-  eliminar(requirement: any) {
-    let modal = this.bsModalService.show(ConfirmationModalComponent, { keyboard: false, backdrop: 'static' });
-    (<ConfirmationModalComponent>modal.content).showConfirmationModal(
-      'Estas Seguro de Eliminar el requerimiento N° ',
-      requirement.CodRequirement
-    );
-    (<ConfirmationModalComponent>modal.content).onClose.subscribe(result => {
-      if (result === true) {
-        console.log('si');
-      } else if (result === false) {
-        console.log('no');
-      } else {
-        console.log('else');
-        // When closing the modal without no or yes
-      }
+
+  eliminar(selected: boolean) {
+    if (selected) {
+      let id = this.requirement.IdRequirement;
+      let iduser: any = this.dataService.users().getUserId();
+      const queryParams: URLSearchParams = new URLSearchParams();
+      queryParams.set('idUser', iduser);
+      this.dataService.requeriments().delete(id, queryParams).subscribe((data) => {
+        this.notification.success('El requerimiento fue eliminado correctamente.', 'Informacion');
+        this.router.navigate(['../../'], { relativeTo: this.route });
+      },
+    (error)=>{
+      this.notification.error('Error al eliminar el requerimiento, por favor intente de nuevo.', 'Error');
     });
-
-    
-
-
-
-
-
-    // let id = requirement.IdRequirement;
-    // let iduser: any = this.dataService.users().getUserId();
-    // const queryParams: URLSearchParams = new URLSearchParams();
-    // queryParams.set('idUser', iduser);
-    // this.dataService.requeriments().delete(id, queryParams).subscribe((data) => {
-    //   this.router.navigate(['../../'], { relativeTo: this.route });
-    // });
+    } 
   }
 
+  imprimir(requirement: any) {
+
+  }
   cancel() {
     this.router.navigate(['../../'], { relativeTo: this.route });
   }

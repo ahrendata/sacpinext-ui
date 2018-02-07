@@ -1,4 +1,4 @@
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -9,7 +9,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
 import { ToastModule } from 'ng2-toastr';
 import { SharedModule } from './shared/shared.module';
-
 import { ConfigService, configServiceInitializer } from './config.service';
 import { AppComponent } from './app.component';
 import { Configuration } from './app.constants';
@@ -22,12 +21,13 @@ import { AuthGuard } from './core/guard/auth.guard';
   imports: [
     FormsModule,
     BrowserModule,
+    ReactiveFormsModule,
     HttpModule,
     HttpClientModule,
     BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
-    ToastModule.forRoot(),
+    ToastModule.forRoot(),   
     AppRoutingModule,
     SharedModule,
     CoreModule

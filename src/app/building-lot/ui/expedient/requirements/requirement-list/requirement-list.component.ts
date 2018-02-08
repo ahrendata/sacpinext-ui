@@ -96,17 +96,17 @@ export class RequirementListComponent implements OnInit {
     this.filterConfig = {
       fields: [{
         id: 'CodRequirement',
-        title: 'CodRequirement',
+        title: 'Codigo',
         placeholder: 'Filter by CodRequirement',
         type: FilterType.TEXT
       }, {
         id: 'AliasExpedient',
-        title: 'AliasExpedient',
+        title: 'Centro costo',
         placeholder: 'Filter by Birth AliasExpedient',
         type: FilterType.TEXT
       }, {
         id: 'AtentionDate',
-        title: 'AtentionDate',
+        title: 'Fecha Atencion',
         placeholder: 'Filter by AtentionDate',
         type: FilterType.TEXT
       }] as FilterField[],
@@ -118,14 +118,14 @@ export class RequirementListComponent implements OnInit {
     this.sortConfig = {
       fields: [{
         id: 'CodRequirement',
-        title: 'CodRequirement',
+        title: 'Codigo',
         sortType: 'alpha'
       }, {
         id: 'AliasExpedient',
-        title: 'AliasExpedient',
+        title: 'Centro costo',
         sortType: 'alpha'
       }, {
-        id: 'AtentionDate',
+        id: 'Fecha atencion',
         title: 'AtentionDate',
         sortType: 'alpha'
       }],
@@ -136,7 +136,8 @@ export class RequirementListComponent implements OnInit {
       primaryActions: [{
         id: 'NUEVO',
         title: 'Nuevo',
-        tooltip: 'Do the first thing'
+        tooltip: 'Generar nuevo requerimiento',
+        styleClass:'btn-primary'
       }]
     } as ActionConfig;
 

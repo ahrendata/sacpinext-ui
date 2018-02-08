@@ -15,6 +15,7 @@ import { TokenService } from './guard/token.service';
 
 import { ConfirmationModalComponent } from '../shared/components/confirmation-modal/confirmation-modal.component';
 import { RestangularService, CustomInterceptor } from './data/restangular.service';
+import { RestangularServiceFactory } from './data/restangular.service';
 
 import { UserService } from './data/user.service';
 import { Configuration } from './../app.constants';
@@ -22,6 +23,7 @@ import { ConfigService } from './../config.service';
 import { LoadingService } from './loading/loading.service';
 import { BsModalService } from 'ngx-bootstrap';
 import { DialogComponent } from './dialog/dialog.component';
+import { ToastsManager } from 'ng2-toastr';
 
 @NgModule({
   imports: [
@@ -40,12 +42,17 @@ import { DialogComponent } from './dialog/dialog.component';
   ],
   providers: [
     DataService,
-    RestangularService,
+    // RestangularService,
     {
-      provide: HTTP_INTERCEPTORS,
-      useClass: CustomInterceptor,
-      multi: true,
+      provide: RestangularService,
+      useFactory: RestangularServiceFactory,
+      deps: [Http, Router, ToastsManager, ConfigService]
     },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: CustomInterceptor,
+    //   multi: true,
+    // },
     LoadingService,
     ExpedientService,
     RequirementService,

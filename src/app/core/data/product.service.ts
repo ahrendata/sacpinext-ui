@@ -15,7 +15,7 @@ export class ProductService {
 
     private restangular: RestangularService;
     constructor(restangular: RestangularService) {
-        this.restangular = restangular.all(productsPath);
+        this.restangular = restangular.init();
     }
 
     findById(id: number, queryParams?: URLSearchParams): Observable<Product> {

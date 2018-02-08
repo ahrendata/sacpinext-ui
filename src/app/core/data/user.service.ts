@@ -14,7 +14,7 @@ export class UserService {
   private restangular: RestangularService;
 
   constructor(restangular: RestangularService, private token: TokenService) {
-    this.restangular = restangular.all(usersPath);
+    this.restangular = restangular.init();
   }
 
   build(id: number): User {

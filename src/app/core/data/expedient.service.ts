@@ -6,7 +6,6 @@ import { SearchCriteria } from './../model/search-criteria.model';
 import { SearchResults } from './../model/search-results.model';
 import { URLSearchParams } from '@angular/http';
 import { RestangularService } from './restangular.service';
-import { TokenService } from '../guard/token.service';
 const expedientIdName = 'Expedient';
 const expedientssPath = 'Expedient';
 
@@ -15,8 +14,8 @@ export class ExpedientService {
 
   private restangular: RestangularService;
 
-  constructor(restangular: RestangularService, private token: TokenService) {
-    this.restangular = restangular.all(expedientssPath);
+  constructor(restangular: RestangularService) {
+    this.restangular = restangular.init();
   }
 
   build(id: number): Expedient {
@@ -47,17 +46,15 @@ export class ExpedientService {
       });
   }
   search(criteria: SearchCriteria): Observable<SearchResults<Expedient>> {
-    const restangular = this.restangular.all(expedientssPath);
+    const restangular = this.restangular.all(expedientssPath + '/filter');
     return restangular
-      .all('search')
       .post(criteria)
       .map(response => {
         const json = response.json();
-
+        //console.log(json);
         const result = new SearchResults<Expedient>();
         const items = new Array<Expedient>();
-
-        json.items.forEach(element => {
+        json.forEach(element => {
           const document = new Expedient(restangular.all(element['id']));
           items.push(Object.assign(document, element));
         });

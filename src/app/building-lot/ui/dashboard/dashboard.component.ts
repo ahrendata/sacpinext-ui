@@ -12,6 +12,13 @@ import { Expedient } from './../../../core/model/expedient.model';
 import { DataService } from '../../../core/data/data.service';
 import { TruncatePipe } from '../../../shared/pipes/truncate.pipe';
 
+import { ActionConfig, Action } from 'patternfly-ng/action';
+import { FilterConfig, FilterField, FilterType, FilterEvent, Filter } from 'patternfly-ng/filter';
+import { SortConfig, SortField, SortEvent } from 'patternfly-ng/sort';
+import { ToolbarConfig, ToolbarView } from 'patternfly-ng/toolbar';
+import { SearchResults } from '../../../core/model/search-results.model';
+import { PaginationConfig, PaginationEvent } from 'patternfly-ng/pagination';
+
 
 @Component({
   selector: 'sacpi-dashboard',
@@ -20,21 +27,27 @@ import { TruncatePipe } from '../../../shared/pipes/truncate.pipe';
 })
 export class DashboardComponent implements OnInit {
 
+  filterConfig: FilterConfig;
+  filtersText: string = '';
+  isAscendingSort: boolean = true;
+  sortConfig: SortConfig;
+  currentSortField: SortField;
+  toolbarConfig: ToolbarConfig;
+  paginationConfig: PaginationConfig;
+
   loading = false;
+  searchResult: SearchResults<Expedient> = new SearchResults<Expedient>();
   expedients: Array<Expedient> = new Array<Expedient>();
   expedient: Expedient;
 
-  searchCriteria: SearchCriteria = {
-    filterText: null
-  };
   filters: Array<SearchCriteriaFilter> = new Array<SearchCriteriaFilter>();
   orderBy: OrderBy = {
-    name: 'CreatedTime',
+    name: 'Alias',
     ascending: false
   };
   paging: Paging = {
     page: 1,
-    pageSize: 10
+    pageSize: 8
   };
 
   constructor(
@@ -48,6 +61,97 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadtoolbar();
+    this.search();
+  }
+
+  loadtoolbar() {
+    this.filterConfig = {
+      fields: [{
+        id: 'Alias',
+        title: 'Centro Costo',
+        placeholder: 'Buscar por Centro Costo...',
+        type: FilterType.TEXT
+      }] as FilterField[],
+
+      resultsCount: this.expedients.length,
+      appliedFilters: []
+    } as FilterConfig;
+
+    this.sortConfig = {
+      fields: [{
+        id: 'Alias',
+        title: 'Centro Costo',
+        sortType: 'alpha'
+      }, {
+        id: 'NumberRequirement',
+        title: 'Cantidad Requerimiento',
+        sortType: 'alpha'
+      }, {
+        id: 'CreatedTime',
+        title: 'Fecha Creacion',
+        sortType: 'alpha'
+      }],
+      isAscending: this.isAscendingSort
+    } as SortConfig;
+
+    this.toolbarConfig = {
+      filterConfig: this.filterConfig,
+      sortConfig: this.sortConfig,
+      views: [{
+        id: 'listView',
+        iconStyleClass: 'fa fa-th-list',
+        tooltip: 'List View'
+      }, {
+        id: 'tableView',
+        iconStyleClass: 'fa fa-table',
+        tooltip: 'Table View'
+      }]
+    } as ToolbarConfig;
+    this.paginationConfig = {
+      pageSize: 10,
+      pageNumber: 1,
+      totalItems: this.expedients.length
+    } as PaginationConfig;
+  }
+
+  // Filter
+  filterChanged($event: FilterEvent): void {
+    this.filtersText = '';
+    $event.appliedFilters.forEach((filter) => {
+      this.filtersText += filter.field.title + ' : ' + filter.value + '\n';
+    });
+    this.applyFilters($event.appliedFilters);
+  }
+
+  applyFilters(filters: Filter[]): void {
+    this.filters = new Array<SearchCriteriaFilter>();
+    if (filters && filters.length > 0) {
+      filters.forEach((filter) => {
+        this.filters.push(new SearchCriteriaFilter(filter.field.id, filter.value, 'like', filter.field.type));
+      });
+    }
+    this.search();
+  }
+  // Sort
+  sortChanged($event: SortEvent): void {
+    this.orderBy.name = $event.field.id;
+    this.orderBy.ascending = $event.isAscending;
+    this.search();
+  }
+
+  // View
+  viewSelected(currentView: ToolbarView): void {
+    this.sortConfig.visible = (currentView.id === 'tableView' ? false : true);
+  }
+
+  handlePageSize($event: PaginationEvent) {
+    this.paging.pageSize = $event.pageSize;
+    this.search();
+  }
+
+  handlePageNumber($event: PaginationEvent) {
+    this.paging.page = $event.pageNumber;
     this.search();
   }
 
@@ -56,9 +160,23 @@ export class DashboardComponent implements OnInit {
     let id = this.dataService.users().getEmployeeId();
     const queryParams: URLSearchParams = new URLSearchParams();
     queryParams.set('id', id.toString());
+    this.dataService.expedients().getAll(queryParams).subscribe((data: any[]) => {
+      this.expedients = data;
+     // this.searchcriteria();
+    },
+      error => {
+        this.notification.error('Error al obtener expedientes, usuario no tiene asigando ningun expediente.', 'Error');
+        this.loading = false;
+      },
+      () => {
+        this.loading = false;
+      });
+  }
 
+  searchcriteria() {
+    this.loading = true;
+    let id = this.dataService.users().getEmployeeId();
     const criteria: SearchCriteria = {
-      filterText: this.searchCriteria.filterText,
       filters: this.filters.map(f => {
         return new SearchCriteriaFilter(f.name, f.value, f.operator, f.type);
       }),
@@ -66,22 +184,20 @@ export class DashboardComponent implements OnInit {
       paging: this.paging
     };
     criteria.filters.push(new SearchCriteriaFilter('id', id.toString(), 'eq'));
-
-    this.dataService.expedients().getAll(queryParams).subscribe((data: any[]) => {
-      this.expedients = data;      
-    },    
+    this.dataService.expedients().search(criteria).subscribe((data) => {
+      this.searchResult = data;
+      this.toolbarConfig.filterConfig.resultsCount = this.searchResult.totalSize;
+      this.paginationConfig.totalItems = this.searchResult.totalSize;// this.requirements.length;
+      // this.paginationConfig.pageSize = this.limit;  
+      // this.expedients = data;
+    },
       error => {
-         this.notification.error('Error al obtener expedientes, usuario no tiene asigando ningun expediente.', 'Error');
+        this.notification.error('Error al obtener expedientes, usuario no tiene asigando ningun expediente.', 'Error');
         this.loading = false;
       },
-      () => {      
+      () => {
         this.loading = false;
       });
-  }
-
-  changeAscending() {
-    this.orderBy.ascending = !this.orderBy.ascending;
-    this.search();
   }
 
   viewDetailExpediente(expedient: Expedient): void {

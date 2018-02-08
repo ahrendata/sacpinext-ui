@@ -14,7 +14,7 @@ export class RequirementTypeService {
 
     private restangular: RestangularService;
     constructor(restangular: RestangularService) {
-        this.restangular = restangular.all(typerequirementsPath);
+        this.restangular = restangular.init();
     }
 
     findById(id: number, queryParams?: URLSearchParams): Observable<ContainerTypeCode> {

@@ -17,7 +17,7 @@ export class RequirementService {
 
   private restangular: RestangularService;
   constructor(restangular: RestangularService) {
-    this.restangular = restangular.all(requirementsPath);
+    this.restangular = restangular.init();
   }
 
   findById(id: number, queryParams?: URLSearchParams): Observable<Requirement> {

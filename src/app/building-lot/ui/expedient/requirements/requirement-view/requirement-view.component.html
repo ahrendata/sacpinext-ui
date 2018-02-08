@@ -104,9 +104,9 @@
                 <thead>
                   <tr>
                     <td class="text-center">#</td>
-                    <td class="text-left td-siacpi">Producto</td>
-                    <td class="text-center">Unidad Medida</td>
+                    <td class="text-left td-siacpi">Producto</td>                   
                     <td class="text-right">Cantidad</td>
+                    <td class="text-center">Unidad Medida</td>
                     <td class="text-left">Descripcion</td>
                     <td class="text-right">Cantidad Comprada</td>
                   </tr>
@@ -114,9 +114,9 @@
                 <tbody>
                   <tr *ngFor="let item of requirement.RequirementDetails; let i = index">
                     <td class="text-center">{{i+1}}</td>
-                    <td>{{item.Product}}</td>
-                    <td class="text-center">{{item.UnidCode}} </td>
+                    <td>{{item.Product}}</td>                  
                     <td class="text-right">{{item.Quantity| number:'1.2-2'}}</td>
+                    <td class="text-center">{{item.UnidCode}} </td>
                     <td>{{item.Observation}}</td>
                     <td class="text-right">{{item.Accumulate| number:'1.2-2'}}</td>
                   </tr>

@@ -8,9 +8,10 @@ import { Injectable } from '@angular/core';
 
 import { Configuration } from './app.constants';
 
+const defaultConfigJson = '/config/sacpinext.json';
 
 const defaults = Object.freeze({
-  apiEndpoint: "http://192.168.1.41:8117/api/"
+  apiEndpoint: "http://localhost:8080/api"
 });
 export function configServiceInitializer(config: ConfigService) {
   return () => config.load();
@@ -22,13 +23,25 @@ export class ConfigService {
 
   private settingsRepository: any = defaults;
 
-  constructor(private _http: Http, private _configuration: Configuration) { }
+  constructor(private _http: Http/*, private _configuration: Configuration*/) { }
 
-  load(): any {  
-    this.settingsRepository= Object.freeze({ apiEndpoint: this._configuration.ServerWithApiUrl });
-    console.log(this.settingsRepository);
-    return this.settingsRepository;
+  // load(): any {  
+  //   this.settingsRepository= Object.freeze({ apiEndpoint: this._configuration.ServerWithApiUrl });
+  //   console.log(this.settingsRepository);
+  //   return this.settingsRepository;
 
+  // }
+
+  load(configJson: string = defaultConfigJson): Promise<any> {
+    return this._http.get(configJson).map(res => res.json())
+      .toPromise()
+      .then((config) => {
+        this.settingsRepository = Object.freeze(_.merge({}, this.settingsRepository, config));
+        return this;
+      })
+      .catch(() => {
+        console.log('Error: Configuration service unreachable!');
+      });
   }
 
   getSettings(group?: string, key?: string): any {

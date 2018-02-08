@@ -125,8 +125,8 @@ export class RequirementViewComponent implements OnInit {
     let columns = [
       { title: "#", dataKey: "Id" },
       { title: "Producto", dataKey: "Product" },
-      { title: "Unidad Medida", dataKey: "UnidCode" },
       { title: "Cantidad", dataKey: "Quantity" },
+      { title: "Unidad Medida", dataKey: "UnidCode" },     
       { title: "Descripcion", dataKey: "Observation" }
     ];
     let rows: any[] = [];
@@ -136,8 +136,8 @@ export class RequirementViewComponent implements OnInit {
       rows.push({
         Id: i,
         Product: element.Product,
-        UnidCode: element.UnidCode, 
         Quantity: this.number.transform(element.Quantity,' ', true, '1.2-2'),
+        UnidCode: element.UnidCode,        
         Observation: element.Observation || ''
       });
     });;

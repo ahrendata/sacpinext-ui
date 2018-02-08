@@ -14,7 +14,7 @@ export class UnitCodeService {
 
     private restangular: RestangularService;
     constructor(restangular: RestangularService) {
-        this.restangular = restangular.all(unitcodesPath);
+        this.restangular = restangular.init();
     }
 
     findById(id: number, queryParams?: URLSearchParams): Observable<ContainerTypeCode> {

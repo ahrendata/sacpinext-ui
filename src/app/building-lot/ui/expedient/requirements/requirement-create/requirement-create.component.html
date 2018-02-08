@@ -62,9 +62,9 @@
               <thead>
                 <tr>
                   <td class="text-center">#</td>
-                  <td class="text-left td-siacpi">Producto</td>
-                  <td class="text-center">Unidad Medida</td>
+                  <td class="text-left td-siacpi">Producto</td>                  
                   <td class="text-right">Cantidad</td>
+                  <td class="text-center">Unidad Medida</td>
                   <td class="text-left">Descripcion</td>
                   <td colspan="2" rowspan="1" class="text-center">Acciones</td>
                   <td class="text-right">Acumulado</td>
@@ -79,16 +79,16 @@
                         placeholder="Seleccione algun producto"></ng-select>
                       <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('IdProduct')">
                       </sacpi-form-field-validation-messages>
+                    </td>                 
+                    <td [sacpiFormFieldValidationState]="item.get('Quantity')">
+                      <input formControlName="Quantity" [sacpiNumberMask]="numberMask" type="text" class="form-control text-right">
+                      <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('Quantity')">
+                      </sacpi-form-field-validation-messages>
                     </td>
                     <td [sacpiFormFieldValidationState]="item.get('IdUnidCode')">
                       <ng-select formControlName="IdUnidCode" class="ng-select-sacpi" bindLabel="Denominacion" bindValue="IdContenedor" [items]="units"
                         placeholder="Seleccione una marca"></ng-select>
                       <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('IdUnidCode')">
-                      </sacpi-form-field-validation-messages>
-                    </td>
-                    <td [sacpiFormFieldValidationState]="item.get('Quantity')">
-                      <input formControlName="Quantity" [sacpiNumberMask]="numberMask" type="text" class="form-control text-right">
-                      <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('Quantity')">
                       </sacpi-form-field-validation-messages>
                     </td>
                     <td [sacpiFormFieldValidationState]="item.get('Observation')">

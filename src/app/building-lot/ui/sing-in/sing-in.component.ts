@@ -2,10 +2,10 @@ import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Validators, FormGroup } from '@angular/forms';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-//import { ToastsManager } from 'ng2-toastr';
 
 import { DataService } from '../../../core/data/data.service';
 import { User } from '../../../core/model/user.model';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'sacpi-sing-in',
@@ -14,7 +14,7 @@ import { User } from '../../../core/model/user.model';
 })
 export class SingInComponent implements OnInit {
 
-  form: FormGroup;  
+  form: FormGroup;
   working = false;
   loading = false;
   user: User;
@@ -24,9 +24,10 @@ export class SingInComponent implements OnInit {
     private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private dataService: DataService,
-   // private toastr: ToastsManager,
-    vcr: ViewContainerRef) { //this.toastr.setRootViewContainerRef(vcr);
-     }
+    private notification: ToastsManager,
+    viewContainerRef: ViewContainerRef) {
+    this.notification.setRootViewContainerRef(viewContainerRef);
+  }
 
   ngOnInit() {
     this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
@@ -50,11 +51,11 @@ export class SingInComponent implements OnInit {
     const userCopy = Object.assign(this.user || {}, form.value);
     this.dataService.users().search(userCopy).subscribe(
       result => {
-      //  this.toastr.success('Ingresando al sistema...', 'Login');
+        this.notification.success('Ingresando al sistema...', 'Informacion');
         this.router.navigate([this.returnUrl]);
       },
       error => {
-      //  this.toastr.error('Usuario y/o Contraseña incorrecta', 'Login');
+        this.notification.error('Usuario y/o Contraseña incorrecta', 'Alerta');
         this.loading = false;
         this.working = false;
       },

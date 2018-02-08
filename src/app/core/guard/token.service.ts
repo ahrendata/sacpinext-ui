@@ -8,13 +8,13 @@ export class TokenService {
     constructor() { }
 
     setToken(obj?: any): void {
-        console.log(JSON.stringify(obj));
+        //console.log(JSON.stringify(obj));
         sessionStorage.setItem(this.TOKEN_KEY, JSON.stringify(obj));
     }
 
     getToken(): string {
         let item = JSON.parse(sessionStorage.getItem(this.TOKEN_KEY));
-        console.log(item);
+       // console.log(item);
         return item;
     }
     removeToken(): void {

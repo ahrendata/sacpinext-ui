@@ -4,7 +4,6 @@ import { HttpClient, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Headers } from '@angular/http';
-import { Configuration } from '../../app.constants';
 import { Response } from '@angular/http';
 import { Router } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr';
@@ -143,7 +142,7 @@ export class RestangularService {
 
   handleError(error: any): Observable<Response> {
     if (error.status === 401) {
-      this.router.navigate(['./login']);
+      this.router.navigate(['/sacpi/login']);
     } else if (error.status === 403) {
       this.router.navigate(['./forbidden']);
     } else if (error.status === 404) {

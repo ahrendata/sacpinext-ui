@@ -12,7 +12,6 @@ import { ToastModule } from 'ng2-toastr';
 import { SharedModule } from './shared/shared.module';
 import { ConfigService, configServiceInitializer } from './config.service';
 import { AppComponent } from './app.component';
-import { Configuration } from './app.constants';
 import { AuthGuard } from './core/guard/auth.guard';
 
 export function restangularProviderConfigurer(restangularProvider: any, config: ConfigService) {

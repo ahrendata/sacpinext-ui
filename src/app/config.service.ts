@@ -3,15 +3,15 @@ import 'rxjs/add/operator/toPromise';
 
 import * as _ from 'lodash';
 
-import { Http } from '@angular/http';
+import { Http, Response } from '@angular/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { Configuration } from './app.constants';
 
-const defaultConfigJson = '/config/sacpinext.json';
+const defaultConfigJson = '/assets/sacpinext.json';
 
 const defaults = Object.freeze({
-  apiEndpoint: "http://localhost:8080/api"
+  apiEndpoint: "http://192.168.1.41:8117/api"
 });
 export function configServiceInitializer(config: ConfigService) {
   return () => config.load();
@@ -20,10 +20,26 @@ export function configServiceInitializer(config: ConfigService) {
 @Injectable()
 export class ConfigService {
 
-
   private settingsRepository: any = defaults;
 
-  constructor(private _http: Http/*, private _configuration: Configuration*/) { }
+  constructor(private http: Http) { }
+
+  public load(configJson: string = defaultConfigJson): Promise<any> {
+
+    return this.http.get(configJson)
+      .map((res: Response) => res.json())
+      .toPromise()
+      .then((config: any) => {
+        this.settingsRepository = Object.freeze(_.merge({}, this.settingsRepository, config));
+        return this.settingsRepository;
+      })
+      .catch((err: any) => {
+        console.log(err);
+        Promise.resolve();
+      });
+  }
+
+  // constructor(private _http: Http) { }
 
   // load(): any {  
   //   this.settingsRepository= Object.freeze({ apiEndpoint: this._configuration.ServerWithApiUrl });
@@ -32,17 +48,19 @@ export class ConfigService {
 
   // }
 
-  load(configJson: string = defaultConfigJson): Promise<any> {
-    return this._http.get(configJson).map(res => res.json())
-      .toPromise()
-      .then((config) => {
-        this.settingsRepository = Object.freeze(_.merge({}, this.settingsRepository, config));
-        return this;
-      })
-      .catch(() => {
-        console.log('Error: Configuration service unreachable!');
-      });
-  }
+  // load(configJson: string = defaultConfigJson): Promise<this> {
+  //   console.log(configJson);
+  //   return this._http.get(configJson).map(res => res.json())
+  //     .toPromise()
+  //     .then((config) => {
+  //       console.log(config);
+  //       this.settingsRepository = Object.freeze(_.merge({}, this.settingsRepository, config));
+  //       return this;
+  //     })
+  //     .catch(() => {
+  //       console.log('Error: Configuration service unreachable!');
+  //     });
+  // }
 
   getSettings(group?: string, key?: string): any {
     if (!group) {

@@ -1,8 +1,14 @@
 <div class="row">
   <div class="col-sm-12">
     <div class="form-group">
-      <pfng-toolbar [config]="toolbarConfig" (onActionSelect)="handleAction($event)" (onFilterChange)="filterChanged($event)" (onFilterFieldSelect)="filterFieldSelected($event)"
-        (onFilterTypeAhead)="filterQueries($event)" (onSortChange)="sortChanged($event)" (onViewSelect)="viewSelected($event)">
+      <pfng-toolbar [actionTemplate]="toolbarTemplante" [config]="toolbarConfig" (onFilterChange)="filterChanged($event)" (onSortChange)="sortChanged($event)"
+        (onViewSelect)="viewSelected($event)">
+        <ng-template #toolbarTemplante>
+          <button class="btn btn-primary primary-action" type="button" (click)="nuevo()">
+            <span class="fa fa-plus"></span>
+            Nuevo Requerimiento
+          </button>
+        </ng-template>
       </pfng-toolbar>
     </div>
   </div>
@@ -22,38 +28,37 @@
                 <div class="list-pf-title">
                   {{item.CodRequirement}}
                   <span *ngIf=item.Status class="pficon pficon-ok"></span>
-                </div>
+                </div>         
                 <div class="list-pf-description text-overflow-pf">{{item.AliasExpedient}}</div>
                 <div class="list-pf-description text-overflow-pf">{{item.TypeRequirement}}</div>
               </div>
               <div class="list-pf-additional-content">
                 <div>
-                  <span class="pficon pficon-messages"></span>
-                  <strong>Plazo </strong> {{item.AtentionDate| date:"dd/MM/yy"}}
+                  <span class="fa fa-calendar-plus-o"></span>
+                  Plazo
+                  <strong>{{item.AtentionDate| date:"dd/MM/yy"}} </strong>
                 </div>
                 <div>
-                  <span class="pficon pficon-orders"></span>
+                  <span class="fa fa-shopping-cart"></span>
                   <strong> {{item.PercentBought|number:'1.2-2'}} % </strong> Comprado
                 </div>
                 <div>
-                  <span class="pficon pficon-service"></span>
+                  <span class="fa fa-car"></span>
                   <strong> {{item.PercentSend|number:'1.2-2'}} % </strong> Enviado
                 </div>
                 <div>
-                  <span class="pficon pficon-save"></span>
-                  <strong>Creado </strong> {{item.CreateDate| date:"dd/MM/yy"}}
+                  <span class="fa fa-calendar"></span>
+                  Creado
+                  <strong> {{item.CreateDate| date:"dd/MM/yy"}}</strong>
                 </div>
               </div>
             </div>
           </ng-template>
           <ng-template #actionTemplate let-item="item" let-index="index">
-            <pfng-action class="list-pf-actions" [config]="getActionConfig(item, actionButtonTemplate, startButtonTemplate)" (onActionSelect)="handleActionGrid($event, item)">
+            <pfng-action class="list-pf-actions" [config]="getActionConfig(item, actionButtonTemplate)" (onActionSelect)="handleActionGrid($event, item)">
               <ng-template #actionButtonTemplate let-action="action">
-                <span class="fa fa-plus">&nbsp;</span>{{action.title}}
-              </ng-template>
-              <ng-template #startButtonTemplate let-action="action">
-                {{item.started === true ? "Starting" : action.title}}
-              </ng-template>
+                <span class="fa fa-pencil">&nbsp;</span>{{action.title}}
+              </ng-template>             
             </pfng-action>
           </ng-template>
         </pfng-list>

@@ -184,6 +184,7 @@ export class DashboardComponent implements OnInit {
       paging: this.paging
     };
     criteria.filters.push(new SearchCriteriaFilter('id', id.toString(), 'eq'));
+    console.log(JSON.stringify(criteria));
     this.dataService.expedients().search(criteria).subscribe((data) => {
       this.searchResult = data;
       this.toolbarConfig.filterConfig.resultsCount = this.searchResult.totalSize;

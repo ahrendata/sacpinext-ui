@@ -11,7 +11,8 @@ import { Observable } from 'rxjs';
 const defaultConfigJson = '/assets/sacpinext.json';
 
 const defaults = Object.freeze({
-  apiEndpoint: "http://192.168.1.41:8117/api"
+  //apiEndpoint: "http://192.168.1.41:8117/api"
+  apiEndpoint: window['ClarksnutUIEnv']['apiUrl']
 });
 export function configServiceInitializer(config: ConfigService) {
   return () => config.load();

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sacpinext-ui
+type: Opaque
+data:
+  proxy.pass.url: "https://192.168.1.6:8443"
+  sacpinext.api.url: "http://192.168.1.5:8788"

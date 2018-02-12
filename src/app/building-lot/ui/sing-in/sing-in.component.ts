@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, Inject, Renderer2 } from '@angular/core';
 import { Validators, FormGroup } from '@angular/forms';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DataService } from '../../../core/data/data.service';
 import { User } from '../../../core/model/user.model';
 import { ToastsManager } from 'ng2-toastr';
+import { DOCUMENT } from '@angular/platform-browser';
 
 @Component({
   selector: 'sacpi-sing-in',
@@ -25,7 +26,10 @@ export class SingInComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private dataService: DataService,
     private notification: ToastsManager,
-    viewContainerRef: ViewContainerRef) {
+    viewContainerRef: ViewContainerRef,
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2) {
+    this.renderer.addClass(document.body.parentElement, 'login-pf');
     this.notification.setRootViewContainerRef(viewContainerRef);
   }
 

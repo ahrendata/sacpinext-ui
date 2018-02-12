@@ -10,6 +10,7 @@
       "assets": [
         "assets",
         "config",
+        "config-local",
         "favicon.ico"
       ],
       "index": "index.html",

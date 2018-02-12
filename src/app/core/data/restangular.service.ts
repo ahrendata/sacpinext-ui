@@ -1,7 +1,7 @@
 import { RequestOptionsArgs, Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { HttpClient, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Headers } from '@angular/http';
 import { Response } from '@angular/http';
@@ -10,8 +10,8 @@ import { ToastsManager } from 'ng2-toastr';
 import { ConfigService } from '../../config.service';
 import { RestangularBasePath } from './restangular-base-path';
 
-export function RestangularServiceFactory(http: Http, router: Router, notifications: ToastsManager, config: ConfigService) {
-  return new RestangularService(http, router, notifications, { url: config.getSettings().apiEndpoint });
+export function RestangularServiceFactory(http: Http, router: Router, config: ConfigService) {
+  return new RestangularService(http, router, { url: config.getSettings().apiEndpoint });
 }
 
 @Injectable()
@@ -19,10 +19,9 @@ export class RestangularService {
   private _path: string;
 
   constructor(
-    private _http: Http,
-    private router: Router,
-    private notifications: ToastsManager,
-    basePath: RestangularBasePath) {
+    @Inject(Http) private _http: Http,
+    @Inject(Router) private router: Router,
+    @Inject(ConfigService) basePath: RestangularBasePath) {
     this._path = basePath.url;
   }
 
@@ -36,13 +35,13 @@ export class RestangularService {
 
   one(path: string, id: number): RestangularService {
     const restangular = this.clone();
-    restangular._path += (path ? '/' + path : '') + '/' + id;   
+    restangular._path += (path ? '/' + path : '') + '/' + id;
     return restangular;
   }
 
   init(): RestangularService {
     const restangular = this.clone();
-    restangular._path = restangular._path ;//+ '/sacpinext';
+    restangular._path = restangular._path;//+ '/sacpinext';
     return restangular;
   }
 
@@ -95,7 +94,7 @@ export class RestangularService {
   }
 
   clone(): RestangularService {
-    return new RestangularService(this._http, this.router, this.notifications, { url: this._path });
+    return new RestangularService(this._http, this.router, { url: this._path });
   }
 
   /*Alternatives with QueryParam */
@@ -155,9 +154,9 @@ export class RestangularService {
         console.log(err);
       }
       if (data && data['errorMessage']) {
-        this.notifications.error('Error! ' + data['errorMessage']);
+        //  this.notifications.error('Error! ' + data['errorMessage']);
       } else {
-        this.notifications.error('Error! An unexpected server error has occurred');
+        // this.notifications.error('Error! An unexpected server error has occurred');
       }
     }
     return Observable.throw(error);

@@ -39,7 +39,7 @@ export class ExpedientService {
         const json = response.json();
         const expedients = new Array<Expedient>();
         json.forEach(element => {
-          const expedient = new Expedient(expedientsRestangular.one('', element[expedientIdName]));
+          const expedient = new Expedient(expedientsRestangular.one('', element['IdExpediente']));
           expedients.push(Object.assign(expedient, element));
         });
         return expedients;
@@ -51,14 +51,12 @@ export class ExpedientService {
       .post(criteria)
       .map(response => {
         const json = response.json();
-        //console.log(json);
         const result = new SearchResults<Expedient>();
         const items = new Array<Expedient>();
-        json.forEach(element => {
-          const document = new Expedient(restangular.all(element['id']));
+        json.items.forEach(element => {
+          const document = new Expedient(restangular.all(element['IdExpediente']));
           items.push(Object.assign(document, element));
         });
-
         result.items = items;
         result.totalSize = json.totalSize;
         return result;

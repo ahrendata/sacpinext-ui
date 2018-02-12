@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit {
 
   filters: Array<SearchCriteriaFilter> = new Array<SearchCriteriaFilter>();
   orderBy: OrderBy = {
-    name: 'Alias',
+    name: 'ALIAS_OBRA',
     ascending: false
   };
   paging: Paging = {
@@ -68,19 +68,18 @@ export class DashboardComponent implements OnInit {
   loadtoolbar() {
     this.filterConfig = {
       fields: [{
-        id: 'Alias',
+        id: 'ALIAS_OBRA',
         title: 'Centro Costo',
         placeholder: 'Buscar por Centro Costo...',
         type: FilterType.TEXT
       }] as FilterField[],
-
-      resultsCount: this.expedients.length,
+      resultsCount: this.searchResult.totalSize,
       appliedFilters: []
     } as FilterConfig;
 
     this.sortConfig = {
       fields: [{
-        id: 'Alias',
+        id: 'ALIAS_OBRA',
         title: 'Centro Costo',
         sortType: 'alpha'
       }, {
@@ -88,7 +87,7 @@ export class DashboardComponent implements OnInit {
         title: 'Cantidad Requerimiento',
         sortType: 'alpha'
       }, {
-        id: 'CreatedTime',
+        id: 'FECHA_CREACION',
         title: 'Fecha Creacion',
         sortType: 'alpha'
       }],
@@ -109,9 +108,9 @@ export class DashboardComponent implements OnInit {
       }]
     } as ToolbarConfig;
     this.paginationConfig = {
-      pageSize: 10,
+      pageSize: 8,
       pageNumber: 1,
-      totalItems: this.expedients.length
+      totalItems: this.searchResult.totalSize
     } as PaginationConfig;
   }
 
@@ -155,42 +154,22 @@ export class DashboardComponent implements OnInit {
     this.search();
   }
 
-  search(): void {
-    this.loading = true;
-    let id = this.dataService.users().getEmployeeId();
-    const queryParams: URLSearchParams = new URLSearchParams();
-    queryParams.set('id', id.toString());
-    this.dataService.expedients().getAll(queryParams).subscribe((data: any[]) => {
-      this.expedients = data;
-     // this.searchcriteria();
-    },
-      error => {
-        this.notification.error('Error al obtener expedientes, usuario no tiene asigando ningun expediente.', 'Error');
-        this.loading = false;
-      },
-      () => {
-        this.loading = false;
-      });
-  }
-
-  searchcriteria() {
+  search() {
     this.loading = true;
     let id = this.dataService.users().getEmployeeId();
     const criteria: SearchCriteria = {
+      id: id,
       filters: this.filters.map(f => {
         return new SearchCriteriaFilter(f.name, f.value, f.operator, f.type);
       }),
       orders: [this.orderBy],
       paging: this.paging
     };
-    criteria.filters.push(new SearchCriteriaFilter('id', id.toString(), 'eq'));
-    console.log(JSON.stringify(criteria));
-    this.dataService.expedients().search(criteria).subscribe((data) => {
+    this.dataService.expedients().search(criteria).subscribe((data) => {    
       this.searchResult = data;
+      this.expedients = this.searchResult.items;
       this.toolbarConfig.filterConfig.resultsCount = this.searchResult.totalSize;
-      this.paginationConfig.totalItems = this.searchResult.totalSize;// this.requirements.length;
-      // this.paginationConfig.pageSize = this.limit;  
-      // this.expedients = data;
+      this.paginationConfig.totalItems = this.searchResult.totalSize;
     },
       error => {
         this.notification.error('Error al obtener expedientes, usuario no tiene asigando ningun expediente.', 'Error');

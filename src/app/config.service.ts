@@ -38,29 +38,7 @@ export class ConfigService {
         Promise.resolve();
       });
   }
-
-  // constructor(private _http: Http) { }
-
-  // load(): any {  
-  //   this.settingsRepository= Object.freeze({ apiEndpoint: this._configuration.ServerWithApiUrl });
-  //   console.log(this.settingsRepository);
-  //   return this.settingsRepository;
-
-  // }
-
-  // load(configJson: string = defaultConfigJson): Promise<this> {
-  //   console.log(configJson);
-  //   return this._http.get(configJson).map(res => res.json())
-  //     .toPromise()
-  //     .then((config) => {
-  //       console.log(config);
-  //       this.settingsRepository = Object.freeze(_.merge({}, this.settingsRepository, config));
-  //       return this;
-  //     })
-  //     .catch(() => {
-  //       console.log('Error: Configuration service unreachable!');
-  //     });
-  // }
+ 
 
   getSettings(group?: string, key?: string): any {
     if (!group) {

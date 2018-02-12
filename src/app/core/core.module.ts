@@ -45,7 +45,7 @@ import { ToastsManager } from 'ng2-toastr';
     {
       provide: RestangularService,
       useFactory: RestangularServiceFactory,
-      deps: [Http, Router, ToastsManager, ConfigService]
+      deps: [Http, Router, ConfigService]
     },
     // {
     //   provide: HTTP_INTERCEPTORS,

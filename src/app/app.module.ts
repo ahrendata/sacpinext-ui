@@ -10,6 +10,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
 import { ToastModule } from 'ng2-toastr';
 import { SharedModule } from './shared/shared.module';
+import { NotificationModule } from 'patternfly-ng';
+
 import { ConfigService, configServiceInitializer } from './config.service';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './core/guard/auth.guard';
@@ -29,6 +31,7 @@ export function restangularProviderConfigurer(restangularProvider: any, config: 
     ReactiveFormsModule,
     HttpModule,
     HttpClientModule,
+    NotificationModule,
     BrowserAnimationsModule,
     RestangularModule.forRoot([ConfigService], restangularProviderConfigurer),
     BsDropdownModule.forRoot(),

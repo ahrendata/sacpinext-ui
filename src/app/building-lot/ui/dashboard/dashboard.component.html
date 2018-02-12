@@ -1,56 +1,23 @@
-<div class="row">
-  <div class="col-md-12">
-    <h1>Centros de Costo</h1>
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="form-group">
-          <pfng-toolbar [config]="toolbarConfig" (onFilterChange)="filterChanged($event)" (onSortChange)="sortChanged($event)" (onViewSelect)="viewSelected($event)">
-          </pfng-toolbar>
-        </div>
-      </div>
-    </div>
-    <sacpi-loading [loading]="loading">
-      <div class="container-fluid container-cards-pf">
-        <div class="row row-cards-pf">
-          <div *ngFor="let item of expedients" class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card-pf card-pf-view card-pf-view-select card-pf-view-single-select">
-              <div class="card-pf-heading-kebab">
-                <div class="pull-right dropdown-kebab-pf">
-                  <!-- <button type="button" title="Ver Detalle del expediente" (click)="viewDetailExpediente(item)" class="btn btn-default">
-                    <i class="fa fa-th-list"></i>
-                  </button> -->
-                </div>
-              </div>
-              <div class="card-pf-body" (click)="viewRequerimiento(item)">
-                <div class="card-pf-top-element">
-                  <span class="fa  fa-folder-open card-pf-icon-circle"></span>
-                </div>
-                <h2 class="card-pf-title text-center"><strong>{{item.Alias}}</strong></h2>
-                <div class="card-pf-items text-center">
-                  <div class="card-pf-item">
-                    <span class="fa fa-file-text"></span>
-                    <span *ngIf="item.NumberRequirement" class="card-pf-item-text">{{item.NumberRequirement}}</span>
-                    <span *ngIf="!item.NumberRequirement" class="text-muted">0</span>
-                  </div>
-                  <div class="card-pf-item">
-                    <span class="fa fa-car"></span>
-                  </div>
-                </div>
-                <p class="card-pf-info text-center">
-                  <strong>Fecha Creación</strong>&nbsp;
-                  <span *ngIf="item.CreatedTime">{{item.CreatedTime| toDate | date: 'dd/MM/y HH:mm:ss'}}</span>
-                  <span *ngIf="!item.CreatedTime" class="text-muted">Unknow</span>
-                  <br/>
-                  <span class="contenido" *ngIf="item.ExpedientName">{{item.ExpedientName | truncate : 30}}</span>
-                  <span *ngIf="!item.ExpedientName" class="text-muted">no-description-available</span>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <pfng-pagination [config]='paginationConfig' (onPageSizeChange)="handlePageSize($event)" (onPageNumberChange)="handlePageNumber($event)"></pfng-pagination>
-      <br>
-    </sacpi-loading>
+<div class="blank-slate-pf " id="">
+  <div class="blank-slate-pf-icon">
+    <span class="pficon pficon pficon-add-circle-o"></span>
+  </div>
+  <h1>
+    Empty State Title
+  </h1>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut
+    enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+  </p>
+  <p>
+    Learn more about this
+    <a href="#">on the documentation</a>.
+  </p>
+  <div class="blank-slate-pf-main-action">
+    <button class="btn btn-primary btn-lg"> Main Action </button>
+  </div>
+  <div class="blank-slate-pf-secondary-action">
+    <button class="btn btn-default">Secondary Action</button>
+    <button class="btn btn-default">Secondary Action</button>
   </div>
 </div>

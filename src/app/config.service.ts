@@ -7,11 +7,7 @@ import { Http, Response } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-
-const defaultConfigJson = '/assets/sacpinext.json';
-
 const defaults = Object.freeze({
-  //apiEndpoint: "http://192.168.1.41:8117/api"
   apiEndpoint: window['ClarksnutUIEnv']['apiUrl']
 });
 export function configServiceInitializer(config: ConfigService) {
@@ -25,21 +21,10 @@ export class ConfigService {
 
   constructor(private http: Http) { }
 
-  public load(configJson: string = defaultConfigJson): Promise<any> {
-
-    return this.http.get(configJson)
-      .map((res: Response) => res.json())
-      .toPromise()
-      .then((config: any) => {
-        this.settingsRepository = Object.freeze(_.merge({}, this.settingsRepository, config));
-        return this.settingsRepository;
-      })
-      .catch((err: any) => {
-        console.log(err);
-        Promise.resolve();
-      });
+  public load(): Promise<any> {
+    return this.settingsRepository;
   }
- 
+
 
   getSettings(group?: string, key?: string): any {
     if (!group) {

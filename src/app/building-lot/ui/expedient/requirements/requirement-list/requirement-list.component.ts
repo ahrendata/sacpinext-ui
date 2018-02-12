@@ -57,7 +57,7 @@ export class RequirementListComponent implements OnInit {
   currentSortField: SortField;
   toolbarConfig: ToolbarConfig;
   weekDayQueries: any[];
-
+  loading = false;
   //for list
   actionsText1: string = '';
   emptyStateConfig: EmptyStateConfig;
@@ -72,7 +72,6 @@ export class RequirementListComponent implements OnInit {
   page = 1;
   limit = 5;
 
-  loading = false;
   requirements: any[] = [];
   expedients: any[] = [];
   requirementType: any[] = [];

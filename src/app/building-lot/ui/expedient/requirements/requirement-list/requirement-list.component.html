@@ -13,57 +13,58 @@
     </div>
   </div>
 </div>
-
-<div class="padding-15">
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="form-group">
-        <pfng-list [actionTemplate]="actionTemplate" [config]="listConfig" [items]="requirements" [itemTemplate]="itemTemplate">
-          <ng-template #itemTemplate let-item="item" let-index="index">
-            <div class="list-pf-left">
-              <span class="fa fa-list-alt  list-pf-icon list-pf-icon-bordered list-pf-icon-small"></span>
-            </div>
-            <div class="list-pf-content-wrapper">
-              <div class="list-pf-main-content">
-                <div class="list-pf-title">
-                  {{item.CodRequirement}}
-                  <span *ngIf=item.Status class="pficon pficon-ok"></span>
-                </div>         
-                <div class="list-pf-description text-overflow-pf">{{item.AliasExpedient}}</div>
-                <div class="list-pf-description text-overflow-pf">{{item.TypeRequirement}}</div>
+<sacpi-loading [loading]="loading">
+  <div class="padding-15">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group">
+          <pfng-list [actionTemplate]="actionTemplate" [config]="listConfig" [items]="requirements" [itemTemplate]="itemTemplate">
+            <ng-template #itemTemplate let-item="item" let-index="index">
+              <div class="list-pf-left">
+                <span class="fa fa-list-alt  list-pf-icon list-pf-icon-bordered list-pf-icon-small"></span>
               </div>
-              <div class="list-pf-additional-content">
-                <div>
-                  <span class="fa fa-calendar-plus-o"></span>
-                  Plazo
-                  <strong>{{item.AtentionDate| date:"dd/MM/yy"}} </strong>
+              <div class="list-pf-content-wrapper">
+                <div class="list-pf-main-content">
+                  <div class="list-pf-title">
+                    {{item.CodRequirement}}
+                    <span *ngIf=item.Status class="pficon pficon-ok"></span>
+                  </div>
+                  <div class="list-pf-description text-overflow-pf">{{item.AliasExpedient}}</div>
+                  <div class="list-pf-description text-overflow-pf">{{item.TypeRequirement}}</div>
                 </div>
-                <div>
-                  <span class="fa fa-shopping-cart"></span>
-                  <strong> {{item.PercentBought|number:'1.2-2'}} % </strong> Comprado
-                </div>
-                <div>
-                  <span class="fa fa-car"></span>
-                  <strong> {{item.PercentSend|number:'1.2-2'}} % </strong> Enviado
-                </div>
-                <div>
-                  <span class="fa fa-calendar"></span>
-                  Creado
-                  <strong> {{item.CreateDate| date:"dd/MM/yy"}}</strong>
+                <div class="list-pf-additional-content">
+                  <div>
+                    <span class="fa fa-calendar-plus-o"></span>
+                    Plazo
+                    <strong>{{item.AtentionDate| date:"dd/MM/yy"}} </strong>
+                  </div>
+                  <div>
+                    <span class="fa fa-shopping-cart"></span>
+                    <strong> {{item.PercentBought|number:'1.2-2'}} % </strong> Comprado
+                  </div>
+                  <div>
+                    <span class="fa fa-car"></span>
+                    <strong> {{item.PercentSend|number:'1.2-2'}} % </strong> Enviado
+                  </div>
+                  <div>
+                    <span class="fa fa-calendar"></span>
+                    Creado
+                    <strong> {{item.CreateDate| date:"dd/MM/yy"}}</strong>
+                  </div>
                 </div>
               </div>
-            </div>
-          </ng-template>
-          <ng-template #actionTemplate let-item="item" let-index="index">
-            <pfng-action class="list-pf-actions" [config]="getActionConfig(item, actionButtonTemplate)" (onActionSelect)="handleActionGrid($event, item)">
-              <ng-template #actionButtonTemplate let-action="action">
-                <span class="fa fa-pencil">&nbsp;</span>{{action.title}}
-              </ng-template>             
-            </pfng-action>
-          </ng-template>
-        </pfng-list>
-        <pfng-pagination [config]='paginationConfig' (onPageSizeChange)="handlePageSize($event)" (onPageNumberChange)="handlePageNumber($event)"></pfng-pagination>
+            </ng-template>
+            <ng-template #actionTemplate let-item="item" let-index="index">
+              <pfng-action class="list-pf-actions" [config]="getActionConfig(item, actionButtonTemplate)" (onActionSelect)="handleActionGrid($event, item)">
+                <ng-template #actionButtonTemplate let-action="action">
+                  <span class="fa fa-pencil">&nbsp;</span>{{action.title}}
+                </ng-template>
+              </pfng-action>
+            </ng-template>
+          </pfng-list>
+          <pfng-pagination [config]='paginationConfig' (onPageSizeChange)="handlePageSize($event)" (onPageNumberChange)="handlePageNumber($event)"></pfng-pagination>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</sacpi-loading>

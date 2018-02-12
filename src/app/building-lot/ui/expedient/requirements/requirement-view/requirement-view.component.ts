@@ -28,7 +28,7 @@ import * as jsPDF from 'jspdf'
 export class RequirementViewComponent implements OnInit {
 
   toolbarConfig: ToolbarConfig;
-  loading = false;
+  loading = false;  
 
   routingSub: Subscription;
   requirement: any;

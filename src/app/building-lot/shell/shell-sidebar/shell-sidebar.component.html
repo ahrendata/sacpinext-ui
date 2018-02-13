@@ -18,5 +18,24 @@
         <span class="list-group-item-value">Requerimiento</span>
       </a>
     </li>
+    <li class="list-group-item  mobile-nav-item-pf visible-xs-block" routerLinkActive="active">
+      <a href="javascript:void(0);" (click)="accountManagement()">
+        <span class="fa fa-cog" data-toggle="tooltip" title="Cambiar Contraseña"></span>
+        <span class="list-group-item-value">Cambiar Contraseña</span>
+      </a>
+    </li>
+    <li class="list-group-item  mobile-nav-item-pf visible-xs-block" routerLinkActive="active">
+      <a (click)="aboutModal.open()">
+        <span class="fa fa-android" data-toggle="tooltip" title="About"></span>
+        <span class="list-group-item-value">About</span>
+      </a>
+    </li>
+    <li class="list-group-item  mobile-nav-item-pf visible-xs-block" routerLinkActive="active">
+      <a (click)="logout()">
+        <span class="fa fa-power-off" data-toggle="tooltip" title="Cerrar Session"></span>
+        <span class="list-group-item-value">Cerrar Session</span>
+      </a>
+    </li>
   </ul>
 </div>
+<sacpi-about-modal #aboutModal></sacpi-about-modal>

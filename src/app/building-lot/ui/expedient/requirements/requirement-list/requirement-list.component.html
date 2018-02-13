@@ -21,13 +21,14 @@
           <pfng-list [actionTemplate]="actionTemplate" [config]="listConfig" [items]="requirements" [itemTemplate]="itemTemplate">
             <ng-template #itemTemplate let-item="item" let-index="index">
               <div class="list-pf-left">
-                <span class="fa fa-list-alt  list-pf-icon list-pf-icon-bordered list-pf-icon-small"></span>
+                <span *ngIf="item.Status" class="fa fa-list-alt  list-pf-icon list-pf-icon-bordered list-pf-icon-small"></span>
+                <span *ngIf="!item.Status" class="fa fa-list-alt  list-pf-icon list-pf-icon-bordered-confirm list-pf-icon-small"></span>
               </div>
               <div class="list-pf-content-wrapper">
                 <div class="list-pf-main-content">
                   <div class="list-pf-title">
                     {{item.CodRequirement}}
-                    <span *ngIf=item.Status class="pficon pficon-ok"></span>
+                    <!-- <span *ngIf=item.Status class="pficon pficon-ok"></span> -->
                   </div>
                   <div class="list-pf-description text-overflow-pf">{{item.AliasExpedient}}</div>
                   <div class="list-pf-description text-overflow-pf">{{item.TypeRequirement}}</div>
@@ -39,11 +40,11 @@
                     <strong>{{item.AtentionDate| date:"dd/MM/yy"}} </strong>
                   </div>
                   <div>
-                    <span class="fa fa-shopping-cart"></span>
+                    <span class="fa fa-money"></span>
                     <strong> {{item.PercentBought|number:'1.2-2'}} % </strong> Comprado
                   </div>
                   <div>
-                    <span class="fa fa-car"></span>
+                    <span class="fa fa-truck"></span>
                     <strong> {{item.PercentSend|number:'1.2-2'}} % </strong> Enviado
                   </div>
                   <div>

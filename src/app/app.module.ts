@@ -25,8 +25,8 @@ export function restangularProviderConfigurer(restangularProvider: any, config: 
   declarations: [
     AppComponent
   ],
-  imports: [
-    FormsModule,
+  imports: [  
+  FormsModule,
     BrowserModule,
     ReactiveFormsModule,
     HttpModule,
@@ -39,7 +39,7 @@ export function restangularProviderConfigurer(restangularProvider: any, config: 
     ToastModule.forRoot(),
     AppRoutingModule,
     SharedModule,
-    CoreModule
+    CoreModule    
   ],
   providers: [
     ConfigService,

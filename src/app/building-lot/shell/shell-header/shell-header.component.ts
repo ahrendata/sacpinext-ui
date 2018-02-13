@@ -10,12 +10,9 @@ import { DataService } from '../../../core/data/data.service';
   styleUrls: ['./shell-header.component.scss']
 })
 export class ShellHeaderComponent implements OnInit {
-  @Input()
-  currentExpedient: Expedient;
 
-  @Input()
-  expedients: Array<Expedient>;
   public isCollapsed: boolean = false;
+
   user: any = {
     username: ''
   };
@@ -28,6 +25,7 @@ export class ShellHeaderComponent implements OnInit {
   ngOnInit() {
     this.user.username = this.dataService.users().getUser();
   }
+  
   accountManagement() {
     console.log("accountManagement");
   }
@@ -35,6 +33,7 @@ export class ShellHeaderComponent implements OnInit {
   collapsed() {
     this.isCollapsed = true;
   }
+
   logout() {
     this.dataService.users().logout();
     this.router.navigate(['./login'], { relativeTo: this.route });

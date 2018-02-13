@@ -67,30 +67,30 @@ export class RestangularService {
       }
     }
 
-    return this._http.get(this._path, requestOptionsArgs).catch((error) => {
+    return this._http.get(this._path, requestOptionsArgs);/*.catch((error) => {
       return this.handleError(error);
-    });
+    });*/
   }
 
   post(obj?: any): Observable<Response> {
-    return this._http.post(this._path, obj).catch((error) => {
+    return this._http.post(this._path, obj);/*.catch((error) => {
       return this.handleError(error);
-    });
+    });*/
   }
 
   put(obj: any): Observable<Response> {
     const clone = Object.assign({}, obj);
     delete clone['_restangular'];
 
-    return this._http.put(this._path, clone).catch((error) => {
+    return this._http.put(this._path, clone);/*.catch((error) => {
       return this.handleError(error);
-    });
+    });*/
   }
 
   delete(): Observable<Response> {
-    return this._http.delete(this._path).catch((error) => {
+    return this._http.delete(this._path);/*.catch((error) => {
       return this.handleError(error);
-    });
+    });*/
   }
 
   clone(): RestangularService {
@@ -113,9 +113,9 @@ export class RestangularService {
         requestOptionsArgs = Object.assign(requestOptionsArgs, options);
       }
     }
-    return this.http.delete(this._path, requestOptionsArgs).catch((error) => {
+    return this.http.delete(this._path, requestOptionsArgs);/*.catch((error) => {
       return this.handleError(error);
-    });
+    });*/
   }
 
   public postQuery(queryParams?: URLSearchParams, options?: RequestOptionsArgs): Observable<Response> {
@@ -132,9 +132,9 @@ export class RestangularService {
         requestOptionsArgs = Object.assign(requestOptionsArgs, options);
       }
     }
-    return this.http.post(this._path, {}, requestOptionsArgs).catch((error) => {
+    return this.http.post(this._path, {}, requestOptionsArgs);/*.catch((error) => {
       return this.handleError(error);
-    });
+    });*/
   }
 
 
@@ -161,104 +161,6 @@ export class RestangularService {
     }
     return Observable.throw(error);
   }
-
-
-
-
-
-  // clone(): RestangularService {
-  //   return new RestangularService(this.http, this._configuration);
-  // }
-  // private actionUrl: string;
-
-  // constructor(private http: Http, private _configuration: Configuration) {
-  //   this.actionUrl = _configuration.ServerWithApiUrl;
-  // }
-
-  // one(path: string, id: number): RestangularService {
-  //   const restangular = this.clone();
-  //   restangular.actionUrl += (path ? '/' + path : '') + '/' + id;
-  //   return restangular;
-  // }
-
-  // all(path: string): RestangularService {
-  //   const restangular = this.clone();
-  //   restangular.actionUrl = restangular.actionUrl + '/' + path;
-  //   return restangular;
-  // }
-
-  // public get(queryParams?: URLSearchParams, options?: RequestOptionsArgs): Observable<Response> {
-  //   let requestOptionsArgs;
-  //   if (queryParams || options) {
-  //     requestOptionsArgs = {
-  //       headers: new Headers()
-  //     };
-
-  //     if (queryParams) {
-  //       requestOptionsArgs.search = queryParams;
-  //     }
-  //     if (options) {
-  //       requestOptionsArgs = Object.assign(requestOptionsArgs, options);
-  //     }
-  //   }
-  //   return this.http.get(this.actionUrl, requestOptionsArgs);
-  // }
-
-  // public post(obj?: any): Observable<Response> {
-  //   return this.http.post(this.actionUrl, obj);
-  // }
-
-  // public put(obj: any): Observable<Response> {
-  //   const clone = Object.assign({}, obj);
-  //   delete clone['_restangular'];
-  //   return this.http.put(this.actionUrl, clone);
-  // }
-
-  // public putId(id: number, obj: any): Observable<Response> {
-  //   return this.http.put(this.actionUrl, JSON.stringify(obj));
-  // }
-
-  // public delete(): Observable<Response> {
-  //   return this.http.delete(this.actionUrl);
-  // }
-
-  // /*Alternatives with QueryParam */
-
-  // public deleteQuery(queryParams?: URLSearchParams, options?: RequestOptionsArgs): Observable<Response> {
-  //   let requestOptionsArgs;
-  //   if (queryParams || options) {
-  //     requestOptionsArgs = {
-  //       headers: new Headers()
-  //     };
-
-  //     if (queryParams) {
-  //       requestOptionsArgs.search = queryParams;
-  //     }
-  //     if (options) {
-  //       requestOptionsArgs = Object.assign(requestOptionsArgs, options);
-  //     }
-  //   }
-  //   return this.http.delete(this.actionUrl, requestOptionsArgs);
-  // }
-
-  // public postQuery(queryParams?: URLSearchParams, options?: RequestOptionsArgs): Observable<Response> {
-  //   let requestOptionsArgs;
-  //   if (queryParams || options) {
-  //     requestOptionsArgs = {
-  //       headers: new Headers()
-  //     };
-
-  //     if (queryParams) {
-  //       requestOptionsArgs.search = queryParams;
-  //     }
-  //     if (options) {
-  //       requestOptionsArgs = Object.assign(requestOptionsArgs, options);
-  //     }
-  //   }
-  //   return this.http.post(this.actionUrl,{}, requestOptionsArgs);
-  // }
-
-
 }
 
 

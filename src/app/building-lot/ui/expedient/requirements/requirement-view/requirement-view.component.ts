@@ -28,7 +28,7 @@ import * as jsPDF from 'jspdf'
 export class RequirementViewComponent implements OnInit {
 
   toolbarConfig: ToolbarConfig;
-  loading = false;  
+  loading = false;
 
   routingSub: Subscription;
   requirement: any;
@@ -121,12 +121,14 @@ export class RequirementViewComponent implements OnInit {
   }
 
   imprimir() {
-
+    let requirement = this.requirement;
+    let CreateDate = this.datePipe.transform(requirement.CreateDate, 'dd/MM/yyyy HH:mm:ss');
+    let AtentionDate = this.datePipe.transform(requirement.AtentionDate, 'dd/MM/yyyy');
     let columns = [
       { title: "#", dataKey: "Id" },
       { title: "Producto", dataKey: "Product" },
       { title: "Cantidad", dataKey: "Quantity" },
-      { title: "Unidad Medida", dataKey: "UnidCode" },     
+      { title: "Unidad Medida", dataKey: "UnidCode" },
       { title: "Descripcion", dataKey: "Observation" }
     ];
     let rows: any[] = [];
@@ -136,40 +138,52 @@ export class RequirementViewComponent implements OnInit {
       rows.push({
         Id: i,
         Product: element.Product,
-        Quantity: this.number.transform(element.Quantity,' ', true, '1.2-2'),
-        UnidCode: element.UnidCode,        
+        Quantity: this.number.transform(element.Quantity, ' ', true, '1.2-2'),
+        UnidCode: element.UnidCode,
         Observation: element.Observation || ''
       });
-    });;
+    });
     var doc = new jsPDF();
-    doc.setFontSize(12);
-    doc.setFontStyle('bold');
-    doc.text(70, 20, 'REQUERIMIENTO N° ' + this.requirement.CodRequirement);
-    doc.setFontSize(8);
-    doc.setFontStyle('normal');
-    doc.text(10, 30, 'Fecha creación');
-    doc.text(35, 30, ':');
-    doc.text(40, 30, this.datePipe.transform(this.requirement.CreateDate, 'dd/MM/yyyy HH:mm:ss'));
-    doc.text(100, 30, 'Tipo Requerimiento');
-    doc.text(135, 30, ':');
-    doc.text(140, 30, this.requirement.TypeRequirement || '');
-    doc.text(10, 35, 'Fecha Atención');
-    doc.text(35, 35, ':');
-    doc.text(40, 35, this.datePipe.transform(this.requirement.AtentionDate, 'dd/MM/yyyy'));
-    doc.text(100, 35, 'Centro de Costo');
-    doc.text(135, 35, ':');
-    doc.text(140, 35, this.requirement.AliasExpedient);
-    doc.text(10, 40, 'Estado');
-    doc.text(35, 40, ':');
-    doc.text(40, 40, this.requirement.Status ? 'Confirmado' : 'Sin Confirmar');
     doc.autoTable(columns, rows, {
       headerStyles: { fillColor: [114, 118, 123] },
       columnStyles: {
         Id: { halign: 'right' },
-        Quantity: { halign: 'right' }
+        Quantity: { halign: 'right' },
+        UnidCode: { halign: 'center' }
       },
-      styles: { columnWidth: 'auto', fillColor: [209, 209, 209], cellPadding: 0.7, fontSize: 8 },
-      margin: { top: 45, right: 10, left: 10 }
+      bodyStyles: { valign: 'middle' },
+      showHeader: 'firstPage',
+      tableLineColor: 200, 
+      tableLineWidth: 0.2,
+      styles: {
+        fillColor: [209, 209, 209],
+        cellPadding: 0.7,
+        fontSize: 8,
+        overflow: 'linebreak'
+      },
+      margin: { top: 45, right: 10, left: 10 },
+      addPageContent: function (data) {
+        doc.setFontSize(12);
+        doc.setFontStyle('bold');
+        doc.text(70, 20, 'REQUERIMIENTO N° ' + requirement.CodRequirement);
+        doc.setFontSize(8);
+        doc.setFontStyle('normal');
+        doc.text(10, 30, 'Fecha creación');
+        doc.text(35, 30, ':');
+        doc.text(40, 30, CreateDate);
+        doc.text(100, 30, 'Tipo Requerimiento');
+        doc.text(135, 30, ':');
+        doc.text(140, 30, requirement.TypeRequirement || '');
+        doc.text(10, 35, 'Fecha Atención');
+        doc.text(35, 35, ':');
+        doc.text(40, 35, AtentionDate);
+        doc.text(100, 35, 'Centro de Costo');
+        doc.text(135, 35, ':');
+        doc.text(140, 35, requirement.AliasExpedient);
+        doc.text(10, 40, 'Estado');
+        doc.text(35, 40, ':');
+        doc.text(40, 40, requirement.Status ? 'Confirmado' : 'Sin Confirmar');
+      }
     });
     doc.save('Req-' + this.requirement.CodRequirement + '.pdf');
 

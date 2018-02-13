@@ -16,7 +16,7 @@
         </ol>
         <div>
           <pfng-toolbar [config]="toolbarConfig" [actionTemplate]="actionTemplate">
-            <ng-template #actionTemplate>
+            <ng-template #actionTemplate>              
               <button *ngIf="requirement.StatusEdit" class="btn btn-default primary-action" type="button" (click)="editar()">
                 <span class="fa fa-pencil"></span>
                 Editar

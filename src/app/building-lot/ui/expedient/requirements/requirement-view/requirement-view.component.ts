@@ -147,13 +147,14 @@ export class RequirementViewComponent implements OnInit {
     doc.autoTable(columns, rows, {
       headerStyles: { fillColor: [114, 118, 123] },
       columnStyles: {
-        Id: { halign: 'right' },
-        Quantity: { halign: 'right' },
-        UnidCode: { halign: 'center' }
+        Id: { columnWidth: 7, halign: 'right' },
+        Product: { columnWidth: 120 },
+        Quantity: { columnWidth: 20, halign: 'right' },
+        UnidCode: { columnWidth: 13, halign: 'center' }       
       },
       bodyStyles: { valign: 'middle' },
       showHeader: 'firstPage',
-      tableLineColor: 200, 
+      tableLineColor: 200,
       tableLineWidth: 0.2,
       styles: {
         fillColor: [209, 209, 209],

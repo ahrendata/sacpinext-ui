@@ -25,10 +25,12 @@
                 <div class="card-pf-top-element">
                   <span class="fa  fa-folder-open card-pf-icon-circle"></span>
                 </div>
-                <h2 class="card-pf-title text-center"><strong>{{item.Alias}}</strong></h2>
+                <h2 class="card-pf-title text-center">
+                  <strong>{{item.Alias}}</strong>
+                </h2>
                 <div class="card-pf-items text-center">
                   <div class="card-pf-item">
-                    <span class="fa fa-file-text"></span>
+                    <span class="fa fa-file-text" title="Cantidad de Requerimientos"></span>
                     <span *ngIf="item.NumberRequirement" class="card-pf-item-text">{{item.NumberRequirement}}</span>
                     <span *ngIf="!item.NumberRequirement" class="text-muted">0</span>
                   </div>

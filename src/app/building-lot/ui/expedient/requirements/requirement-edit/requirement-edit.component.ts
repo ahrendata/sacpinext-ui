@@ -166,6 +166,9 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
 
   saveAll() {
     let iduser = this.dataService.users().getUserId();
+    if (!this.form || !this.form.value.IdExpedient || !this.form.value.IdTypeRequirement) {
+      return;
+    }
     this.detalle.controls.forEach(formControl => {
       let element = formControl.value;
       if (element.Status === 2 && element.IdProduct && element.IdUnidCode && element.Quantity) {
@@ -186,7 +189,7 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
           Details: details
         };
         this.dataService.requeriments().create(requerimiento).subscribe(response => {
-          this.notification.success('Nuevo Producto agregado al requerimiento.', 'Informacion');         
+          this.notification.success('Nuevo Producto agregado al requerimiento.', 'Informacion');
           this.form.patchValue({
             CodRequirement: response.CodRequirement,
             IdRequirement: response.IdRequirement
@@ -197,9 +200,9 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
             Status: 1
           });
         },
-        (error) => {
-          this.notification.warning('Problemas al agregar producto al requerimiento.', 'Alerta');
-        });
+          (error) => {
+            this.notification.warning('Problemas al agregar producto al requerimiento.', 'Alerta');
+          });
       }
     });
   }
@@ -214,10 +217,10 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
         this.detalle.removeAt(index);
         this.notification.info('Producto eliminado del requiremiento.', 'Informacion');
       },
-      (error) => {
-        this.notification.error('Error al eliminar producto del requerimiento.', 'Error');
-      });
-      
+        (error) => {
+          this.notification.error('Error al eliminar producto del requerimiento.', 'Error');
+        });
+
     } else {
       this.detalle.removeAt(index);
     }
@@ -262,7 +265,7 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
 
     } else {
       this.enviar(form);
-    }    
+    }
   }
 
   enviar(form: FormGroup) {

@@ -33,7 +33,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
 
   numberMask = { allowDecimal: true, decimalLimit: 2 };
 
-  
+
   constructor(private router: Router, private route: ActivatedRoute,
     private formBuilder: FormBuilder, private dataService: DataService,
     private notification: ToastsManager,
@@ -135,6 +135,9 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
 
   saveAll() {
     let iduser = this.dataService.users().getUserId();
+    if (!this.form || !this.form.value.IdExpedient || !this.form.value.IdTypeRequirement) {
+      return;
+    }
     this.detalle.controls.forEach(formControl => {
       let element = formControl.value;
       if (element.Status === 2 && element.IdProduct && element.IdUnidCode && element.Quantity) {

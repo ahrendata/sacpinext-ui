@@ -34,6 +34,7 @@ import { ListModule } from 'patternfly-ng/list';
 import { ActionModule } from 'patternfly-ng/action';
 import { PaginationModule } from 'patternfly-ng/pagination';
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
+import { NavigationModule } from 'patternfly-ng';
 
 @NgModule({
   imports: [
@@ -47,8 +48,9 @@ import { ConfirmationModalComponent } from './components/confirmation-modal/conf
     NgSelectModule,
     ToolbarModule,
     ListModule,
-    ActionModule,    
-    PaginationModule
+    ActionModule,
+    PaginationModule,
+    NavigationModule
   ],
   declarations: [
     TruncatePipe,
@@ -79,6 +81,7 @@ import { ConfirmationModalComponent } from './components/confirmation-modal/conf
     ListModule,
     ActionModule,
     PaginationModule,
+    NavigationModule,
     ButtonDeleteComponent,
     ButtonSaveComponent,
     ButtonCancelComponent,
@@ -98,7 +101,7 @@ import { ConfirmationModalComponent } from './components/confirmation-modal/conf
     NumberMaskDirective,
     FormRequiredLabelDirective,
     FormFieldValidationStateDirective,
-    LoadingComponent    
+    LoadingComponent
   ]
 })
 export class SharedModule { }

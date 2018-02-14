@@ -25,7 +25,9 @@ const routes: Routes = [
       { path: '', redirectTo: 'expedients', pathMatch: 'full' },
       { path: 'dashboard', loadChildren: 'app/building-lot/ui/dashboard/dashboard.module#DashboardModule' },
       { path: 'center-coste', loadChildren: 'app/building-lot/ui/center-coste/center-coste.module#CenterCosteModule' },
-      { path: 'expedients', loadChildren: 'app/building-lot/ui/expedient/expedient.module#ExpedientModule' }
+      { path: 'expedients', loadChildren: 'app/building-lot/ui/expedient/expedient.module#ExpedientModule' },
+      { path: 'acount', loadChildren: 'app/building-lot/ui/acount/acount.module#AcountModule' },
+      { path: 'change-password', loadChildren: 'app/building-lot/ui/change-password/change-password.module#ChangePasswordModule' }
     ]
   }
 ];

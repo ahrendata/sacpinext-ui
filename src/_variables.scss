@@ -61,3 +61,17 @@
     }
   }
   
+  .modal{
+    z-index: 99999;
+  }
+
+  .fade.in {
+    z-index: 99999;
+}
+
+.sacpi-fluid {
+  overflow-y: auto;
+}
+.toolbar-pf{
+  background-color: #f5f5f5;
+}

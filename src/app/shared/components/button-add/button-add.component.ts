@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { FormGroup } from '@angular/forms';
 
@@ -9,20 +9,25 @@ import { FormGroup } from '@angular/forms';
 })
 export class ButtonAddComponent implements OnInit {
 
-   @Input()
+  @Input()
   sacpiForm: FormGroup;
 
   @Input()
   working = false;
+
+  @Output()
+  sacpiOnSave: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  onClickChild(event) {
+  save() {
     if (!this.sacpiForm.valid) {
-      event.preventDefault();
+      this.sacpiOnSave.emit(true);
+    } else {
+      this.sacpiOnSave.emit(false);
     }
   }
 

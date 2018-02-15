@@ -36,8 +36,8 @@
               <label class="control-label" [sacpiFormRequiredLabel]="form.get('IdTypeRequirement')">Nivel Requerimiento
                 <i class="fa fa-question-circle text-muted" ngbTooltip="Fecha atencion del requiremiento" placement="right"></i>
               </label>
-              <ng-select formControlName="IdTypeRequirement" class="ng-select-sacpi" [items]="requirementType" bindLabel="Descryption" bindValue="IdContenedor"
-                placeholder="Seleccione expediente"></ng-select>
+              <ng-select formControlName="IdTypeRequirement" class="ng-select-sacpi" [items]="requirementType" bindLabel="Descryption"
+                bindValue="IdContenedor" placeholder="Seleccione expediente"></ng-select>
               <sacpi-form-field-validation-messages [sacpiFormControl]="form.get('IdTypeRequirement')">
               </sacpi-form-field-validation-messages>
             </div>
@@ -52,7 +52,7 @@
               <sacpi-form-field-validation-messages [sacpiFormControl]="form.get('IdExpedient')">
               </sacpi-form-field-validation-messages>
             </div>
-          </div>   
+          </div>
         </div>
 
         <!--/Entidad-->
@@ -62,7 +62,7 @@
               <thead>
                 <tr>
                   <td class="text-center">#</td>
-                  <td class="text-left td-siacpi">Producto</td>                  
+                  <td class="text-left td-siacpi">Producto</td>
                   <td class="text-right">Cantidad</td>
                   <td class="text-center">Unidad Medida</td>
                   <td class="text-left">Descripcion</td>
@@ -79,7 +79,7 @@
                         placeholder="Seleccione algun producto"></ng-select>
                       <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('IdProduct')">
                       </sacpi-form-field-validation-messages>
-                    </td>                 
+                    </td>
                     <td [sacpiFormFieldValidationState]="item.get('Quantity')">
                       <input formControlName="Quantity" [sacpiNumberMask]="numberMask" type="text" class="form-control text-right">
                       <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('Quantity')">
@@ -138,6 +138,7 @@
           </div>
         </div>
         <br>
+        <sacpi-button-add [sacpiForm]="form" [working]="working" (sacpiOnSave)="save($event)"></sacpi-button-add>
         <sacpi-button-confirmar [sacpiForm]="form" [working]="working"></sacpi-button-confirmar>
         <sacpi-button-cancel (sacpiOnCancel)="cancel()"></sacpi-button-cancel>
       </form>

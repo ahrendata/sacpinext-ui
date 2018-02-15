@@ -1,7 +1,9 @@
-<button type="submit" *ngIf="!sacpiForm.valid" class="btn btn-default" disabled>
+<button type="button" *ngIf="!sacpiForm.valid" class="btn btn-primary" disabled>
+  <span class="fa fa-save"></span>
   <span> Guardar</span>
 </button>
-<button type="submit" (click)="onClickChild($event)" [disabled]="working" *ngIf="sacpiForm.valid" class="btn btn-default">
+<button type="button" (click)="save()" [disabled]="working" *ngIf="sacpiForm.valid" class="btn btn-primary">
+  <span class="fa fa-save"></span>
   <span [hidden]="!working">Guardando...</span>
   <span [hidden]="working">Guardar</span>
 </button>

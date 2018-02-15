@@ -53,12 +53,12 @@ export class ExpedientService {
         const json = response.json();
         const result = new SearchResults<Expedient>();
         const items = new Array<Expedient>();
-        json.items.forEach(element => {
+        json.data.forEach(element => {
           const document = new Expedient(restangular.all(element['IdExpediente']));
           items.push(Object.assign(document, element));
         });
         result.items = items;
-        result.totalSize = json.totalSize;
+        result.totalSize = json.count;
         return result;
       });
   }

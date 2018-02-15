@@ -34,7 +34,7 @@ import { ListModule } from 'patternfly-ng/list';
 import { ActionModule } from 'patternfly-ng/action';
 import { PaginationModule } from 'patternfly-ng/pagination';
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
-import { NavigationModule } from 'patternfly-ng';
+import { NavigationModule, WizardModule } from 'patternfly-ng';
 
 @NgModule({
   imports: [
@@ -50,7 +50,8 @@ import { NavigationModule } from 'patternfly-ng';
     ListModule,
     ActionModule,
     PaginationModule,
-    NavigationModule
+    NavigationModule,
+    WizardModule
   ],
   declarations: [
     TruncatePipe,
@@ -82,6 +83,7 @@ import { NavigationModule } from 'patternfly-ng';
     ActionModule,
     PaginationModule,
     NavigationModule,
+    WizardModule,
     ButtonDeleteComponent,
     ButtonSaveComponent,
     ButtonCancelComponent,

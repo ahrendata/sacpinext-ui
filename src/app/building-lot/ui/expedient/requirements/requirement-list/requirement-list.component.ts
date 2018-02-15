@@ -6,28 +6,19 @@ import { ToastsManager } from 'ng2-toastr';
 import { URLSearchParams } from '@angular/http';
 
 //for toolbar
-import { Action } from 'patternfly-ng/action/action';
-import { ActionConfig } from 'patternfly-ng/action/action-config';
-import { Filter } from 'patternfly-ng/filter/filter';
-import { FilterConfig } from 'patternfly-ng/filter/filter-config';
-import { FilterField } from 'patternfly-ng/filter/filter-field';
-import { FilterEvent } from 'patternfly-ng/filter/filter-event';
-import { FilterType } from 'patternfly-ng/filter/filter-type';
-import { SortConfig } from 'patternfly-ng/sort/sort-config';
-import { SortField } from 'patternfly-ng/sort/sort-field';
-import { SortEvent } from 'patternfly-ng/sort/sort-event';
-import { ToolbarConfig } from 'patternfly-ng/toolbar/toolbar-config';
-import { ToolbarView } from 'patternfly-ng/toolbar/toolbar-view';
+import { Action, ActionConfig } from 'patternfly-ng/action';
+import { Filter, FilterConfig, FilterField, FilterEvent, FilterType } from 'patternfly-ng/filter';
+import { SortConfig, SortField, SortEvent } from 'patternfly-ng/sort';
+
+import { ToolbarConfig, ToolbarView } from 'patternfly-ng/toolbar';
 
 //for list
-import { EmptyStateConfig } from 'patternfly-ng/empty-state/empty-state-config';
-import { ListEvent } from 'patternfly-ng/list/list-event';
-import { ListConfig } from 'patternfly-ng/list/basic-list//list-config';
-import { cloneDeep } from 'lodash';
+import { EmptyStateConfig } from 'patternfly-ng/empty-state';
+import { ListEvent, ListConfig } from 'patternfly-ng/list';
 
-//for pagiysntion
-import { PaginationConfig } from 'patternfly-ng/pagination/pagination-config';
-import { PaginationEvent } from 'patternfly-ng/pagination/pagination-event';
+
+//for pagination
+import { PaginationConfig, PaginationEvent } from 'patternfly-ng/pagination';
 
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal';
@@ -37,6 +28,7 @@ import { SearchResults } from '../../../../../core/model/search-results.model';
 import { SearchCriteriaFilter } from '../../../../../core/model/search-criteria-filter.model';
 import { OrderBy } from '../../../../../core/model/order-by.model';
 import { Paging } from '../../../../../core/model/paging.model';
+import { SearchCriteria } from '../../../../../core/model/search-criteria.model';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -46,47 +38,31 @@ import { Paging } from '../../../../../core/model/paging.model';
 })
 
 export class RequirementListComponent implements OnInit {
-  actionConfig: ActionConfig;
-  actionsText: string = '';
+
   filterConfig: FilterConfig;
   filtersText: string = '';
-  items: any[];
-  isAscendingSort: boolean = true;
-  separator: Object;
   sortConfig: SortConfig;
-  currentSortField: SortField;
   toolbarConfig: ToolbarConfig;
-  weekDayQueries: any[];
   loading = false;
-  //for list
-  actionsText1: string = '';
   emptyStateConfig: EmptyStateConfig;
-  itemsAvailable: boolean = true;
   listConfig: ListConfig;
-  selectType: string = 'checkbox';
-
-  //for pag
   paginationConfig: PaginationConfig;
 
-  total = 0;
-  page = 1;
-  limit = 5;
-
-  requirements: any[] = [];
   expedients: any[] = [];
   requirementType: any[] = [];
 
-
-
+  requirements: Array<Requirement> = new Array<Requirement>();
   searchResult: SearchResults<Requirement> = new SearchResults<Requirement>();
+
   filters: Array<SearchCriteriaFilter> = new Array<SearchCriteriaFilter>();
+
   orderBy: OrderBy = {
-    name: 'Alias',
+    name: 'CodRequirement',
     ascending: false
   };
   paging: Paging = {
     page: 1,
-    pageSize: 8
+    pageSize: 10
   };
 
   constructor(private router: Router,
@@ -104,21 +80,11 @@ export class RequirementListComponent implements OnInit {
     this.inittoolbar();
     this.search();
 
-    this.actionConfig = {
-      primaryActions: [{
-        id: 'NUEVO',
-        title: 'Nuevo',
-        tooltip: 'Generar nuevo requerimiento',
-        styleClass: 'btn-primary'
-      }]
-    } as ActionConfig;
-
     this.listConfig = {
       dblClick: false,
       emptyStateConfig: this.emptyStateConfig,
       multiSelect: false,
-      selectItems: false,
-      selectionMatchProp: 'name',
+      selectItems: true,
       showCheckbox: false,
       useExpandItems: false
     } as ListConfig;
@@ -126,7 +92,7 @@ export class RequirementListComponent implements OnInit {
     this.paginationConfig = {
       pageSize: 10,
       pageNumber: 1,
-      totalItems: this.requirements.length
+      totalItems: this.searchResult.totalSize
     } as PaginationConfig;
   }
 
@@ -156,19 +122,19 @@ export class RequirementListComponent implements OnInit {
         placeholder: 'Filter by N° Requerimiento...',
         type: FilterType.TEXT
       }, {
-        id: 'IdExpediente',
+        id: 'IdExpedient',
         title: 'Centro de costo',
         placeholder: 'Filtrar por Centro de costo...',
         type: FilterType.SELECT,
         queries: this.expedients
       }, {
-        id: 'TypeRequirement',
+        id: 'IdTypeRequirement',
         title: 'Tipo Requerimiento',
         placeholder: 'Filtrar por tipo de requerimiento...',
         type: FilterType.SELECT,
         queries: this.requirementType
       }] as FilterField[],
-      resultsCount: 0,// this.items.length,
+      resultsCount: this.searchResult.totalSize,
       appliedFilters: []
     } as FilterConfig;
 
@@ -202,7 +168,7 @@ export class RequirementListComponent implements OnInit {
         title: '% Enviado',
         sortType: 'alpha'
       }],
-      isAscending: this.isAscendingSort
+      isAscending: false
     } as SortConfig;
 
     this.toolbarConfig = {
@@ -242,7 +208,6 @@ export class RequirementListComponent implements OnInit {
         }
       });
     }
-    console.log(this.filters)
     this.search();
   }
 
@@ -255,16 +220,20 @@ export class RequirementListComponent implements OnInit {
 
   search(): void {
     let id = this.dataService.users().getEmployeeId();
-    const queryParams: URLSearchParams = new URLSearchParams();
-    queryParams.set('id', id.toString());
-    queryParams.set('pageNumber', this.page.toString());
-    queryParams.set('PageSize', this.limit.toString());
+    const criteria: SearchCriteria = {
+      id: id,
+      filters: this.filters.map(f => {
+        return new SearchCriteriaFilter(f.name, f.value, f.operator, f.type);
+      }),
+      orders: [this.orderBy],
+      paging: this.paging
+    };
     this.loading = true;
-    this.dataService.requeriments().getAll(queryParams).subscribe((data: any) => {
-      this.requirements = cloneDeep(data.data);// data.data;
-      this.paginationConfig.totalItems = data.count;// this.requirements.length;
-      this.paginationConfig.pageSize = this.limit;
-      this.toolbarConfig.filterConfig.resultsCount = data.count;
+    this.dataService.requeriments().search(criteria).subscribe((data) => {
+      this.searchResult = data;
+      this.requirements = this.searchResult.items;
+      this.toolbarConfig.filterConfig.resultsCount = this.searchResult.totalSize;
+      this.paginationConfig.totalItems = this.searchResult.totalSize;
     },
       error => {
         this.toastr.error('Ocurrieron problema para mostrar el requerimiento', 'Error');
@@ -342,9 +311,6 @@ export class RequirementListComponent implements OnInit {
     }
   }
 
-
-
-
   // View
   viewSelected(currentView: ToolbarView): void {
     this.sortConfig.visible = (currentView.id === 'tableView' ? false : true);
@@ -396,14 +362,11 @@ export class RequirementListComponent implements OnInit {
   //for pagination
   handlePageSize($event: PaginationEvent) {
     this.paging.pageSize = $event.pageSize;
-    this.limit = $event.pageSize;
     this.search();
   }
 
   handlePageNumber($event: PaginationEvent) {
     this.paging.page = $event.pageNumber;
-    this.page = $event.pageNumber;
-    //this.limit = 5;
     this.search();
   }
 }

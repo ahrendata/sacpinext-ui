@@ -1,7 +1,7 @@
 <button type="submit" *ngIf="!sacpiForm.valid" class="btn btn-primary" disabled>
-  <span class="fa fa-thumbs-o-up"></span> <span>Enviar</span>
+  <span class="fa fa-thumbs-o-up"></span> <span>Guardar y Enviar</span>
 </button>
 <button type="submit" (click)="onClickChild($event)" [disabled]="working" *ngIf="sacpiForm.valid" class="btn btn-primary">
   <span class="fa fa-thumbs-o-up"></span> <span [hidden]="!working">Enviando...</span>
-  <span [hidden]="working">Enviar</span>
+  <span [hidden]="working">Guardar y Enviar</span>
 </button>

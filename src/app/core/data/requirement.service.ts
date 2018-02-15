@@ -39,6 +39,7 @@ export class RequirementService {
         return Object.assign(new Requirement(restangular), data);
       });
   }
+
   getAll(queryParams?: URLSearchParams): Observable<Requirement[]> {
     const restangular = this.restangular.all(requirementsPath);
     return restangular
@@ -51,6 +52,24 @@ export class RequirementService {
           requirements.push(Object.assign(requirement, element));
         });
         return json;
+      });
+  }
+
+  search(criteria: SearchCriteria): Observable<SearchResults<Requirement>> {
+    const restangular = this.restangular.all(requirementsPath + '/filter');
+    return restangular
+      .post(criteria)
+      .map(response => {
+        const json = response.json();
+        const result = new SearchResults<Requirement>();
+        const items = new Array<Requirement>();
+        json.data.forEach(element => {
+          const document = new Requirement(restangular.all(element['IdRequirement']));
+          items.push(Object.assign(document, element));
+        });
+        result.items = items;
+        result.totalSize = json.count;
+        return result;
       });
   }
 

@@ -43,7 +43,7 @@ export class CenterCosteComponent implements OnInit {
 
   filters: Array<SearchCriteriaFilter> = new Array<SearchCriteriaFilter>();
   orderBy: OrderBy = {
-    name: 'ALIAS_OBRA',
+    name: 'Alias',
     ascending: false
   };
   paging: Paging = {
@@ -69,7 +69,7 @@ export class CenterCosteComponent implements OnInit {
   loadtoolbar() {
     this.filterConfig = {
       fields: [{
-        id: 'ALIAS_OBRA',
+        id: 'Alias',
         title: 'Centro Costo',
         placeholder: 'Buscar por Centro Costo...',
         type: FilterType.TEXT
@@ -80,7 +80,7 @@ export class CenterCosteComponent implements OnInit {
 
     this.sortConfig = {
       fields: [{
-        id: 'ALIAS_OBRA',
+        id: 'Alias',
         title: 'Centro Costo',
         sortType: 'alpha'
       }, {
@@ -88,7 +88,7 @@ export class CenterCosteComponent implements OnInit {
         title: 'Cantidad Requerimiento',
         sortType: 'alpha'
       }, {
-        id: 'FECHA_CREACION',
+        id: 'CreatedTime',
         title: 'Fecha Creacion',
         sortType: 'alpha'
       }],

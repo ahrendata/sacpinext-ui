@@ -13,9 +13,9 @@
     <b>{{data||''}}</b>?
   </div>
   <div class="modal-footer">
-    <button *ngIf="action == 'confirm'" type="button" class="btn btn-primary" (click)="aceptar('save')">
+    <button *ngIf="action == 'confirm'" type="button" class="btn btn-primary" (click)="aceptar()">
       <span class="fa fa-info"></span> Aceptar</button>
-    <button *ngIf="action == 'delete'" type="button" class="btn btn-danger" (click)="eliminar('delete')">
+    <button *ngIf="action == 'delete'" type="button" class="btn btn-danger" (click)="eliminar()">
       <span class="fa fa-trash-o"></span> Eliminar</button>
     <button type="button" class="btn btn-default" (click)="cancelar()">
       <span class="fa fa-ban"></span> Cancelar</button>

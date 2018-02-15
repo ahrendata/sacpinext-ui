@@ -287,6 +287,47 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
     );
   }
 
+  save(status: boolean) {
+    if (!this.form.value.detalle || this.form.value.detalle.length === 0) {
+      this.notification.warning('Agrege al menos un detalle al requerimiento.', 'Alerta');
+      return;
+    }
+    let details: any[] = [];
+
+    let iduser = this.dataService.users().getUserId();
+    this.detalle.controls.forEach(formControl => {
+      let element = formControl.value;
+      if (element.Status === 2 && element.IdProduct && element.IdUnidCode && element.Quantity) {
+        details.push({
+          IdRequirementDetails: element.IdRequirementDetails,
+          IdProduct: element.IdProduct.IdProducto,
+          IdUnidCode: element.IdUnidCode,
+          Quantity: element.Quantity,
+          Observation: element.Observation
+        });
+      }
+    });
+    let requerimiento = {
+      AtentionDate: new Date(),
+      IdExpedient: this.form.value.IdExpedient,
+      IdTypeRequirement: this.form.value.IdTypeRequirement,
+      IdRequirement: this.form.value.IdRequirement,
+      IdUser: iduser,
+      Details: details
+    };
+    if (details.length > 0) {
+      this.dataService.requeriments().create(requerimiento).subscribe(response => {
+        this.notification.success('Nuevo Producto agregado al requerimiento.', 'Informacion');
+        this.working = false;
+        this.router.navigate(['../'], { relativeTo: this.route });
+      },
+        (error) => {
+          this.notification.warning('Problemas al agregar producto al requerimiento.', 'Alerta');
+        });
+    } else {
+      this.router.navigate(['../'], { relativeTo: this.route });
+    }
+  }
   cancel() {
     this.router.navigate(['../'], { relativeTo: this.route });
   }

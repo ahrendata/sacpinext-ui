@@ -57,12 +57,12 @@ export class RequirementListComponent implements OnInit {
   filters: Array<SearchCriteriaFilter> = new Array<SearchCriteriaFilter>();
 
   orderBy: OrderBy = {
-    name: 'CodRequirement',
+    name: 'IdRequirement',
     ascending: false
   };
   paging: Paging = {
     page: 1,
-    pageSize: 10
+    pageSize: 6
   };
 
   constructor(private router: Router,
@@ -90,8 +90,8 @@ export class RequirementListComponent implements OnInit {
     } as ListConfig;
 
     this.paginationConfig = {
-      pageSize: 10,
-      pageNumber: 1,
+      pageSize: this.paging.pageSize,
+      pageNumber: this.paging.page,
       totalItems: this.searchResult.totalSize
     } as PaginationConfig;
   }
@@ -140,7 +140,7 @@ export class RequirementListComponent implements OnInit {
 
     this.sortConfig = {
       fields: [{
-        id: 'CodRequirement',
+        id: 'IdRequirement',
         title: 'N° Requerimiento',
         sortType: 'alpha'
       }, {

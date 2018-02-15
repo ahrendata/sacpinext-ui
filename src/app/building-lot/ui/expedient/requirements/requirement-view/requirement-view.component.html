@@ -85,16 +85,17 @@
                 </legend>
               </fieldset>
               <dl class="dl-horizontal">
-                <dd *ngIf="requirement.CodRequirement" class="sacpi-req">{{requirement.CodRequirement}}</dd>
-                <dd *ngIf="!requirement.CodRequirement" class="sacpi-req">
+                <span *ngIf="requirement.CodRequirement" class="sacpi-req">{{requirement.CodRequirement}}</span>
+                <span *ngIf="!requirement.CodRequirement" class="sacpi-req">
                   <em>No Registrado</em>
-                </dd>
-                <dd *ngIf="requirement.Status" class="sacpi-status-confirmado">
+                </span>
+                <br>
+                <span *ngIf="requirement.Status" class="sacpi-status-confirmado">
                   <em>Confirmado</em>
-                </dd>
-                <dd *ngIf="!requirement.Status" class="sacpi-status-no-confirmado">
+                </span>
+                <span *ngIf="!requirement.Status" class="sacpi-status-no-confirmado">
                   <em>Sin Confirmar</em>
-                </dd>
+                </span>
               </dl>
             </div>
           </div>

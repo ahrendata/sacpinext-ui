@@ -18,10 +18,10 @@
             </legend>
           </fieldset>
           <dl class="dl-horizontal left">
-            <dd *ngIf="Codigo" class="sacpi-req">{{Codigo}}</dd>
-            <dd *ngIf="!Codigo" class="sacpi-req">
+            <span *ngIf="Codigo" class="sacpi-req">{{Codigo}}</span>
+            <span *ngIf="!Codigo" class="sacpi-req">
               <em>No Registrado</em>
-            </dd>
+            </span>
           </dl>
         </div>
       </div>
@@ -33,7 +33,7 @@
         <div class="row">
           <div class="col-md-2">
             <div class="form-group" [sacpiFormFieldValidationState]="form.get('IdTypeRequirement')">
-              <label class="control-label" [sacpiFormRequiredLabel]="form.get('IdTypeRequirement')">Nivel Requerimiento
+              <label class="control-label" [sacpiFormRequiredLabel]="form.get('IdTypeRequirement')">Tipo Requerimiento
                 <i class="fa fa-question-circle text-muted" ngbTooltip="Fecha atencion del requiremiento" placement="right"></i>
               </label>
               <ng-select formControlName="IdTypeRequirement" class="ng-select-sacpi" [items]="requirementType" bindLabel="Descryption"

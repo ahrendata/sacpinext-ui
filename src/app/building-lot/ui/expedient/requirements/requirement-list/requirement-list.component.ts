@@ -62,7 +62,7 @@ export class RequirementListComponent implements OnInit {
   };
   paging: Paging = {
     page: 1,
-    pageSize: 6
+    pageSize: 5
   };
 
   constructor(private router: Router,

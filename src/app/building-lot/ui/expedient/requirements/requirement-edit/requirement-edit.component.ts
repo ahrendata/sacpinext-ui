@@ -212,8 +212,9 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
     let iduser: any = this.dataService.users().getUserId();
     if (id) {
       const queryParams: URLSearchParams = new URLSearchParams();
+      queryParams.set('id', id);
       queryParams.set('idUser', iduser);
-      this.dataService.requeriments().deletedetail(id, queryParams).subscribe((data) => {
+      this.dataService.requeriments().deletedetail(queryParams).subscribe((data) => {
         this.detalle.removeAt(index);
         this.notification.info('Producto eliminado del requiremiento.', 'Informacion');
       },

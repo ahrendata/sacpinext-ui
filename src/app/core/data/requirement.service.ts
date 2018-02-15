@@ -83,16 +83,24 @@ export class RequirementService {
       });
   }
 
-  delete(id: number, queryParams?: URLSearchParams): Observable<any> {
-    const restangular = this.restangular.one(requirementsPath, id);
+  delete(queryParams?: URLSearchParams): Observable<any> {
+    const restangular = this.restangular.all(requirementsPath + '/ChangeStatus');
     return restangular
-      .deleteQuery(queryParams);
+      .postQuery(queryParams)
+      .map(response => {
+        const json = response.json();
+        return Object.assign(new Requirement(restangular), json);
+      });  
   }
 
-  deletedetail(id: number, queryParams?: URLSearchParams): Observable<any> {
-    const restangular = this.restangular.one('RequirementDetails', id);
+  deletedetail(queryParams?: URLSearchParams): Observable<any> {
+    const restangular = this.restangular.all('RequirementDetails' + '/Status');
     return restangular
-      .deleteQuery(queryParams);
+      .postQuery(queryParams)
+      .map(response => {
+        const json = response.json();
+        return Object.assign(new Requirement(restangular), json);
+      });
   }
 
   confirmar(queryParams?: URLSearchParams): Observable<any> {

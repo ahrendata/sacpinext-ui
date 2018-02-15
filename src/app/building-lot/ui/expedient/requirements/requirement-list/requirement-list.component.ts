@@ -260,7 +260,6 @@ export class RequirementListComponent implements OnInit {
         const queryParams: URLSearchParams = new URLSearchParams();
         queryParams.set('idRequeriment', item.IdRequirement);
         queryParams.set('idUser', iduser);
-        console.log("Confirmando el requerimiento");
         this.dataService.requeriments().confirmar(queryParams).subscribe(
           response => {
             this.router.navigate(['../'], { relativeTo: this.activatedRoute });
@@ -283,9 +282,9 @@ export class RequirementListComponent implements OnInit {
           if (result === true) {
             let iduser: any = this.dataService.users().getUserId();
             const queryParams: URLSearchParams = new URLSearchParams();
+            queryParams.set('id', item.IdRequirement);
             queryParams.set('idUser', iduser);
-            console.log("Confirmando el requerimiento");
-            this.dataService.requeriments().delete(item.IdRequirement, queryParams).subscribe(
+            this.dataService.requeriments().delete(queryParams).subscribe(
               response => {
                 this.toastr.success('El requerimiento fue eliminado correctamente.', 'Informacion');
                 this.search();

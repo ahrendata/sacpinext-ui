@@ -109,8 +109,9 @@ export class RequirementViewComponent implements OnInit {
       let id = this.requirement.IdRequirement;
       let iduser: any = this.dataService.users().getUserId();
       const queryParams: URLSearchParams = new URLSearchParams();
+      queryParams.set('id', id);
       queryParams.set('idUser', iduser);
-      this.dataService.requeriments().delete(id, queryParams).subscribe((data) => {
+      this.dataService.requeriments().delete(queryParams).subscribe((data) => {
         this.notification.success('El requerimiento fue eliminado correctamente.', 'Informacion');
         this.router.navigate(['../../'], { relativeTo: this.route });
       },

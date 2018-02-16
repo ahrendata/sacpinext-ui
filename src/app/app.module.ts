@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RestangularModule } from 'ngx-restangular';
-import { BsDropdownModule, ModalModule } from 'ngx-bootstrap';
+import { BsDropdownModule, ModalModule, TooltipModule } from 'ngx-bootstrap';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { Http, HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -25,8 +25,8 @@ export function restangularProviderConfigurer(restangularProvider: any, config: 
   declarations: [
     AppComponent
   ],
-  imports: [  
-  FormsModule,
+  imports: [
+    FormsModule,
     BrowserModule,
     ReactiveFormsModule,
     HttpModule,
@@ -37,9 +37,10 @@ export function restangularProviderConfigurer(restangularProvider: any, config: 
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
     ToastModule.forRoot(),
+    TooltipModule.forRoot(),
     AppRoutingModule,
     SharedModule,
-    CoreModule    
+    CoreModule
   ],
   providers: [
     ConfigService,

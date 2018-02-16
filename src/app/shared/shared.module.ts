@@ -1,6 +1,6 @@
 import { YesNoPipe } from './pipes/yes-no.pipe';
 import { ToDatePipe } from './pipes/to-date.pipe';
-import { BsDropdownModule, ModalModule } from 'ngx-bootstrap';
+import { BsDropdownModule, ModalModule, TooltipModule } from 'ngx-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
@@ -45,6 +45,7 @@ import { NavigationModule, WizardModule } from 'patternfly-ng';
     ReactiveFormsModule,
     BsDropdownModule,
     ModalModule,
+    TooltipModule,
     NgSelectModule,
     ToolbarModule,
     ListModule,
@@ -77,6 +78,7 @@ import { NavigationModule, WizardModule } from 'patternfly-ng';
   exports: [
     BsDropdownModule,
     ModalModule,
+    TooltipModule,
     NgSelectModule,
     ToolbarModule,
     ListModule,

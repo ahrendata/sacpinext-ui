@@ -50,23 +50,26 @@ export class NumberMaskDirective implements AfterViewInit, ControlValueAccessor,
 
   @HostListener('cut', ['$event'])
   handleCut(event: any) {
-    if (!this.isChromeAndroid()) {
-      this.inputHandler.handleCut(event);
-    }
+    this.inputHandler.handleCut(event);
+    // if (!this.isChromeAndroid()) {
+    //   this.inputHandler.handleCut(event);
+    // }
   }
 
   @HostListener('input', ['$event'])
   handleInput(event: any) {
-    if (this.isChromeAndroid()) {
-      this.inputHandler.handleInput(event);
-    }
+    this.inputHandler.handleInput(event);
+    // if (this.isChromeAndroid()) {
+    //   this.inputHandler.handleInput(event);
+    // }
   }
 
   @HostListener('keydown', ['$event'])
   handleKeydown(event: any) {
-    if (!this.isChromeAndroid()) {
-      this.inputHandler.handleKeydown(event);
-    }
+    this.inputHandler.handleKeydown(event);
+    // if (!this.isChromeAndroid()) {
+    //   this.inputHandler.handleKeydown(event);
+    // }
   }
 
   @HostListener('keypress', ['$event'])
@@ -76,9 +79,10 @@ export class NumberMaskDirective implements AfterViewInit, ControlValueAccessor,
 
   @HostListener('paste', ['$event'])
   handlePaste(event: any) {
-    if (!this.isChromeAndroid()) {
-      this.inputHandler.handlePaste(event);
-    }
+    this.inputHandler.handlePaste(event);
+    // if (!this.isChromeAndroid()) {
+    //   this.inputHandler.handlePaste(event);
+    // }
   }
 
   isChromeAndroid(): boolean {

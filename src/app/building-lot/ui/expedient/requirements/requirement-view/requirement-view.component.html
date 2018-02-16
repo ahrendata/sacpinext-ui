@@ -48,28 +48,28 @@
               </fieldset>
               <dl class="dl-horizontal left">
                 <dt> Fecha Creación
-                  <span ngbTooltip="Fecha Creación" placement="right" class="pficon pficon-help text-muted small"></span>
+                  <span tooltip="Fecha Creación" placement="top" class="pficon pficon-help text-muted small"></span>
                 </dt>
                 <dd *ngIf="requirement.CreateDate">{{requirement.CreateDate | toDate | date: 'dd/MM/y HH:mm:ss'}}</dd>
                 <dd *ngIf="!requirement.CreateDate">
                   <em>No Registrado</em>
                 </dd>
                 <dt> Fecha Atención
-                  <span ngbTooltip="Fecha Atención" placement="right" class="pficon pficon-help text-muted small"></span>
+                  <span tooltip="Fecha Atención" placement="top" class="pficon pficon-help text-muted small"></span>
                 </dt>
                 <dd *ngIf="requirement.AtentionDate">{{requirement.AtentionDate | toDate | date: 'dd/MM/y HH:mm:ss'}}</dd>
                 <dd *ngIf="!requirement.AtentionDate">
                   <em>No Registrado</em>
                 </dd>
                 <dt> Tipo Requerimiento
-                  <span ngbTooltip="Tipo Requerimiento" placement="right" class="pficon pficon-help text-muted small"></span>
+                  <span tooltip="Tipo Requerimiento" placement="top" class="pficon pficon-help text-muted small"></span>
                 </dt>
                 <dd *ngIf="requirement.TypeRequirement">{{requirement.TypeRequirement}}</dd>
                 <dd *ngIf="!requirement.TypeRequirement">
                   <em>No Registrado</em>
                 </dd>
                 <dt> Centro de Costo
-                  <span ngbTooltip="Centro de Costo" placement="right" class="pficon pficon-help text-muted small"></span>
+                  <span tooltip="Centro de Costo" placement="top" class="pficon pficon-help text-muted small"></span>
                 </dt>
                 <dd *ngIf="requirement.AliasExpedient">{{requirement.AliasExpedient}}</dd>
                 <dd *ngIf="!requirement.AliasExpedient">

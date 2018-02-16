@@ -16,7 +16,7 @@
 
             <div class="form-group" [sacpiFormFieldValidationState]="form.get('UserName')">
               <label class="col-sm-3 col-md-3 control-label" [sacpiFormRequiredLabel]="form.get('UserName')">Usuario
-                <i class="fa fa-question-circle text-muted" ngbTooltip="Usuario del sistema" placement="right"></i>
+                <i class="fa fa-question-circle text-muted" tooltip="Usuario del sistema" placement="top"></i>
               </label>
               <div class="col-sm-9 col-md-9">
                 <input formControlName="UserName" type="text" class="form-control" autofocus/>
@@ -26,7 +26,7 @@
             </div>
             <div class="form-group" [sacpiFormFieldValidationState]="form.get('Password')">
               <label class="col-sm-3 col-md-3 control-label" [sacpiFormRequiredLabel]="form.get('Password')">Constraseña
-                <i class="fa fa-question-circle text-muted" ngbTooltip="Contraseña del sistema" placement="right"></i>
+                <i class="fa fa-question-circle text-muted" tooltip="Contraseña del sistema" placement="top"></i>
               </label>
               <div class="col-sm-9 col-md-9">
                 <input formControlName="Password" type="password" class="form-control" />

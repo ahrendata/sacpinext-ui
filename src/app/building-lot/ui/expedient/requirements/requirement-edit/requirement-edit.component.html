@@ -33,7 +33,7 @@
           <div class="col-md-2">
             <div class="form-group" [sacpiFormFieldValidationState]="form.get('IdTypeRequirement')">
               <label class="control-label" [sacpiFormRequiredLabel]="form.get('IdTypeRequirement')">Tipo Requerimiento
-                <i class="fa fa-question-circle text-muted" ngbTooltip="Fecha atencion del requiremiento" placement="right"></i>
+                <i class="fa fa-question-circle text-muted" tooltip="Fecha atencion del requiremiento" placement="top"></i>
               </label>
               <ng-select formControlName="IdTypeRequirement" class="ng-select-sacpi" [items]="requirementType" bindLabel="Descryption"
                 bindValue="IdContenedor" placeholder="Seleccione expediente"></ng-select>
@@ -44,7 +44,7 @@
           <div class="col-md-2">
             <div class="form-group" [sacpiFormFieldValidationState]="form.get('IdExpedient')">
               <label class="control-label" [sacpiFormRequiredLabel]="form.get('IdExpedient')">Centro de Costo
-                <i class="fa fa-question-circle text-muted" ngbTooltip="Expediente" placement="right"></i>
+                <i class="fa fa-question-circle text-muted" tooltip="Centro de costo" placement="top"></i>
               </label>
               <ng-select formControlName="IdExpedient" class="ng-select-sacpi" [items]="expedients" bindLabel="Alias" bindValue="IdExpediente"
                 placeholder="Seleccione expediente"></ng-select>

@@ -34,7 +34,7 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
   routingSub: Subscription;
   search = new EventEmitter<string>();
 
-  numberMask = { allowDecimal: true, decimalLimit: 2 };
+  // numberMask = { allowDecimal: true, decimalLimit: 2 };
 
   constructor(private router: Router, private route: ActivatedRoute,
     private formBuilder: FormBuilder, private dataService: DataService,

@@ -21,20 +21,18 @@ import { FormFieldsStatusComponent } from './components/form-fields-status/form-
 import { FormFieldValidationStateDirective } from './directives/form-field-validation-state.directive';
 import { FormRequiredLabelDirective } from './directives/form-required-label.directive';
 import { NumberMaskDirective } from './directives/number-mask.directive';
-import { ButtonLoginComponent } from './components/button-login/button-login.component';
+import { OnlyNumberDirective } from './directives/only-number.directive';
+import { EqualValidatorDirective } from './directives/password-match.directive';
 
 import { NgSelectModule } from '@ng-select/ng-select';
 
-
 import { ButtonAddComponent } from './components/button-add/button-add.component';
 import { ButtonConfirmarComponent } from './components/button-confirmar/button-confirmar.component';
-
-import { ToolbarModule } from 'patternfly-ng/toolbar';
-import { ListModule } from 'patternfly-ng/list';
-import { ActionModule } from 'patternfly-ng/action';
-import { PaginationModule } from 'patternfly-ng/pagination';
+import { ButtonLoginComponent } from './components/button-login/button-login.component';
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
-import { NavigationModule, WizardModule } from 'patternfly-ng';
+
+import { NavigationModule, WizardModule, PaginationModule, ActionModule, ListModule, ToolbarModule } from 'patternfly-ng';
+
 
 @NgModule({
   imports: [
@@ -72,6 +70,8 @@ import { NavigationModule, WizardModule } from 'patternfly-ng';
     FormFieldsStatusComponent,
     FormRequiredLabelDirective,
     NumberMaskDirective,
+    OnlyNumberDirective,
+    EqualValidatorDirective,
     FormFieldValidationStateDirective,
     ConfirmationModalComponent
   ],
@@ -101,7 +101,7 @@ import { NavigationModule, WizardModule } from 'patternfly-ng';
     YesNoPipe,
     FormFieldValidationMessagesComponent,
     FormFieldsStatusComponent,
-
+    OnlyNumberDirective,
     NumberMaskDirective,
     FormRequiredLabelDirective,
     FormFieldValidationStateDirective,

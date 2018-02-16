@@ -31,11 +31,13 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
   requirementSub: Subscription;
   search = new EventEmitter<string>();
 
-  numberMask = { allowDecimal: true, decimalLimit: 2 };
+  // numberMask = { allowDecimal: true, decimalLimit: 2 };
 
-
-  constructor(private router: Router, private route: ActivatedRoute,
-    private formBuilder: FormBuilder, private dataService: DataService,
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder,
+    private dataService: DataService,
     private notification: ToastsManager,
     private viewContainerRef: ViewContainerRef
   ) {
@@ -184,7 +186,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
       const queryParams: URLSearchParams = new URLSearchParams();
       queryParams.set('id', id);
       queryParams.set('idUser', iduser);
-      this.dataService.requeriments().deletedetail( queryParams).subscribe((data) => {
+      this.dataService.requeriments().deletedetail(queryParams).subscribe((data) => {
         this.detalle.removeAt(index);
         this.notification.info('Producto eliminado del requiremiento.', 'Informacion');
       },

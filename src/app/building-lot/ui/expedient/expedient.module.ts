@@ -12,7 +12,7 @@ const routes: Routes = [
   {
     path: 'requirements',
     loadChildren: 'app/building-lot/ui/expedient/requirements/requirements.module#RequirementModule'
-  }  
+  }
 ];
 
 @NgModule({
@@ -24,7 +24,7 @@ const routes: Routes = [
     ShellComponentModule,
 
     SharedModule,
-    CoreModule,
+    CoreModule
   ],
   declarations: []
 })

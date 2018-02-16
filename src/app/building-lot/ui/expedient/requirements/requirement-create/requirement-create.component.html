@@ -81,7 +81,7 @@
                       </sacpi-form-field-validation-messages>
                     </td>
                     <td [sacpiFormFieldValidationState]="item.get('Quantity')">
-                      <input formControlName="Quantity" [sacpiNumberMask]="numberMask" type="text" class="form-control text-right">
+                      <input formControlName="Quantity" type="number" min="1" placeholder="0.00" class="form-control text-right">
                       <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('Quantity')">
                       </sacpi-form-field-validation-messages>
                     </td>
@@ -118,7 +118,7 @@
                       </div>
                     </td>
                     <td [sacpiFormFieldValidationState]="item.get('Accumulate')">
-                      <input formControlName="Accumulate" [sacpiNumberMask]="numberMask" type="text" class="form-control text-right" readonly>
+                      <input formControlName="Accumulate"  type="number" min="0" placeholder="0.00" class="form-control text-right" readonly>
                       <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('Accumulate')">
                       </sacpi-form-field-validation-messages>
                     </td>

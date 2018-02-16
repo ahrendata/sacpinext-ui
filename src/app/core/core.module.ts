@@ -23,6 +23,7 @@ import { LoadingService } from './loading/loading.service';
 import { BsModalService } from 'ngx-bootstrap';
 import { DialogComponent } from './dialog/dialog.component';
 import { ToastsManager } from 'ng2-toastr';
+import { TruncatePipe } from './../shared/pipes/truncate.pipe';
 
 @NgModule({
   imports: [
@@ -41,17 +42,11 @@ import { ToastsManager } from 'ng2-toastr';
   ],
   providers: [
     DataService,
-    // RestangularService,
     {
       provide: RestangularService,
       useFactory: RestangularServiceFactory,
       deps: [Http, Router, ConfigService]
     },
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: CustomInterceptor,
-    //   multi: true,
-    // },
     LoadingService,
     ExpedientService,
     RequirementService,
@@ -60,7 +55,8 @@ import { ToastsManager } from 'ng2-toastr';
     ProductService,
     RequirementTypeService,
     TokenService,
-    BsModalService
+    BsModalService,
+    TruncatePipe
   ]
 })
 export class CoreModule { }

@@ -10,7 +10,6 @@ import { ToastsManager } from 'ng2-toastr';
 
 import { Expedient } from './../../../core/model/expedient.model';
 import { DataService } from '../../../core/data/data.service';
-import { TruncatePipe } from '../../../shared/pipes/truncate.pipe';
 
 import { ActionConfig, Action } from 'patternfly-ng/action';
 import { FilterConfig, FilterField, FilterType, FilterEvent, Filter } from 'patternfly-ng/filter';

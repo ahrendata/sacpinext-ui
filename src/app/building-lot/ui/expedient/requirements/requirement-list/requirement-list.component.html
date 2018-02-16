@@ -21,34 +21,36 @@
           <pfng-list [actionTemplate]="actionTemplate" [config]="listConfig" [items]="requirements" [itemTemplate]="itemTemplate">
             <ng-template #itemTemplate let-item="item" let-index="index">
               <div class="list-pf-left">
-                <span *ngIf="item.Status" class="fa fa-list-alt  list-pf-icon list-pf-icon-bordered list-pf-icon-small"></span>
-                <span *ngIf="!item.Status" class="fa fa-list-alt  list-pf-icon list-pf-icon-bordered-confirm list-pf-icon-small"></span>
+                <span *ngIf="item.Status" class="fa fa-list-alt  list-pf-icon list-pf-icon-bordered list-pf-icon-small" tooltip="Requerimiento confirmado"
+                  placement="top"></span>
+                <span *ngIf="!item.Status" class="fa fa-list-alt  list-pf-icon list-pf-icon-bordered-confirm list-pf-icon-small" tooltip="Requerimiento sin confirmar (en temporal y/o borrador)"
+                  placement="top"></span>
               </div>
               <div class="list-pf-content-wrapper">
                 <div class="list-pf-main-content">
                   <div class="list-pf-title">
-                    {{item.CodRequirement}}
-                    <!-- <span *ngIf=item.Status class="pficon pficon-ok"></span> -->
+                    <span *ngIf="item.Status">{{item.CodRequirement}}</span>
+                    <span *ngIf="!item.Status" class="list-temporal">{{item.CodRequirement}}</span>
                   </div>
                   <div class="list-pf-description text-overflow-pf">{{item.AliasExpedient}}</div>
                   <div class="list-pf-description text-overflow-pf">{{item.TypeRequirement}}</div>
                 </div>
                 <div class="list-pf-additional-content">
                   <div>
-                    <span class="fa fa-calendar-plus-o"></span>
+                    <span class="fa fa-calendar-plus-o" tooltip="Fecha de atención máxima" placement="top"></span>
                     Plazo
                     <strong>{{item.AtentionDate| date:"dd/MM/yy"}} </strong>
                   </div>
                   <div>
-                    <span class="fa fa-money"></span>
+                    <span class="fa fa-money" tooltip="Porcentaje de productos con ordenes generados" placement="top"></span>
                     <strong> {{item.PercentBought|number:'1.2-2'}} % </strong> Comprado
                   </div>
                   <div>
-                    <span class="fa fa-truck"></span>
+                    <span class="fa fa-truck" tooltip="Porcentaje de productos con guía de remisión" placement="top"></span>
                     <strong> {{item.PercentSend|number:'1.2-2'}} % </strong> Enviado
                   </div>
                   <div>
-                    <span class="fa fa-calendar"></span>
+                    <span class="fa fa-calendar" tooltip="Fecha de creación" placement="top"></span>
                     Creado
                     <strong> {{item.CreateDate| date:"dd/MM/yy"}}</strong>
                   </div>
@@ -64,7 +66,8 @@
             </ng-template>
           </pfng-list>
           <pfng-pagination [config]='paginationConfig' (onPageSizeChange)="handlePageSize($event)" (onPageNumberChange)="handlePageNumber($event)"></pfng-pagination>
-          <br><br>
+          <br>
+          <br>
         </div>
       </div>
     </div>

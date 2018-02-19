@@ -260,13 +260,8 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
     );
   }
 
-  save(status: boolean) {
-    if (!this.form.value.detalle || this.form.value.detalle.length === 0) {
-      this.notification.warning('Agrege al menos un detalle al requerimiento.', 'Alerta');
-      return;
-    }
+  save() {    
     let details: any[] = [];
-
     let iduser = this.dataService.users().getUserId();
     this.detalle.controls.forEach(formControl => {
       let element = formControl.value;
@@ -303,7 +298,8 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-    this.router.navigate(['../'], { relativeTo: this.route });
+    this.save();
+   // this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   get detalle(): FormArray {

@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 const defaults = Object.freeze({
-  apiEndpoint: window['ClarksnutUIEnv']['apiUrl']
+  apiEndpoint: window['SacpiNextUIEnv']['apiUrl']
 });
 export function configServiceInitializer(config: ConfigService) {
   return () => config.load();

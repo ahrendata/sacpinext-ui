@@ -21,6 +21,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;
   Codigo: string;
   loading = false;
+  delete=false;
   working = false;
 
   requirementType: any[] = [];
@@ -30,8 +31,6 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
 
   requirementSub: Subscription;
   search = new EventEmitter<string>();
-
-  // numberMask = { allowDecimal: true, decimalLimit: 2 };
 
   constructor(
     private router: Router,
@@ -53,8 +52,12 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
       });
   }
   ngAfterViewInit() {
-    let requirementObs = Observable.interval(10000);
-    this.requirementSub = requirementObs.subscribe(item => this.saveAll());
+    let requirementObs = Observable.interval(5000);
+    this.requirementSub = requirementObs.subscribe(item => {
+      if (!this.working) {
+        this.saveAll()
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -143,6 +146,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
     this.detalle.controls.forEach(formControl => {
       let element = formControl.value;
       if (element.Status === 2 && element.IdProduct && element.IdUnidCode && element.Quantity) {
+        this.working = true;
         let details: any[] = [];
         details.push({
           IdRequirementDetails: element.IdRequirementDetails,
@@ -160,6 +164,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
           Details: details
         };
         this.dataService.requeriments().create(requerimiento).subscribe(response => {
+          this.working = false;
           this.notification.success('Nuevo Producto agregado al requerimiento.', 'Informacion');
           this.Codigo = response.CodRequirement;
           this.form.patchValue({
@@ -173,6 +178,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
           });
         },
           (error) => {
+            this.working = false;
             this.notification.warning('Problemas al agregar producto al requerimiento.', 'Alerta');
           });
       }
@@ -182,71 +188,41 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
   removeDetalleFormControl(item: FormGroup, index: number) {
     let id = item.value.IdRequirementDetails;
     let iduser: any = this.dataService.users().getUserId();
+    if(this.working){ this.notification.warning('Operaciones en proceso, por favor espere hasta terminar y vuelva eliminar.', 'Alerta'); return;}
+    this.delete=true;
     if (id) {
       const queryParams: URLSearchParams = new URLSearchParams();
       queryParams.set('id', id);
       queryParams.set('idUser', iduser);
       this.dataService.requeriments().deletedetail(queryParams).subscribe((data) => {
+        this.delete=false;
         this.detalle.removeAt(index);
         this.notification.info('Producto eliminado del requiremiento.', 'Informacion');
       },
         (error) => {
+          this.delete=false;
           this.notification.error('Error al eliminar producto del requerimiento.', 'Error');
         });
 
     } else {
       this.detalle.removeAt(index);
+      this.delete=false;
     }
   }
 
   confirmar(form: FormGroup): void {
-    if (!form.value.detalle || form.value.detalle.length === 0) {
-      this.notification.warning('Agrege al menos un detalle al requerimiento.', 'Alerta');
-      return;
-    }
-    let details: any[] = [];
-
-    let iduser = this.dataService.users().getUserId();
-    this.detalle.controls.forEach(formControl => {
-      let element = formControl.value;
-      if (element.Status === 2 && element.IdProduct && element.IdUnidCode && element.Quantity) {
-        details.push({
-          IdRequirementDetails: element.IdRequirementDetails,
-          IdProduct: element.IdProduct.IdProducto,
-          IdUnidCode: element.IdUnidCode,
-          Quantity: element.Quantity,
-          Observation: element.Observation
-        });
-      }
-    });
-    let requerimiento = {
-      AtentionDate: new Date(),
-      IdExpedient: this.form.value.IdExpedient,
-      IdTypeRequirement: this.form.value.IdTypeRequirement,
-      IdRequirement: this.form.value.IdRequirement,
-      IdUser: iduser,
-      Details: details
-    };
-    if (details.length > 0) {
-      this.dataService.requeriments().create(requerimiento).subscribe(response => {
-        this.notification.success('Nuevo Producto agregado al requerimiento.', 'Informacion');
-        this.enviar(form);
-      },
-        (error) => {
-          this.notification.warning('Problemas al agregar producto al requerimiento.', 'Alerta');
-        });
-
+    if (!this.working) {
+      this.save(true);
     } else {
-      this.enviar(form);
+      this.enviar();
     }
   }
-  enviar(form: FormGroup) {
+  enviar() {
     let iduser: any = this.dataService.users().getUserId();
     this.working = true;
     const queryParams: URLSearchParams = new URLSearchParams();
-    queryParams.set('idRequeriment', form.value.IdRequirement);
+    queryParams.set('idRequeriment', this.form.value.IdRequirement);
     queryParams.set('idUser', iduser);
-
     this.dataService.requeriments().confirmar(queryParams).subscribe(
       response => {
         this.notification.info('Requerimiento enviado a la central', 'Informacion');
@@ -260,8 +236,9 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
     );
   }
 
-  save() {    
+  save(confirmar: boolean = false) {
     let details: any[] = [];
+    this.working = true;
     let iduser = this.dataService.users().getUserId();
     this.detalle.controls.forEach(formControl => {
       let element = formControl.value;
@@ -286,10 +263,12 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
     if (details.length > 0) {
       this.dataService.requeriments().create(requerimiento).subscribe(response => {
         this.notification.success('Nuevo Producto agregado al requerimiento.', 'Informacion');
-        this.working = false;
-        this.router.navigate(['../'], { relativeTo: this.route });
+        if (confirmar) { this.enviar(); } else {
+          this.router.navigate(['../'], { relativeTo: this.route });
+        }
       },
         (error) => {
+          this.working = false;
           this.notification.warning('Problemas al agregar producto al requerimiento.', 'Alerta');
         });
     } else {
@@ -298,8 +277,9 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-    this.save();
-   // this.router.navigate(['../'], { relativeTo: this.route });
+    if (this.working) { this.notification.warning('El requerimiento se esta guardando.... espere por favor.', 'Alerta'); } else {
+      this.save();
+    }
   }
 
   get detalle(): FormArray {

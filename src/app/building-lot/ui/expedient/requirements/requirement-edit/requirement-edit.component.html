@@ -98,9 +98,9 @@
                     </td>
                     <td class="table-view-pf-actions">
                       <div class="table-view-pf-btn">
-                        <button class="btn btn-default" type="button" (click)="removeDetalleFormControl(item,i)">
-                          <span class="fa fa-trash"></span>
-                          Eliminar
+                        <button class="btn btn-default" type="button" (click)="removeDetalleFormControl(item,i)" [disabled]="delete">
+                          <span class="fa fa-trash"></span> <span [hidden]="!delete">Eliminando...</span>
+                          <span [hidden]="delete">Eliminar</span>
                         </button>
                       </div>
                     </td>

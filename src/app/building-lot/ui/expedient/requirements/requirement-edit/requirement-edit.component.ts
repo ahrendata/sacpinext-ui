@@ -181,6 +181,7 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
     this.working = record > 0;
     if (record === 0) {
       if (confirm) { this.enviarConfirm(); }
+      if (home) { this.home(); }
     }
     form.forEach((formControl, i) => {
       let element = formControl.value;
@@ -215,6 +216,7 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
         if (record === (i + 1)) {
           this.working = false;
           if (confirm) { this.enviarConfirm(); }
+          if (home) { this.home(); }
         }
       },
         (error) => {
@@ -223,8 +225,7 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
             this.working = false;
           }
         });
-    });
-    if (home) { this.home(); }
+    }); 
   }
 
   removeDetalleFormControl(item: FormGroup, index: number) {
@@ -292,7 +293,6 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-    console.log("cancel");
     if (this.working) { this.notification.warning('El requerimiento se esta guardando.... espere por favor.', 'Alerta'); return; }
     this.saveAll(false, true);
   }

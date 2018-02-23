@@ -21,7 +21,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;
   Codigo: string;
   loading = false;
-  delete=false;
+  delete = false;
   working = false;
 
   requirementType: any[] = [];
@@ -80,11 +80,9 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
   }
 
   loadDataForm() {
-    this.loading = true;
     this.loadExpedients();
     this.loadUnitCodes();
     this.loadRequirementType();
-    this.loading = false;
   }
 
   addDetalleFormControl(): void {
@@ -117,18 +115,21 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
   }
 
   loadExpedients() {
+    this.loading = true;
     let id = this.dataService.users().getEmployeeId();
     const queryParams: URLSearchParams = new URLSearchParams();
     queryParams.set('id', id.toString());
-    this.dataService.expedients().getAll(queryParams).subscribe((data: any[]) => { this.expedients = data; });
+    this.dataService.expedients().getAll(queryParams).subscribe((data: any[]) => { this.expedients = data; this.loading = false; });
   }
 
   loadUnitCodes() {
-    this.dataService.unitcodes().getAll().subscribe((data: any[]) => { this.units = data; });
+    this.loading = true;
+    this.dataService.unitcodes().getAll().subscribe((data: any[]) => { this.units = data; this.loading = false; });
   }
 
   loadRequirementType() {
-    this.dataService.requerimenttype().getAll().subscribe((data: any[]) => { this.requirementType = data; });
+    this.loading = true;
+    this.dataService.requerimenttype().getAll().subscribe((data: any[]) => { this.requirementType = data; this.loading = false; });
   }
 
   searchProduct(value: string): Observable<any[]> {
@@ -138,86 +139,99 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
     return this.dataService.products().getAll(queryParams);
   }
 
-  saveAll() {
+  saveAll(confirm: boolean = false, home: boolean = false) {
     let iduser = this.dataService.users().getUserId();
     if (!this.form || !this.form.value.IdExpedient || !this.form.value.IdTypeRequirement) {
+      if (home) { this.home(); }
       return;
     }
-    this.detalle.controls.forEach(formControl => {
+    let form = this.detalle.controls.filter((f) => f.valid && f.value.Status === 2), record = form.length;
+    this.working = record > 0;
+    if (record === 0) {
+      if (confirm) { this.enviarConfirm(); }
+    }
+    form.forEach((formControl, i) => {
       let element = formControl.value;
-      if (element.Status === 2 && element.IdProduct && element.IdUnidCode && element.Quantity) {
-        this.working = true;
-        let details: any[] = [];
-        details.push({
-          IdRequirementDetails: element.IdRequirementDetails,
-          IdProduct: element.IdProduct.IdProducto,
-          IdUnidCode: element.IdUnidCode,
-          Quantity: element.Quantity,
-          Observation: element.Observation
+      let details: any[] = [];
+      details.push({
+        IdRequirementDetails: element.IdRequirementDetails,
+        IdProduct: element.IdProduct.IdProducto,
+        IdUnidCode: element.IdUnidCode,
+        Quantity: element.Quantity,
+        Observation: element.Observation
+      });
+      let requerimiento = {
+        AtentionDate: new Date(),
+        IdExpedient: this.form.value.IdExpedient,
+        IdTypeRequirement: this.form.value.IdTypeRequirement,
+        IdRequirement: this.form.value.IdRequirement,
+        IdUser: iduser,
+        Details: details
+      };
+      this.dataService.requeriments().create(requerimiento).subscribe(response => {
+        this.Codigo = response.CodRequirement;
+        this.form.patchValue({
+          CodRequirement: response.CodRequirement,
+          IdRequirement: response.IdRequirement
         });
-        let requerimiento = {
-          AtentionDate: new Date(),
-          IdExpedient: this.form.value.IdExpedient,
-          IdTypeRequirement: this.form.value.IdTypeRequirement,
-          IdRequirement: this.form.value.IdRequirement,
-          IdUser: iduser,
-          Details: details
-        };
-        this.dataService.requeriments().create(requerimiento).subscribe(response => {
+        formControl.patchValue({
+          IdRequirementDetails: response.Details[0].IdRequirementDetails,
+          Accumulate: response.Details[0].Accumulate,
+          Status: 1
+        });
+        this.notification.success('Nuevo Producto agregado al requerimiento.', 'Informacion');
+        if (record === (i + 1)) {
           this.working = false;
-          this.notification.success('Nuevo Producto agregado al requerimiento.', 'Informacion');
-          this.Codigo = response.CodRequirement;
-          this.form.patchValue({
-            CodRequirement: response.CodRequirement,
-            IdRequirement: response.IdRequirement
-          });
-          formControl.patchValue({
-            IdRequirementDetails: response.Details[0].IdRequirementDetails,
-            Accumulate: response.Details[0].Accumulate,
-            Status: 1
-          });
-        },
-          (error) => {
+          if (confirm) { this.enviarConfirm(); }
+        }
+      },
+        (error) => {
+          this.notification.warning('Problemas al agregar producto al requerimiento.', 'Alerta');
+          if (record === (i + 1)) {
             this.working = false;
-            this.notification.warning('Problemas al agregar producto al requerimiento.', 'Alerta');
-          });
-      }
+          }
+        });
     });
+    if (home) { this.home(); }
   }
 
   removeDetalleFormControl(item: FormGroup, index: number) {
     let id = item.value.IdRequirementDetails;
     let iduser: any = this.dataService.users().getUserId();
-    if(this.working){ this.notification.warning('Operaciones en proceso, por favor espere hasta terminar y vuelva eliminar.', 'Alerta'); return;}
-    this.delete=true;
+    if (this.working) { this.notification.warning('Operaciones en proceso, por favor espere hasta terminar y vuelva eliminar.', 'Alerta'); return; }
+    this.delete = true;
     if (id) {
       const queryParams: URLSearchParams = new URLSearchParams();
       queryParams.set('id', id);
       queryParams.set('idUser', iduser);
       this.dataService.requeriments().deletedetail(queryParams).subscribe((data) => {
-        this.delete=false;
+        this.delete = false;
         this.detalle.removeAt(index);
         this.notification.info('Producto eliminado del requiremiento.', 'Informacion');
       },
         (error) => {
-          this.delete=false;
+          this.delete = false;
           this.notification.error('Error al eliminar producto del requerimiento.', 'Error');
         });
 
     } else {
       this.detalle.removeAt(index);
-      this.delete=false;
+      this.delete = false;
     }
   }
 
   confirmar(form: FormGroup): void {
-    if (!this.working) {
-      this.save(true);
-    } else {
-      this.enviar();
+    if (this.working) {
+      this.notification.warning('El requerimiento se esta guardando.... espere por favor.', 'Alerta');
+      return;
     }
+    this.saveAll(true, false);
   }
-  enviar() {
+  enviarConfirm() {
+    if (this.working) {
+      this.notification.warning('El requerimiento se esta guardando.... espere por favor.', 'Alerta');
+      return;
+    }
     let iduser: any = this.dataService.users().getUserId();
     this.working = true;
     const queryParams: URLSearchParams = new URLSearchParams();
@@ -236,50 +250,18 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
     );
   }
 
-  save(confirmar: boolean = false) {
-    let details: any[] = [];
-    this.working = true;
-    let iduser = this.dataService.users().getUserId();
-    this.detalle.controls.forEach(formControl => {
-      let element = formControl.value;
-      if (element.Status === 2 && element.IdProduct && element.IdUnidCode && element.Quantity) {
-        details.push({
-          IdRequirementDetails: element.IdRequirementDetails,
-          IdProduct: element.IdProduct.IdProducto,
-          IdUnidCode: element.IdUnidCode,
-          Quantity: element.Quantity,
-          Observation: element.Observation
-        });
-      }
-    });
-    let requerimiento = {
-      AtentionDate: new Date(),
-      IdExpedient: this.form.value.IdExpedient,
-      IdTypeRequirement: this.form.value.IdTypeRequirement,
-      IdRequirement: this.form.value.IdRequirement,
-      IdUser: iduser,
-      Details: details
-    };
-    if (details.length > 0) {
-      this.dataService.requeriments().create(requerimiento).subscribe(response => {
-        this.notification.success('Nuevo Producto agregado al requerimiento.', 'Informacion');
-        if (confirmar) { this.enviar(); } else {
-          this.router.navigate(['../'], { relativeTo: this.route });
-        }
-      },
-        (error) => {
-          this.working = false;
-          this.notification.warning('Problemas al agregar producto al requerimiento.', 'Alerta');
-        });
-    } else {
-      this.router.navigate(['../'], { relativeTo: this.route });
+  home() {
+    if (this.working) {
+      this.notification.warning('El requerimiento se esta guardando.... espere por favor.', 'Alerta');
+      return;
     }
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   cancel() {
-    if (this.working) { this.notification.warning('El requerimiento se esta guardando.... espere por favor.', 'Alerta'); } else {
-      this.save();
-    }
+    console.log("cancel");
+    if (this.working) { this.notification.warning('El requerimiento se esta guardando.... espere por favor.', 'Alerta'); return; }
+    this.saveAll(false, true);
   }
 
   get detalle(): FormArray {

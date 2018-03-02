@@ -65,7 +65,7 @@
                   <td class="text-right">Cantidad</td>
                   <td class="text-center">Unidad Medida</td>
                   <td class="text-left">Descripcion</td>
-                  <td colspan="2" rowspan="1" class="text-center">Acciones</td>
+                  <td colspan="3" rowspan="1" class="text-center">Acciones</td>
                   <td class="text-right">Acumulado</td>
                 </tr>
 
@@ -98,22 +98,31 @@
                     </td>
                     <td class="table-view-pf-actions">
                       <div class="table-view-pf-btn">
-                        <button class="btn btn-default" type="button" (click)="removeDetalleFormControl(item,i)" [disabled]="delete">
-                          <span class="fa fa-trash"></span> <span [hidden]="!delete">Eliminando...</span>
-                          <span [hidden]="delete">Eliminar</span>
+                        <button class="btn btn-default" type="button" (click)="removeDetalleFormControl(item,i)" *ngIf="item.get('Delete').value==0">
+                          <span class="fa fa-trash" style="color:red;" tooltip="Eliminar producto" placement="top"></span>
+                        </button>
+                        <button class="btn btn-default" type="button" *ngIf="item.get('Delete').value==1">
+                          <span class="fa fa-spinner" tooltip="Eliminando producto" placement="top"></span>
                         </button>
                       </div>
                     </td>
                     <td class="table-view-pf-actions">
                       <div class="dropdown dropdown-kebab-pf">
                         <button class="btn btn-default" type="button" *ngIf="item.get('Status').value==1">
-                          <span class="pficon pficon-ok"></span>
+                          <span class="pficon pficon-ok" tooltip="Producto agregado al requerimiento" placement="top"></span>
                         </button>
                         <button class="btn btn-default" type="button" *ngIf="item.get('Status').value==2">
-                          <span class="pficon pficon-warning-triangle-o"></span>
+                          <span class="pficon pficon-warning-triangle-o" tooltip="Producto por guardar y/o en temporal" placement="top"></span>
                         </button>
                         <button class="btn btn-default" type="button" *ngIf="item.get('Status').value==0">
-                          <span class="pficon pficon-error-circle-o"></span>
+                          <span class="pficon pficon-error-circle-o" tooltip="Producto eliminado" placement="top"></span>
+                        </button>
+                      </div>
+                    </td>
+                    <td class="table-view-pf-actions">
+                      <div class="dropdown dropdown-kebab-pf">
+                        <button class="btn btn-default" type="button" *ngIf="item.get('Duplicate').value==1">
+                          <span class="fa fa-bell" style="color:red;" tooltip="Producto Duplicado" placement="top"></span>
                         </button>
                       </div>
                     </td>

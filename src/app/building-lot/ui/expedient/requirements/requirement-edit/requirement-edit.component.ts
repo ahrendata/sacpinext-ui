@@ -24,7 +24,6 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
   loading = false;
   working = false;
   Codigo: string;
-  delete = false;
 
   requirementType: any[] = [];
   expedients: any[] = [];
@@ -56,7 +55,7 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
     let requirementObs = Observable.interval(10000);
     this.requirementSub = requirementObs.subscribe(item => {
       if (!this.working) {
-        this.saveAll()
+        this.saveAll();
       }
     });
   }
@@ -90,7 +89,9 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
             Quantity: [item.Quantity, Validators.compose([Validators.required, Validators.minLength(1)])],
             Observation: [item.Observation, Validators.compose([Validators.maxLength(150)])],
             Accumulate: [item.Accumulate, Validators.compose([Validators.maxLength(150)])],
-            Status: [1]
+            Status: [1],
+            Duplicate: [0],
+            Delete: [0]
           });
           this.addObservableControl(formGroup);
           this.detalle.push(formGroup);
@@ -120,7 +121,9 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
       Quantity: [null, Validators.compose([Validators.required, Validators.minLength(1)])],
       Observation: [null, Validators.compose([Validators.maxLength(150)])],
       Accumulate: [null, Validators.compose([Validators.maxLength(150)])],
-      Status: [2]
+      Status: [2],
+      Duplicate: [0],
+      Delete: [0]
     });
     this.addObservableControl(formGroup);
     this.detalle.push(formGroup);
@@ -133,6 +136,19 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
 
   addObservableControl(formGroup: FormGroup) {
     formGroup.get("IdProduct").valueChanges.subscribe(value => {
+      this.allnotDuplicate();
+      let id = value.IdProducto, status = false;
+      this.detalle.controls.forEach(element => {
+        let item = element.value.IdProduct;
+        if (item) {
+          let form = this.detalle.controls.filter((f) => f.value.Duplicate === 0 && f.value.IdProduct && f.value.IdProduct.IdProducto === item.IdProducto), record = form.length;
+          if (record > 1) {
+            form.forEach(formControl => {
+              formControl.patchValue({ Duplicate: 1 });
+            });
+          }
+        }
+      });
       formGroup.patchValue({ Status: 2 });
     });
     formGroup.get("IdUnidCode").valueChanges.subscribe(value => {
@@ -171,6 +187,12 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
     return this.dataService.products().getAll(queryParams);
   }
 
+  allnotDuplicate(): void {
+    this.detalle.controls.forEach(element => {
+      element.patchValue({ Duplicate: 0 });
+    });
+  }
+
   saveAll(confirm: boolean = false, home: boolean = false) {
     let iduser = this.dataService.users().getUserId();
     if (!this.form || !this.form.value.IdExpedient || !this.form.value.IdTypeRequirement) {
@@ -179,13 +201,14 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
     }
     let form = this.detalle.controls.filter((f) => f.valid && f.value.Status === 2), record = form.length;
     this.working = record > 0;
-    if (record === 0) {
+    if (!this.working) {
       if (confirm) { this.enviarConfirm(); }
       if (home) { this.home(); }
+      return;
     }
+    let details: any[] = [];
     form.forEach((formControl, i) => {
       let element = formControl.value;
-      let details: any[] = [];
       details.push({
         IdRequirementDetails: element.IdRequirementDetails,
         IdProduct: element.IdProduct.IdProducto,
@@ -193,63 +216,66 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
         Quantity: element.Quantity,
         Observation: element.Observation
       });
-      let requerimiento = {
-        AtentionDate: new Date(),
-        IdExpedient: this.form.value.IdExpedient,
-        IdTypeRequirement: this.form.value.IdTypeRequirement,
-        IdRequirement: this.form.value.IdRequirement,
-        IdUser: iduser,
-        Details: details
-      };
-      this.dataService.requeriments().create(requerimiento).subscribe(response => {
-        this.Codigo = response.CodRequirement;
-        this.form.patchValue({
-          CodRequirement: response.CodRequirement,
-          IdRequirement: response.IdRequirement
-        });
-        formControl.patchValue({
-          IdRequirementDetails: response.Details[0].IdRequirementDetails,
-          Accumulate: response.Details[0].Accumulate,
-          Status: 1
-        });
-        this.notification.success('Nuevo Producto agregado al requerimiento.', 'Informacion');
-        if (record === (i + 1)) {
-          this.working = false;
-          if (confirm) { this.enviarConfirm(); }
-          if (home) { this.home(); }
-        }
-      },
-        (error) => {
-          this.notification.warning('Problemas al agregar producto al requerimiento.', 'Alerta');
-          if (record === (i + 1)) {
-            this.working = false;
+    });
+    let requerimiento = {
+      AtentionDate: new Date(),
+      IdExpedient: this.form.value.IdExpedient,
+      IdTypeRequirement: this.form.value.IdTypeRequirement,
+      IdRequirement: this.form.value.IdRequirement,
+      IdUser: iduser,
+      Details: details
+    };
+    this.dataService.requeriments().create(requerimiento).subscribe(response => {
+      this.Codigo = response.CodRequirement;
+      this.form.patchValue({
+        CodRequirement: response.CodRequirement,
+        IdRequirement: response.IdRequirement
+      });
+      response.Details.forEach(element => {
+        form.forEach(formControl => {
+          let item = formControl.value;
+          if (item.IdProduct.IdProducto === element.IdProduct
+            && item.IdUnidCode === element.IdUnidCode
+            && item.Quantity === element.Quantity) {
+            formControl.patchValue({
+              IdRequirementDetails: element.IdRequirementDetails,
+              Accumulate: element.Accumulate,
+              Status: 1
+            });
           }
         });
-    }); 
+      });
+      this.notification.success('Nuevo Producto agregado al requerimiento.', 'Informacion');
+      this.working = false;
+      if (confirm) { this.enviarConfirm(); }
+      if (home) { this.home(); }
+    },
+      (error) => {
+        this.notification.warning('Problemas al agregar producto al requerimiento.', 'Alerta');
+        this.working = false;
+      });
   }
 
-  removeDetalleFormControl(item: FormGroup, index: number) {
-    let id = item.value.IdRequirementDetails;
+  removeDetalleFormControl(formControl: FormGroup, index: number) {
+    let id = formControl.value.IdRequirementDetails;
     let iduser: any = this.dataService.users().getUserId();
     if (this.working) { this.notification.warning('Operaciones en proceso, por favor espere hasta terminar y vuelva eliminar.', 'Alerta'); return; }
-    this.delete = true;
+    formControl.patchValue({ Delete: 1 });
     if (id) {
       const queryParams: URLSearchParams = new URLSearchParams();
       queryParams.set('id', id);
       queryParams.set('idUser', iduser);
       this.dataService.requeriments().deletedetail(queryParams).subscribe((data) => {
-        this.delete = false;
         this.detalle.removeAt(index);
         this.notification.info('Producto eliminado del requiremiento.', 'Informacion');
       },
         (error) => {
-          this.delete = false;
+          formControl.patchValue({ Delete: 0 });
           this.notification.error('Error al eliminar producto del requerimiento.', 'Error');
         });
 
     } else {
       this.detalle.removeAt(index);
-      this.delete = false;
     }
   }
 

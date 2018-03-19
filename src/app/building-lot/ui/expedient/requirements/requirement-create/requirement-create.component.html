@@ -53,6 +53,16 @@
               </sacpi-form-field-validation-messages>
             </div>
           </div>
+          <div class="col-md-4">
+            <div class="form-group" [sacpiFormFieldValidationState]="form.get('Description')">
+              <label class="control-label" [sacpiFormRequiredLabel]="form.get('Description')">Descripción
+                <i class="fa fa-question-circle text-muted" tooltip="Descripción del Requerimiento" placement="top"></i>
+              </label>
+              <input formControlName="Description" type="text" class="form-control">
+              <sacpi-form-field-validation-messages [sacpiFormControl]="form.get('Description')">
+              </sacpi-form-field-validation-messages>
+            </div>
+          </div>
         </div>
 
         <!--/Entidad-->

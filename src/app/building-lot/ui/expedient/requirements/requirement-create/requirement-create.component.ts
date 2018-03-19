@@ -74,6 +74,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
       AtentionDate: [null, Validators.compose([Validators.maxLength(200)])],
       IdExpedient: [null, Validators.compose([Validators.required])],
       IdTypeRequirement: [null, Validators.compose([Validators.required])],
+      Description: [null, Validators.compose([Validators.required, Validators.maxLength(200)])],
       detalle: this.formBuilder.array([], Validators.compose([]))
     });
   }
@@ -160,7 +161,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
   }
   saveAll(confirm: boolean = false, home: boolean = false) {
     let iduser = this.dataService.users().getUserId();
-    if (!this.form || !this.form.value.IdExpedient || !this.form.value.IdTypeRequirement) {
+    if (!this.form || !this.form.value.IdExpedient || !this.form.value.IdTypeRequirement || !this.form.value.Description) {
       if (home) { this.home(); }
       return;
     }
@@ -185,6 +186,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
     let requerimiento = {
       AtentionDate: new Date(),
       IdExpedient: this.form.value.IdExpedient,
+      Description: this.form.value.Description,
       IdTypeRequirement: this.form.value.IdTypeRequirement,
       IdRequirement: this.form.value.IdRequirement,
       IdUser: iduser,
@@ -195,7 +197,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
       this.form.patchValue({
         CodRequirement: response.CodRequirement,
         IdRequirement: response.IdRequirement
-      });     
+      });
       response.Details.forEach(element => {
         form.forEach(formControl => {
           let item = formControl.value;
@@ -208,7 +210,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
               Status: 1
             });
           }
-        });        
+        });
       });
       this.notification.success('Nuevo Producto agregado al requerimiento.', 'Informacion');
       this.working = false;
@@ -218,7 +220,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
       (error) => {
         this.notification.warning('Problemas al agregar producto al requerimiento.', 'Alerta');
         this.working = false;
-      });    
+      });
   }
 
   removeDetalleFormControl(formControl: FormGroup, index: number) {

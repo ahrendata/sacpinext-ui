@@ -117,6 +117,11 @@ export class RequirementListComponent implements OnInit {
   inittoolbar() {
     this.filterConfig = {
       fields: [{
+        id: 'Description',
+        title: 'Descripcion',
+        placeholder: 'Filter por descripcion del requerimiento...',
+        type: FilterType.TEXT
+      },{
         id: 'CodRequirement',
         title: 'N° Requerimiento',
         placeholder: 'Filter by N° Requerimiento...',
@@ -144,6 +149,10 @@ export class RequirementListComponent implements OnInit {
         title: 'N° Requerimiento',
         sortType: 'alpha'
       }, {
+        id:'Description',
+        title: 'Descripción',
+        sortType: 'alpha'
+      },{
         id: 'AliasExpedient',
         title: 'Centro de Costo',
         sortType: 'alpha'

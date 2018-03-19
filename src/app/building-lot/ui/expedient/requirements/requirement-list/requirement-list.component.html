@@ -32,10 +32,11 @@
                     <span *ngIf="item.Status">{{item.CodRequirement}}</span>
                     <span *ngIf="!item.Status" class="list-temporal">{{item.CodRequirement}}</span>
                   </div>
-                  <div class="list-pf-description text-overflow-pf">{{item.AliasExpedient}}</div>
-                  <div class="list-pf-description text-overflow-pf">{{item.TypeRequirement}}</div>
+                  <div class="list-pf-description text-overflow-pf"> <span tooltip="{{item.Description}}" placement="top">{{item.Description}}</span></div>
+                  <div class="list-pf-description text-overflow-pf"><span tooltip="{{item.TypeRequirement}}" placement="top">{{item.TypeRequirement}}</span></div>
+                  <div class="list-pf-description text-overflow-pf"><span tooltip="{{item.AliasExpedient}}" placement="top">{{item.AliasExpedient}}</span></div>
                 </div>
-                <div class="list-pf-additional-content">
+                <div class="list-pf-additional-content">                 
                   <div>
                     <span class="fa fa-calendar-plus-o" tooltip="Fecha de atención máxima" placement="top"></span>
                     Plazo

@@ -78,6 +78,7 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
           IdRequirement: data.IdRequirement,
           AtentionDate: data.AtentionDate,
           IdExpedient: data.IdExpedient,
+          Description: data.Description,
           IdTypeRequirement: data.IdTypeRequirement
         });
         let detalle = data.RequirementDetails || [];
@@ -110,6 +111,7 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
       AtentionDate: [null, Validators.compose([Validators.maxLength(200)])],
       IdExpedient: [null, Validators.compose([Validators.required])],
       IdTypeRequirement: [null, Validators.compose([Validators.required])],
+      Description: [null, Validators.compose([Validators.required, Validators.maxLength(200)])],
       detalle: this.formBuilder.array([], Validators.compose([]))
     });
   }
@@ -195,7 +197,7 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
 
   saveAll(confirm: boolean = false, home: boolean = false) {
     let iduser = this.dataService.users().getUserId();
-    if (!this.form || !this.form.value.IdExpedient || !this.form.value.IdTypeRequirement) {
+    if (!this.form || !this.form.value.IdExpedient || !this.form.value.IdTypeRequirement || !this.form.value.Description) {
       if (home) { this.home(); }
       return;
     }
@@ -220,6 +222,7 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
     let requerimiento = {
       AtentionDate: new Date(),
       IdExpedient: this.form.value.IdExpedient,
+      Description: this.form.value.Description,
       IdTypeRequirement: this.form.value.IdTypeRequirement,
       IdRequirement: this.form.value.IdRequirement,
       IdUser: iduser,

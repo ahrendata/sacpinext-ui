@@ -16,7 +16,7 @@
         </ol>
         <div>
           <pfng-toolbar [config]="toolbarConfig" [actionTemplate]="actionTemplate">
-            <ng-template #actionTemplate>              
+            <ng-template #actionTemplate>
               <button *ngIf="requirement.StatusEdit" class="btn btn-default primary-action" type="button" (click)="editar()">
                 <span class="fa fa-pencil"></span>
                 Editar
@@ -34,7 +34,7 @@
                 Imprimir
               </button>
               <sacpi-button-cancel (sacpiOnCancel)="cancel()"></sacpi-button-cancel>
-            </ng-template>
+            </ng-template>           
           </pfng-toolbar>
         </div>
         <div id="printSectionId">
@@ -47,6 +47,13 @@
                 </legend>
               </fieldset>
               <dl class="dl-horizontal left">
+                <dt> Descripción
+                  <span tooltip="Descripción del requerimiento" placement="top" class="pficon pficon-help text-muted small"></span>
+                </dt>
+                <dd *ngIf="requirement.Description">{{requirement.Description }}</dd>
+                <dd *ngIf="!requirement.Description">
+                  <em>No Registrado</em>
+                </dd>
                 <dt> Fecha Creación
                   <span tooltip="Fecha Creación" placement="top" class="pficon pficon-help text-muted small"></span>
                 </dt>
@@ -105,7 +112,7 @@
                 <thead>
                   <tr>
                     <td class="text-center">#</td>
-                    <td class="text-left td-siacpi">Producto</td>                   
+                    <td class="text-left td-siacpi">Producto</td>
                     <td class="text-right">Cantidad</td>
                     <td class="text-center">Unidad Medida</td>
                     <td class="text-left">Descripcion</td>
@@ -115,7 +122,7 @@
                 <tbody>
                   <tr *ngFor="let item of requirement.RequirementDetails; let i = index">
                     <td class="text-center">{{i+1}}</td>
-                    <td>{{item.Product}}</td>                  
+                    <td>{{item.Product}}</td>
                     <td class="text-right">{{item.Quantity| number:'1.2-2'}}</td>
                     <td class="text-center">{{item.UnidCode}} </td>
                     <td>{{item.Observation}}</td>

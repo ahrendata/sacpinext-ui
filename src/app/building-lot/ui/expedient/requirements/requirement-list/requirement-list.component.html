@@ -32,9 +32,9 @@
                     <span *ngIf="item.Status">{{item.CodRequirement}}</span>
                     <span *ngIf="!item.Status" class="list-temporal">{{item.CodRequirement}}</span>
                   </div>
-                  <div class="list-pf-description text-overflow-pf"> <span tooltip="{{item.Description}}" placement="top">{{item.Description}}</span></div>
-                  <div class="list-pf-description text-overflow-pf"><span tooltip="{{item.TypeRequirement}}" placement="top">{{item.TypeRequirement}}</span></div>
-                  <div class="list-pf-description text-overflow-pf"><span tooltip="{{item.AliasExpedient}}" placement="top">{{item.AliasExpedient}}</span></div>
+                  <div class="list-pf-description list-group-item-text">{{item.Description}}</div>
+                  <div class="list-pf-description list-group-item-text">{{item.TypeRequirement}}</div>
+                  <div class="list-pf-description list-group-item-text">{{item.AliasExpedient}}</div>   
                 </div>
                 <div class="list-pf-additional-content">                 
                   <div>

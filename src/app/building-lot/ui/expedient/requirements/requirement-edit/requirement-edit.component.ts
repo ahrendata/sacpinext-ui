@@ -111,7 +111,7 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
       AtentionDate: [null, Validators.compose([Validators.maxLength(200)])],
       IdExpedient: [null, Validators.compose([Validators.required])],
       IdTypeRequirement: [null, Validators.compose([Validators.required])],
-      Description: [null, Validators.compose([Validators.required, Validators.maxLength(200)])],
+      Description: [null, Validators.compose([Validators.maxLength(200)])],
       detalle: this.formBuilder.array([], Validators.compose([]))
     });
   }

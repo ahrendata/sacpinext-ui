@@ -197,7 +197,7 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
 
   saveAll(confirm: boolean = false, home: boolean = false) {
     let iduser = this.dataService.users().getUserId();
-    if (!this.form || !this.form.value.IdExpedient || !this.form.value.IdTypeRequirement || !this.form.value.Description) {
+    if (!this.form || !this.form.value.IdExpedient || !this.form.value.IdTypeRequirement) {
       if (home) { this.home(); }
       return;
     }

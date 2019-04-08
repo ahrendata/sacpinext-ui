@@ -33,11 +33,23 @@ export class ShellSidebarComponent implements OnInit {
         badges: [{ id: 1 }]
       },
       {
-        title: 'Requerimiento',
+        title: 'Req. de Producto',
         iconStyleClass: 'fa fa-file-text',
         url: './expedients/requirements',
         badges: [{ id: 1 }]
       },
+      {
+        title: 'Req. de Servicio',
+        iconStyleClass: 'fa fa-file-text',
+        url: './expedients/services',
+        badges: [{ id: 1 }]
+      },
+      // {
+      //   title: 'Contrato',
+      //   iconStyleClass: 'fa fa-file-text',
+      //   url: './expedients/contract',
+      //   badges: [{ id: 1 }]
+      // },
       {
         title: 'Cuenta',
         iconStyleClass: 'fa fa-user',

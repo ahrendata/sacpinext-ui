@@ -6,7 +6,7 @@
         <ng-template #toolbarTemplante>
           <button class="btn btn-primary primary-action" type="button" (click)="nuevo()">
             <span class="fa fa-plus"></span>
-            Crear Requerimiento de Producto
+            Crear Requerimiento de Servicio
           </button>
         </ng-template>
       </pfng-toolbar>
@@ -42,14 +42,14 @@
                     Plazo
                     <strong>{{item.AtentionDate| date:"dd/MM/yy"}} </strong>
                   </div>
-                  <div>
+                  <!-- <div>
                     <span class="fa fa-money" tooltip="Porcentaje de productos con ordenes generados" placement="top"></span>
                     <strong> {{item.PercentBought|number:'1.2-2'}} % </strong> Comprado
                   </div>
                   <div>
                     <span class="fa fa-truck" tooltip="Porcentaje de productos con guía de remisión" placement="top"></span>
                     <strong> {{item.PercentSend|number:'1.2-2'}} % </strong> Enviado
-                  </div>
+                  </div> -->
                   <div>
                     <span class="fa fa-calendar" tooltip="Fecha de creación" placement="top"></span>
                     Creado

@@ -12,14 +12,15 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/switchMap';
 import { Subscription } from 'rxjs/Subscription';
 import { ToastsManager } from 'ng2-toastr';
+
 import { ConfirmationModalComponent } from '../../../../../shared/components/confirmation-modal/confirmation-modal.component';
 
 @Component({
-  selector: 'sacpi-requirement-edit',
-  templateUrl: './requirement-edit.component.html',
-  styleUrls: ['./requirement-edit.component.scss']
+  selector: 'sacpi-service-edit',
+  templateUrl: './service-edit.component.html',
+  styleUrls: ['./service-edit.component.scss']
 })
-export class RequirementEditComponent implements OnInit, OnDestroy {
+export class ServiceEditComponent implements OnInit {
 
   form: FormGroup;
   formup: FormGroup;
@@ -29,8 +30,6 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
 
   requirementType: any[] = [];
   expedients: any[] = [];
-  units: any[] = [];
-  products: any[] = [];
   Archivos: any[] = [];
 
   requirementSub: Subscription;
@@ -41,20 +40,12 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private route: ActivatedRoute,
     private formBuilder: FormBuilder, private dataService: DataService,
     private notification: ToastsManager,
-    private viewContainerRef: ViewContainerRef,
     private bsModalService: BsModalService,
     private toastr: ToastsManager,
+    private viewContainerRef: ViewContainerRef
   ) {
     this.notification.setRootViewContainerRef(viewContainerRef);
-    this.search
-      .distinctUntilChanged()
-      .debounceTime(200)
-      .switchMap(term => this.searchProduct(term))
-      .subscribe(items => {
-        this.products = items;
-      }, (err) => {
-        this.products = [];
-      });
+
   }
   ngAfterViewInit() {
     let requirementObs = Observable.interval(10000);
@@ -70,8 +61,6 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
     this.routingSub.unsubscribe();
   }
 
-  archivosEdit: any[] = [];
-
   ngOnInit() {
     this.loading = true;
     this.routingSub = this.route.params.subscribe(params => {
@@ -79,7 +68,7 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
       this.buildForm();
       this.loadDataForm();
 
-      this.dataService.requeriments().findById(id).subscribe((data: any) => {
+      this.dataService.requeriments().findByIdService(id).subscribe((data: any) => {
         this.Codigo = data.CodRequirement;
         this.form.patchValue({
           CodRequirement: data.CodRequirement,
@@ -93,18 +82,14 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
         detalle.forEach(item => {
           const formGroup = this.formBuilder.group({
             IdRequirementDetails: [item.IdRequirementDetails, Validators.compose([Validators.maxLength(150)])],
-            IdProduct: [item.Product, Validators.compose([Validators.required, Validators.minLength(1)])],
-            IdUnidCode: [item.IdUnidCode, Validators.compose([Validators.required, Validators.minLength(1)])],
-            Quantity: [item.Quantity, Validators.compose([Validators.required, Validators.minLength(1)])],
-            Observation: [item.Observation, Validators.compose([Validators.maxLength(500)])],
-            Accumulate: [item.Accumulate, Validators.compose([Validators.maxLength(150)])],
+            ServiceDescription: [item.ServicioDescripcion, Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(500)])],
             FileDetails: [item.FilesDetails],
             Status: [1],
             Duplicate: [0],
             Delete: [0],
             DeleteFile: [0]
           });
-          this.archivosEdit = item.FilesDetails;
+
           this.addObservableControl(formGroup);
           this.detalle.push(formGroup);
         });
@@ -116,6 +101,7 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
     });
 
   }
+
   buildForm() {
     this.form = this.formBuilder.group({
       IdRequirement: [null, Validators.compose([Validators.maxLength(50)])],
@@ -124,7 +110,7 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
       IdExpedient: [null, Validators.compose([Validators.required])],
       IdTypeRequirement: [null, Validators.compose([Validators.required])],
       Description: [null, Validators.compose([Validators.maxLength(200)])],
-      IdTipoPedido: [2, Validators.compose([Validators.required])],
+      IdTipoPedido: [1, Validators.compose([Validators.required])],
       detalle: this.formBuilder.array([], Validators.compose([]))
     });
 
@@ -133,16 +119,13 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
       FileName: ['']
     })
   }
+
   addDetalleFormControl(): void {
     this.Archivos = [];
     this.valor = -1;
     const formGroup = this.formBuilder.group({
       IdRequirementDetails: [null, Validators.compose([Validators.maxLength(150)])],
-      IdProduct: [null, Validators.compose([Validators.required, Validators.minLength(1)])],
-      IdUnidCode: [null, Validators.compose([Validators.required, Validators.minLength(1)])],
-      Quantity: [null, Validators.compose([Validators.required, Validators.minLength(1)])],
-      Observation: [null, Validators.compose([Validators.maxLength(150)])],
-      Accumulate: [null, Validators.compose([Validators.maxLength(150)])],
+      ServiceDescription: [null, Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(500)])],
       FileDetails: [this.Archivos],
       Status: [2],
       Duplicate: [0],
@@ -154,41 +137,19 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
   }
   loadDataForm() {
     this.loadExpedients();
-    this.loadUnitCodes();
     this.loadRequirementType();
   }
 
   addObservableControl(formGroup: FormGroup) {
-    if(this.accion){
+    if (this.accion) {
       setTimeout(() => this.addEnd(), 1000);
       this.accion = false;
     }
 
-    formGroup.get("IdProduct").valueChanges.subscribe(value => {
-      this.allnotDuplicate();
-      let id = value.IdProducto, status = false;
-      this.detalle.controls.forEach(element => {
-        let item = element.value.IdProduct;
-        if (item) {
-          let form = this.detalle.controls.filter((f) => f.value.Duplicate === 0 && f.value.IdProduct && f.value.IdProduct.IdProducto === item.IdProducto), record = form.length;
-          if (record > 1) {
-            form.forEach(formControl => {
-              formControl.patchValue({ Duplicate: 1 });
-            });
-          }
-        }
-      });
+    formGroup.get("ServiceDescription").valueChanges.subscribe(value => {
       formGroup.patchValue({ Status: 2 });
     });
-    formGroup.get("IdUnidCode").valueChanges.subscribe(value => {
-      formGroup.patchValue({ Status: 2 });
-    });
-    formGroup.get("Quantity").valueChanges.subscribe(value => {
-      formGroup.patchValue({ Status: 2 });
-    });
-    formGroup.get("Observation").valueChanges.subscribe(value => {
-      formGroup.patchValue({ Status: 2 });
-    });
+
     formGroup.get("FileDetails").valueChanges.subscribe(value => {
       formGroup.patchValue({ Status: 2 });
     });
@@ -202,21 +163,9 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
     this.dataService.expedients().getAll(queryParams).subscribe((data: any[]) => { this.expedients = data; this.loading = false; });
   }
 
-  loadUnitCodes() {
-    this.loading = true;
-    this.dataService.unitcodes().getAll().subscribe((data: any[]) => { this.units = data; this.loading = false; });
-  }
-
   loadRequirementType() {
     this.loading = true;
     this.dataService.requerimenttype().getAll().subscribe((data: any[]) => { this.requirementType = data; this.loading = false; });
-  }
-
-  searchProduct(value: string): Observable<any[]> {
-    const queryParams: URLSearchParams = new URLSearchParams();
-    queryParams.set('filter', value);
-    queryParams.set('top', '20');
-    return this.dataService.products().getAll(queryParams);
   }
 
   allnotDuplicate(): void {
@@ -243,10 +192,7 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
       let element = formControl.value;
       details.push({
         IdRequirementDetails: element.IdRequirementDetails,
-        IdProduct: element.IdProduct.IdProducto,
-        IdUnidCode: element.IdUnidCode,
-        Quantity: element.Quantity,
-        Observation: element.Observation,
+        ServiceDescription: element.ServiceDescription,
         FileDetails: element.FileDetails
       });
     });
@@ -261,6 +207,7 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
       Details: details
     };
     this.dataService.requeriments().create(requerimiento).subscribe(response => {
+
       this.Codigo = response.CodRequirement;
       this.form.patchValue({
         CodRequirement: response.CodRequirement,
@@ -269,27 +216,23 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
       response.Details.forEach(element => {
         form.forEach(formControl => {
           let item = formControl.value;
-          if (item.IdProduct.IdProducto === element.IdProduct
-            && item.IdUnidCode === element.IdUnidCode
-            && item.Quantity === element.Quantity) {
-            formControl.patchValue({
-              IdRequirementDetails: element.IdRequirementDetails,
-              Accumulate: element.Accumulate,
-              FileDetails : element.FileDetails,
-              Status: 1
-            });
-          }
+          formControl.patchValue({
+            IdRequirementDetails: element.IdRequirementDetails,
+            FileDetails: element.FileDetails,
+            Status: 1
+          });
         });
       });
-      this.notification.success('Nuevo Producto agregado al requerimiento.', 'Informacion');
+      this.notification.success('Nuevo Servicio agregado al requerimiento.', 'Informacion');
       this.working = false;
       if (confirm) { this.enviarConfirm(); }
       if (home) { this.home(); }
     },
       (error) => {
-        this.notification.warning('Problemas al agregar producto al requerimiento.', 'Alerta');
+        this.notification.warning('Problemas al agregar el servicio al requerimiento.', 'Alerta');
         this.working = false;
       });
+
   }
 
   removeDetalleFormControl(formControl: FormGroup, index: number) {
@@ -303,12 +246,11 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
       queryParams.set('idUser', iduser);
       this.dataService.requeriments().deletedetail(queryParams).subscribe((data) => {
         this.detalle.removeAt(index);
-        this.loadDataForm();//revisar
-        this.notification.info('Producto eliminado del requerimiento.', 'Informacion');
+        this.notification.info('Servicio eliminado del requerimiento.', 'Informacion');
       },
         (error) => {
           formControl.patchValue({ Delete: 0 });
-          this.notification.error('Error al eliminar producto del requerimiento.', 'Error');
+          this.notification.error('Error al eliminar el servicio del requerimiento.', 'Error');
         });
 
     } else {
@@ -364,6 +306,7 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
     return this.form.get('detalle') as FormArray;
   }
 
+
   deleteFile(formControl: FormGroup, file : any, indexF, index) {
     let modal = this.bsModalService.show(ConfirmationModalComponent, { keyboard: false, backdrop: 'static' });
     (<ConfirmationModalComponent>modal.content).showConfirmationModal(
@@ -400,10 +343,6 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
 
   }
 
-  // replace(i) {
-  //   this.valor = i;
-  // }
-
   valorAnt: number;
   valor: number = -1;
   ocultar(ind) {
@@ -436,14 +375,14 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
       var ab = new ArrayBuffer(byteString.length);
       var ia = new Uint8Array(ab);
       for (var i = 0; i < byteString.length; i++) {
-          ia[i] = byteString.charCodeAt(i);
-       }
+        ia[i] = byteString.charCodeAt(i);
+      }
 
-       var blob = new Blob([ia]);
-       const fileName = data.FileName;
-       if (navigator.msSaveBlob) {
-         navigator.msSaveBlob(blob, fileName);
-       }else {
+      var blob = new Blob([ia]);
+      const fileName = data.FileName;
+      if (navigator.msSaveBlob) {
+        navigator.msSaveBlob(blob, fileName);
+      } else {
         const link = document.createElement('a');
         if (link.download !== undefined) {
           const url = URL.createObjectURL(blob);
@@ -455,7 +394,7 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
           document.body.removeChild(link);
         }
       }
-      
+
     })
   }
 
@@ -463,62 +402,58 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
     if (this.formup == null) {
       return;
     } else {
-        if(this.nuevo == true){
-          this.formup.patchValue({
-            File: event.data,
-            FileName: event.fileName
-          });
-          this.Archivos.push(this.formup.value);
-        }else{
+      if (this.nuevo == true) {
+        this.formup.patchValue({
+          File: event.data,
+          FileName: event.fileName
+        });
+        this.Archivos.push(this.formup.value);
+      } else {
         this.formup.patchValue({
           File: event.data,
           FileName: event.fileName
         });
         this.formEdit.value.FileDetails.push(this.formup.value);
         setTimeout(() => this.addObservableControl(this.formEdit), 5000);
-        //this.addEnd(this.formedit);// solo es el tiempo
         this.accion = true;
-        }
+      }
     }
- }
+  }
 
-accion : boolean = false; 
-nuevo: boolean= false;// si es false es antiguo, si es true es nuevo
-formEdit : FormGroup;
-indexR : number = null;
+  accion: boolean = false;
+  nuevo: boolean = false;// si es false es antiguo, si es true es nuevo
+  formEdit: FormGroup;
+  indexR: number = null;
 
-  addFiles(formControl : FormGroup, ind ) {
+  addFiles(formControl: FormGroup, ind) {
     this.ocultar(ind);
 
-    if(formControl.value.IdRequirementDetails != null){
+    if (formControl.value.IdRequirementDetails != null) {
       this.nuevo = false;
       this.formEdit = formControl;
       this.indexR = ind;
-     }else{
-       this.nuevo = true;
-     }
-     
+    } else {
+      this.nuevo = true;
+    }
+
   }
 
-  addEnd(){
+  addEnd() {
     const formGroup = this.formBuilder.group({
       IdRequirementDetails: [this.formEdit.value.IdRequirementDetails, Validators.compose([Validators.maxLength(150)])],
-      IdProduct: [this.formEdit.value.IdProduct, Validators.compose([Validators.required, Validators.minLength(1)])],
-      IdUnidCode: [this.formEdit.value.IdUnidCode, Validators.compose([Validators.required, Validators.minLength(1)])],
-      Quantity: [this.formEdit.value.Quantity, Validators.compose([Validators.required, Validators.minLength(1)])],
-      Observation: [this.formEdit.value.Observation, Validators.compose([Validators.maxLength(150)])],
-      Accumulate: [this.formEdit.value.Accumulate, Validators.compose([Validators.maxLength(150)])],
-      FileDetails:  [this.formEdit.value.FileDetails],
+      ServiceDescription: [this.formEdit.value.ServiceDescription, Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(500)])],
+      FileDetails: [this.formEdit.value.FileDetails],
       Status: [2],
       Duplicate: [0],
       Delete: [0],
-          
     });
 
-  this.addObservableControl(formGroup);
-  this.detalle.insert(this.indexR,formGroup);
-  this.detalle.removeAt(this.indexR+1);
-  this.saveAll();
-  this.accion = false;
+    this.addObservableControl(formGroup);
+    this.detalle.insert(this.indexR, formGroup);
+    this.detalle.removeAt(this.indexR + 1);
+    this.saveAll();
+    this.accion = false;
   }
+
+
 }

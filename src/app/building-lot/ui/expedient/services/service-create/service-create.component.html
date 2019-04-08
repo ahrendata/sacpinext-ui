@@ -4,20 +4,20 @@
       <div class="col-md-8">
         <ol class="breadcrumb">
           <li>
-            <a routerLink="../">Requerimientos</a>
+            <a routerLink="../">Requerimiento de Servicio</a>
           </li>
-          <li>Editar Requerimiento</li>
+          <li>Crear Requerimiento de Servicio</li>
         </ol>
-        <h1>Editar requerimiento </h1>
+        <h1>Creacion de Requerimiento de Servicio </h1>
       </div>
       <div class="col-md-4">
         <div class="col-lg-12">
           <fieldset>
             <legend>
-              <h3>Codigo Requerimiento</h3>
+              <h3>Codigo Requerimiento de Servicio</h3>
             </legend>
           </fieldset>
-          <dl class="dl-horizontal right">
+          <dl class="dl-horizontal left">
             <span *ngIf="Codigo" class="sacpi-req">{{Codigo}}</span>
             <span *ngIf="!Codigo" class="sacpi-req">
               <em>No Registrado</em>
@@ -26,13 +26,14 @@
         </div>
       </div>
     </div>
+
     <sacpi-loading [loading]="loading">
       <form [formGroup]="form" (ngSubmit)="confirmar(form)">
         <sacpi-form-fields-status [sacpiForm]="form"></sacpi-form-fields-status>
         <div class="row">
           <div class="col-md-2">
             <div class="form-group" [sacpiFormFieldValidationState]="form.get('IdTypeRequirement')">
-              <label class="control-label" [sacpiFormRequiredLabel]="form.get('IdTypeRequirement')">Tipo Requerimiento
+              <label class="control-label" [sacpiFormRequiredLabel]="form.get('IdTypeRequirement')">Tipo Orden de Servicio
                 <i class="fa fa-question-circle text-muted" tooltip="Fecha atencion del requiremiento"
                   placement="top"></i>
               </label>
@@ -65,74 +66,51 @@
           </div>
         </div>
 
-        <!--/Entidad-->
         <div class="row">
           <div class="col-md-12">
             <table class="table table-striped table-bordered table-hover dataTable no-footer">
               <thead>
                 <tr>
                   <td class="text-center">#</td>
-                  <td class="text-left td-siacpi">Producto</td>
-                  <td class="text-right">Cantidad</td>
-                  <td class="text-center">Unidad Medida</td>
-                  <td class="text-left">Descripcion</td>
+                  <td class="text-left td-siacpi">Descripcion de Orden</td>
                   <td colspan="3" rowspan="1" class="text-center">Acciones</td>
-                  <td class="text-right">Acumulado</td>
-                  <td class="text-right">Archivos</td>
-                </tr>
+                  <td class="text-left">Archivos</td>
 
+                </tr>
               </thead>
               <tbody formArrayName="detalle">
                 <ng-template ngFor let-item [ngForOf]="detalle.controls" let-i="index">
                   <tr [formGroupName]="i">
                     <td class="text-center">{{i+1}}</td>
-                    <td [sacpiFormFieldValidationState]="item.get('IdProduct')" class="ng-product-filter">
-                      <ng-select formControlName="IdProduct" class="ng-select-sacpi" bindLabel="Denominacion"
-                        [typeahead]="search" [items]="products" placeholder="Seleccione algun producto"></ng-select>
-                      <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('IdProduct')">
-                      </sacpi-form-field-validation-messages>
-                    </td>
-                    <td [sacpiFormFieldValidationState]="item.get('Quantity')">
-                      <input formControlName="Quantity" type="number" min="1" placeholder="0.00"
-                        class="form-control text-right">
-                      <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('Quantity')">
-                      </sacpi-form-field-validation-messages>
-                    </td>
-                    <td [sacpiFormFieldValidationState]="item.get('IdUnidCode')">
-                      <ng-select formControlName="IdUnidCode" class="ng-select-sacpi" bindLabel="Denominacion"
-                        bindValue="IdContenedor" [items]="units" placeholder="Seleccione una marca"></ng-select>
-                      <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('IdUnidCode')">
-                      </sacpi-form-field-validation-messages>
-                    </td>
-                    <td [sacpiFormFieldValidationState]="item.get('Observation')">
-                      <input formControlName="Observation" type="text" class="form-control" placeholder="Descripcion" />
-                      <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('Observation')">
+                    <td [sacpiFormFieldValidationState]="item.get('ServiceDescription')" class="ng-product-filter"> 
+                      <textarea name="ServiceDescription" formControlName="ServiceDescription" type="text" class="form-control"></textarea>                    
+                      <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('ServiceDescription')">
                       </sacpi-form-field-validation-messages>
                     </td>
                     <td class="table-view-pf-actions">
                       <div class="table-view-pf-btn">
                         <button class="btn btn-default" type="button" (click)="removeDetalleFormControl(item,i)"
                           *ngIf="item.get('Delete').value==0">
-                          <span class="fa fa-trash" style="color:red;" tooltip="Eliminar producto"
+                          <span class="fa fa-trash" style="color:red;" tooltip="Eliminar requerimiento de Servicio"
                             placement="top"></span>
                         </button>
                         <button class="btn btn-default" type="button" *ngIf="item.get('Delete').value==1">
-                          <span class="fa fa-spinner" tooltip="Eliminando producto" placement="top"></span>
+                          <span class="fa fa-spinner" tooltip="Eliminando requerimiento de Servicio" placement="top"></span>
                         </button>
                       </div>
                     </td>
                     <td class="table-view-pf-actions">
                       <div class="dropdown dropdown-kebab-pf">
                         <button class="btn btn-default" type="button" *ngIf="item.get('Status').value==1">
-                          <span class="pficon pficon-ok" tooltip="Producto agregado al requerimiento"
+                          <span class="pficon pficon-ok" tooltip="requerimiento de Servicio agregado al requerimiento"
                             placement="top"></span>
                         </button>
                         <button class="btn btn-default" type="button" *ngIf="item.get('Status').value==2">
-                          <span class="pficon pficon-warning-triangle-o" tooltip="Producto por guardar y/o en temporal"
+                          <span class="pficon pficon-warning-triangle-o" tooltip="requerimiento de Servicio por guardar y/o en temporal"
                             placement="top"></span>
                         </button>
                         <button class="btn btn-default" type="button" *ngIf="item.get('Status').value==0">
-                          <span class="pficon pficon-error-circle-o" tooltip="Producto eliminado"
+                          <span class="pficon pficon-error-circle-o" tooltip="requerimiento de Servicio eliminado"
                             placement="top"></span>
                         </button>
                       </div>
@@ -140,30 +118,25 @@
                     <td class="table-view-pf-actions">
                       <div class="dropdown dropdown-kebab-pf">
                         <button class="btn btn-default" type="button" *ngIf="item.get('Duplicate').value==1">
-                          <span class="fa fa-bell" style="color:red;" tooltip="Producto Duplicado"
+                          <span class="fa fa-bell" style="color:red;" tooltip="requerimiento de Servicio Duplicado"
                             placement="top"></span>
                         </button>
                       </div>
                     </td>
-                    <td [sacpiFormFieldValidationState]="item.get('Accumulate')">
-                      <input formControlName="Accumulate" type="number" min="0" placeholder="0.00"
-                        class="form-control text-right" readonly>
-                      <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('Accumulate')">
-                      </sacpi-form-field-validation-messages>
-                    </td>
                     <td class="table-view-pf-actions">
-                      <div class="col-md-3" >
-                        <sacpi-read-file style="width: 85%" [showFileName]="false" [asText]="false" [asDataUrl]="true"
-                          (complete)="onFileChange($event)" (click)="addFiles(item, i)"></sacpi-read-file>
+                      <div class="col-md-3 row">
+                        <sacpi-read-file [showFileName]="false" [asText]="false" [asDataUrl]="true"
+                          (complete)="onFileChange($event)" (click)="addFiles(item, i)" ></sacpi-read-file>
 
-                        <div *ngIf="item.get('FileDetails').value?.length>0"  (click)="ocultar(i)" 
-                           tooltip="Ver Archivos Adjuntos">
+                        <div *ngIf="item.get('FileDetails').value?.length>0" (click)="ocultar(i)"
+                          tooltip="Ver Archivos Adjuntos">
                           <span class="btn btn-default">
-                            <span class=" pficon-image"
-                              style="padding-right: 5px"></span>{{item.get('FileDetails').value?.length}}
+                            <span class=" pficon-image"></span>{{item.get('FileDetails').value?.length}}
                           </span>
+
                         </div>
                       </div>
+                     
                     </td>
                   </tr>
                   <tr>
@@ -174,7 +147,7 @@
                             <div class="col-md-1">{{in+1}}</div>
                             <!-- <div class="col-md-1">{{f.IdRequirementFileDetails}}</div> -->
                             <div class="col-md-5" (click)="download(f.IdRequirementFileDetails)"><span
-                             >{{f.FileName}}</span>
+                              >{{f.FileName}}</span>
                               <!-- tooltip="click Para descargar Archivo" style="cursor: pointer">{{f.FileName}}</span> -->
                             </div>
   
@@ -197,22 +170,22 @@
                         </div>
                       </div>
                     </tr>
-                </ng-template>
+                </ng-template> 
               </tbody>
               <tfoot>
                 <tr>
                   <td colspan="10" class="text-left">
                     <button (click)="addDetalleFormControl()" type="button" class="btn btn-default">
-                      <span class="fa fa-plus"></span> Agregar Productos
+                      <span class="fa fa-plus"></span> Agregar Orden Servicio
                     </button>
                   </td>
                 </tr>
+              
               </tfoot>
             </table>
           </div>
         </div>
         <br>
-        <!-- <sacpi-button-add [sacpiForm]="form" [working]="working" (sacpiOnSave)="save($event)"></sacpi-button-add> -->
         <sacpi-button-confirmar [sacpiForm]="form" [working]="working"></sacpi-button-confirmar>
         <sacpi-button-cancel (sacpiOnCancel)="cancel()"></sacpi-button-cancel>
       </form>

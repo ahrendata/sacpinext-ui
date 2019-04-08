@@ -32,6 +32,7 @@ import { ButtonLoginComponent } from './components/button-login/button-login.com
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 
 import { NavigationModule, WizardModule, PaginationModule, ActionModule, ListModule, ToolbarModule } from 'patternfly-ng';
+import { ReadFileComponent } from './components/read-file/read-file.component';
 
 
 @NgModule({
@@ -73,7 +74,8 @@ import { NavigationModule, WizardModule, PaginationModule, ActionModule, ListMod
     OnlyNumberDirective,
     EqualValidatorDirective,
     FormFieldValidationStateDirective,
-    ConfirmationModalComponent
+    ConfirmationModalComponent,
+    ReadFileComponent
   ],
   exports: [
     BsDropdownModule,
@@ -105,7 +107,9 @@ import { NavigationModule, WizardModule, PaginationModule, ActionModule, ListMod
     NumberMaskDirective,
     FormRequiredLabelDirective,
     FormFieldValidationStateDirective,
-    LoadingComponent
+    LoadingComponent,
+    ReadFileComponent
+
   ]
 })
 export class SharedModule { }

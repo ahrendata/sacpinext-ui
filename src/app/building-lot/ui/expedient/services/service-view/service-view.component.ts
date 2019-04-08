@@ -1,0 +1,191 @@
+import { Requirement } from './../../../../../core/model/requirement.model';
+import { GenericType } from './../../../../../core/model/genericType.model';
+import { DataService } from './../../../../../core/data/data.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Component, NgModule, OnInit, ViewContainerRef } from '@angular/core';
+import { URLSearchParams } from '@angular/http';
+import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
+
+import { Observable } from 'rxjs/Rx';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/switchMap';
+import { DatePipe, CurrencyPipe } from '@angular/common';
+import { Subscription } from 'rxjs/Subscription';
+import { ActionConfig } from 'patternfly-ng/action';
+import { ToolbarConfig } from 'patternfly-ng/toolbar';
+import { ToastsManager } from 'ng2-toastr/src/toast-manager';
+
+import 'jspdf-autotable';
+import * as jsPDF from 'jspdf'
+
+
+@Component({
+  selector: 'sacpi-service-view',
+  templateUrl: './service-view.component.html',
+  styleUrls: ['./service-view.component.scss'],
+  providers: [DatePipe, CurrencyPipe]
+})
+export class ServiceViewComponent implements OnInit {
+
+  toolbarConfig: ToolbarConfig;
+  loading = false;
+
+  routingSub: Subscription;
+  requirement: any;
+  codigo: string;
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder,
+    private dataService: DataService,
+    private notification: ToastsManager,
+    private viewContainerRef: ViewContainerRef,
+    private datePipe: DatePipe,
+    private number: CurrencyPipe
+  ) {
+    this.notification.setRootViewContainerRef(viewContainerRef);
+  }
+
+  ngAfterViewInit() {
+  }
+
+  ngOnInit() {
+    this.initToolbar();
+    this.loading = true;
+    this.routingSub = this.route.params.subscribe(params => {
+      let id = +params['id'];
+      this.dataService.requeriments().viewByIdService(id).subscribe((data: any) => {
+        this.requirement = data;
+        this.codigo = this.requirement.CodRequirement;
+        this.loading = false;
+      },
+        (error) => {
+          this.loading = false;
+        });
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.routingSub.unsubscribe();
+  }
+
+  initToolbar() {
+    this.toolbarConfig = {
+      views: [{
+        id: 'listView',
+        iconStyleClass: 'fa fa-th-list',
+        tooltip: 'List View'
+      }, {
+        id: 'tableView',
+        iconStyleClass: 'fa fa-table',
+        tooltip: 'Table View'
+      }]
+    } as ToolbarConfig;
+  }
+
+  editar() {
+    this.router.navigate(['../../', this.requirement.IdRequirement], { relativeTo: this.route });
+  }
+  confirmar() {
+    let iduser: any = this.dataService.users().getUserId();
+    this.loading = true;
+    const queryParams: URLSearchParams = new URLSearchParams();
+    queryParams.set('idRequeriment', this.requirement.IdRequirement);
+    queryParams.set('idUser', iduser);
+    this.dataService.requeriments().confirmar(queryParams).subscribe(
+      response => {
+        this.loading = false;
+        this.router.navigate(['../../'], { relativeTo: this.route });
+      },
+      error => {
+        this.loading = false;
+      }
+    );
+  }
+
+  eliminar(selected: boolean) {
+    if (selected) {
+      let id = this.requirement.IdRequirement;
+      let iduser: any = this.dataService.users().getUserId();
+      const queryParams: URLSearchParams = new URLSearchParams();
+      queryParams.set('id', id);
+      queryParams.set('idUser', iduser);
+      this.dataService.requeriments().delete(queryParams).subscribe((data) => {
+        this.notification.success('El requerimiento fue eliminado correctamente.', 'Informacion');
+        this.router.navigate(['../../'], { relativeTo: this.route });
+      },
+        (error) => {
+          this.notification.error('Error al eliminar el requerimiento, por favor intente de nuevo.', 'Error');
+        });
+    }
+  }
+
+  imprimir() {
+    let requirement = this.requirement;
+    let CreateDate = this.datePipe.transform(requirement.CreateDate, 'dd/MM/yyyy HH:mm:ss');
+    let AtentionDate = this.datePipe.transform(requirement.AtentionDate, 'dd/MM/yyyy');
+    let columns = [
+      { title: "#", dataKey: "Id" },
+      { title: "Descripcion de serVicio", dataKey: "ServiceDescription" },
+    ];
+    let rows: any[] = [];
+    let i: number = 0;
+    this.requirement.RequirementDetails.forEach(element => {
+      i++;
+      rows.push({
+        Id: i,
+        ServiceDescription : element.ServiceDescription || ''
+      });
+
+    });
+    var doc = new jsPDF();
+    doc.autoTable(columns, rows, {
+      headerStyles: { fillColor: [114, 118, 123] },
+      columnStyles: {
+        Id: { columnWidth: 7, halign: 'right' },
+        ServiceDescription: { columnWidth: 'full' },
+      },
+
+      bodyStyles: { valign: 'middle' },
+      showHeader: 'firstPage',
+      tableLineColor: 200,
+      tableLineWidth: 0.2,
+      styles: {
+        fillColor: [209, 209, 209],
+        cellPadding: 0.7,
+        fontSize: 8,
+        overflow: 'linebreak'
+      },
+      margin: { top: 45, right: 10, left: 10 },
+      addPageContent: function (data) {
+        doc.setFontSize(12);
+        doc.setFontStyle('bold');
+        doc.text(70, 20, 'REQUERIMIENTO N° ' + requirement.CodRequirement);
+        doc.setFontSize(8);
+        doc.setFontStyle('normal');
+        doc.text(10, 30, 'Fecha creación');
+        doc.text(35, 30, ':');
+        doc.text(40, 30, CreateDate);
+        doc.text(100, 30, 'Tipo Requerimiento');
+        doc.text(135, 30, ':');
+        doc.text(140, 30, requirement.TypeRequirement || '');
+        doc.text(10, 35, 'Fecha Atención');
+        doc.text(35, 35, ':');
+        doc.text(40, 35, AtentionDate);
+        doc.text(100, 35, 'Centro de Costo');
+        doc.text(135, 35, ':');
+        doc.text(140, 35, requirement.AliasExpedient);
+        doc.text(10, 40, 'Estado');
+        doc.text(35, 40, ':');
+        doc.text(40, 40, requirement.Status ? 'Confirmado' : 'Sin Confirmar');
+      }
+    });
+    doc.save('Req-' + this.requirement.CodRequirement + '.pdf');
+
+  }
+  cancel() {
+    this.router.navigate(['../../'], { relativeTo: this.route });
+  }
+}

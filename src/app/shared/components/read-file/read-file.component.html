@@ -1,0 +1,10 @@
+<div class="input-group">
+  <label class="input-group-btn">
+        <span class="btn btn-default">selecciona archivo
+            <i class="pficon pficon-import"></i>
+            <input type="file" (change)="changeListener($event)" multiple>
+        </span>
+    </label>
+  <input  *ngIf="showFileName" type="text" class="form-control" formControlName = "FileDetails"  [(ngModel)]="file.fileName" readonly>
+
+</div>

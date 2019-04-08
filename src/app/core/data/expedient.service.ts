@@ -45,6 +45,22 @@ export class ExpedientService {
         return expedients;
       });
   }
+//obtener contratos
+  getAllContracts(queryParams?: URLSearchParams): Observable<Expedient[]> {
+    const expedientsRestangular = this.restangular.all(expedientssPath+'/contracts');
+    return expedientsRestangular
+      .get(queryParams)
+      .map(response => {
+        const json = response.json();
+        const expedients = new Array<Expedient>();
+        json.forEach(element => {
+          const expedient = new Expedient(expedientsRestangular.one('', element['IdExpediente']));
+          expedients.push(Object.assign(expedient, element));
+        });
+        return expedients;
+      });
+  }
+
   search(criteria: SearchCriteria): Observable<SearchResults<Expedient>> {
     const restangular = this.restangular.all(expedientssPath + '/filter');
     return restangular
@@ -63,4 +79,24 @@ export class ExpedientService {
       });
   }
 
+// //contratos
+//   searchAllContracts(criteria: SearchCriteria): Observable<SearchResults<Expedient>> {
+//     const restangular = this.restangular.all(expedientssPath + '/contracts');
+//     return restangular
+//       .post(criteria)
+//       .map(response => {
+//         console.log("data contract "+response);
+//         // const json = response.json();
+//         // const result = new SearchResults<Expedient>();
+//         // const items = new Array<Expedient>();
+//         // json.data.forEach(element => {
+//         //   const document = new Expedient(restangular.all(element['IdExpediente']));
+//         //   items.push(Object.assign(document, element));
+//         // });
+//         // result.items = items;
+//         // result.totalSize = json.count;
+//         return null;
+//       });
+//   }
+ 
 }

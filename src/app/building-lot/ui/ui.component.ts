@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute } from '@angular/router';
 
 import { Expedient } from '../../core/model/expedient.model';
+import { Services } from '../../core/model/service.model';
 import { DataService } from '../../core/data/data.service';
 import { DOCUMENT } from '@angular/platform-browser';
 
@@ -16,6 +17,8 @@ export class SacpiUIComponent implements OnInit, OnDestroy {
   dataSubscription: Subscription;
   expedient: Expedient;
   expedients: Array<Expedient>;
+  service : Services;
+  services: Array<Services>;
 
   constructor(private route: ActivatedRoute,
     @Inject(DOCUMENT) private document: Document,
@@ -27,6 +30,11 @@ export class SacpiUIComponent implements OnInit, OnDestroy {
     this.dataSubscription = this.route.data.subscribe(
       (data) => {
         this.expedient = data['expedient'];
+      }
+    );
+    this.dataSubscription = this.route.data.subscribe(
+      (data) => {
+        this.service = data['service'];
       }
     );
     this.loadAllowedexpedients();

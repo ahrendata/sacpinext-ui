@@ -1,3 +1,4 @@
+import { FileService } from './file.service';
 import { Injectable } from '@angular/core';
 import { ExpedientService } from './expedient.service';
 import { RequirementService } from './requirement.service';
@@ -15,7 +16,8 @@ export class DataService {
     private userService: UserService,
     private unitCodeService: UnitCodeService,
     private productService: ProductService,
-    private requirementtype: RequirementTypeService
+    private requirementtype: RequirementTypeService,
+    private fileService : FileService
   ) { }
 
   expedients(): ExpedientService {
@@ -39,5 +41,9 @@ export class DataService {
   }
   requerimenttype(): RequirementTypeService {
     return this.requirementtype;
+  }
+
+  files(): FileService {
+    return this.fileService;
   }
 }

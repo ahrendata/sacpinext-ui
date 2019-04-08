@@ -1,3 +1,4 @@
+import { FileService } from './data/file.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Http } from '@angular/http';
@@ -56,7 +57,8 @@ import { TruncatePipe } from './../shared/pipes/truncate.pipe';
     RequirementTypeService,
     TokenService,
     BsModalService,
-    TruncatePipe
+    TruncatePipe,
+    FileService
   ]
 })
 export class CoreModule { }

@@ -7,11 +7,20 @@ import { CoreModule } from '../../../core/core.module';
 import { ShellComponentModule } from './../../shell/shell.module';
 import { SharedModule } from '../../../shared/shared.module';
 
+
 const routes: Routes = [
   { path: '', redirectTo: 'requirements', pathMatch: 'full' },
   {
     path: 'requirements',
     loadChildren: 'app/building-lot/ui/expedient/requirements/requirements.module#RequirementModule'
+  },
+  {
+    path: 'services',
+    loadChildren: 'app/building-lot/ui/expedient/services/service.module#ServiceModule'
+  },
+  {
+    path: 'contract',
+    loadChildren: 'app/building-lot/ui/expedient/contratos/contrato.module#ContratoModule'
   }
 ];
 

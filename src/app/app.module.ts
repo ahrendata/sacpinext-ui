@@ -23,7 +23,7 @@ export function restangularProviderConfigurer(restangularProvider: any, config: 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     FormsModule,

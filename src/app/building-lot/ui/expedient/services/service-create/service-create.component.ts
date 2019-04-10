@@ -106,7 +106,6 @@ export class ServiceCreateComponent implements OnInit {
       setTimeout(() => this.addEnd(), 1000);
       this.accion = false;
     }
-    
     formGroup.get("ServiceDescription").valueChanges.subscribe(value => {
       formGroup.patchValue({ Status: 2 });
     });
@@ -158,7 +157,6 @@ export class ServiceCreateComponent implements OnInit {
       IdUser: iduser,
       Details: details
     };
-
     this.dataService.requeriments().create(requerimiento).subscribe(response => {
       this.Codigo = response.CodRequirement;
       this.form.patchValue({
@@ -168,15 +166,12 @@ export class ServiceCreateComponent implements OnInit {
       });
       response.Details.forEach(element => {
         form.forEach(formControl => {
-          let item = formControl.value;
-          if (item.ServiceDescription === element.ServiceDescription)
-            {
             formControl.patchValue({
               IdRequirementDetails: element.IdRequirementDetails,
+              ServiceDescription: element.ServiceDescription,
               FileDetails : element.FileDetails,
               Status: 1
             });
-          }
         });
       });
       this.notification.success('Nuevo Servicio agregado al requerimiento.', 'Informacion');
@@ -402,12 +397,11 @@ indexR : number = null;
       Duplicate: [0],
       Delete: [0],
     });
-
-  this.addObservableControl(formGroup);
-  this.detalle.insert(this.indexR,formGroup);
-  this.detalle.removeAt(this.indexR+1);
-  this.saveAll();
-  this.accion = false;
+      this.addObservableControl(formGroup);
+      this.detalle.insert(this.indexR,formGroup);
+      this.detalle.removeAt(this.indexR+1);
+      this.saveAll();
+      this.accion = false;
   }
 
 }

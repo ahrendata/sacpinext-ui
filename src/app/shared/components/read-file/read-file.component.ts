@@ -52,7 +52,6 @@ export class ReadFileComponent implements OnInit {
       const files: File = $event.target.files;
       var filesAmount = $event.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
-        console.log("size de los files "+files[i].size);
         //2097152
         if(files[i].size<= 2188954){ 
           var reader = new FileReader();

@@ -149,16 +149,18 @@
                       <input formControlName="Accumulate" type="number" min="0" placeholder="0.00"
                         class="form-control text-right" readonly>
                     </td>
-                    <td class="table-view-pf-actions" >
-                      <sacpi-read-file [showFileName]="false" [asText]="false" [asDataUrl]="true"
-                        (complete)="onFileChange($event)" (click)="addFiles(item, i)"></sacpi-read-file>
-
-                      <div *ngIf="item.get('FileDetails').value?.length>0" (click)="ocultar(i)"
-                        tooltip="Ver Archivos Adjuntos">
-                        <span class="btn btn-default">
-                          <span class=" pficon-image"
-                            style="padding-right: 5px"></span>{{item.get('FileDetails').value?.length}}
-                        </span>
+                    <td class="table-view-pf-actions">
+                      <div class="refactor table-view-pf-btn">
+                          <sacpi-read-file [showFileName]="false" [asText]="false" [asDataUrl]="true"
+                          (complete)="onFileChange($event)" (click)="addFiles(item, i)"></sacpi-read-file>
+  
+                        <div *ngIf="item.get('FileDetails').value?.length>0" (click)="ocultar(i)"
+                          tooltip="Ver Archivos Adjuntos">
+                          <span class="btn btn-default">
+                            <span class=""
+                              style="padding-right: 5px"></span>{{item.get('FileDetails').value?.length}}
+                          </span>
+                        </div>
                       </div>
                   </td>
                   </tr>

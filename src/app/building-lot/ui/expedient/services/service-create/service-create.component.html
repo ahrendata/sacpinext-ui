@@ -124,16 +124,15 @@
                       </div>
                     </td>
                     <td class="table-view-pf-actions">
-                      <div class="col-md-3 row">
+                      <div class="refactor table-view-pf-btn">
                         <sacpi-read-file [showFileName]="false" [asText]="false" [asDataUrl]="true"
                           (complete)="onFileChange($event)" (click)="addFiles(item, i)" ></sacpi-read-file>
 
                         <div *ngIf="item.get('FileDetails').value?.length>0" (click)="ocultar(i)"
                           tooltip="Ver Archivos Adjuntos">
                           <span class="btn btn-default">
-                            <span class=" pficon-image"></span>{{item.get('FileDetails').value?.length}}
+                            <span class=" "></span>{{item.get('FileDetails').value?.length}}
                           </span>
-
                         </div>
                       </div>
                      

@@ -130,16 +130,19 @@
                       </div>
                     </td>
                     <td class="table-view-pf-actions" >
-                        <sacpi-read-file [showFileName]="false" [asText]="false" [asDataUrl]="true"
+                      <div class="refactor table-view-pf-btn">
+                          <sacpi-read-file [showFileName]="false" [asText]="false" [asDataUrl]="true"
                           (complete)="onFileChange($event)" (click)="addFiles(item, i)"></sacpi-read-file>
 
                         <div *ngIf="item.get('FileDetails').value?.length>0" (click)="ocultar(i)"
                           tooltip="Ver Archivos Adjuntos">
                           <span class="btn btn-default">
-                            <span class=" pficon-image"
+                            <span class=""
                               style="padding-right: 5px"></span>{{item.get('FileDetails').value?.length}}
                           </span>
                         </div>
+                      </div>
+                   
                     </td>
                   </tr>
                   <tr>
@@ -161,7 +164,7 @@
                             </button>
                             <button class="btn btn-default" type="button" *ngIf="f.IdRequirementFileDetails!=undefined">
                               <span class="pficon pficon-ok"
-                                tooltip="Archvios de requerimiento de Servicio agregado al requerimiento" placement="top"></span>
+                                tooltip="Archivos de requerimiento de Servicio agregado al requerimiento" placement="top"></span>
                             </button>
                             <button class="btn btn-default" type="button" *ngIf="f.IdRequirementFileDetails==undefined">
                               <span class="pficon pficon-warning-triangle-o"

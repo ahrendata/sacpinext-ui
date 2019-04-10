@@ -44,12 +44,12 @@ export class ShellSidebarComponent implements OnInit {
         url: './expedients/services',
         badges: [{ id: 1 }]
       },
-      // {
-      //   title: 'Contrato',
-      //   iconStyleClass: 'fa fa-file-text',
-      //   url: './expedients/contract',
-      //   badges: [{ id: 1 }]
-      // },
+      {
+        title: 'Contrato',
+        iconStyleClass: 'fa fa-file-text',
+        url: './expedients/contract',
+        badges: [{ id: 1 }]
+      },
       {
         title: 'Cuenta',
         iconStyleClass: 'fa fa-user',

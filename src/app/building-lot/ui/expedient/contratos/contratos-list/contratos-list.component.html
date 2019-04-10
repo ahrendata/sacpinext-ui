@@ -4,7 +4,7 @@
       <i class="fa fa-question-circle text-muted" tooltip="Centro de costo" placement="top"></i>
     </label>
     <ng-select  class="ng-select-sacpi" [items]="expedients" bindLabel="Alias"
-      bindValue="IdExpediente" placeholder="Seleccione expediente"></ng-select>
+      bindValue="IdExpediente" placeholder="Seleccione expediente" [(ngModel)]="centroCostoId" (click)="loadContratos()"></ng-select>
   </div>
 </div>
 
@@ -15,56 +15,50 @@
     <div class="row">
       <div class="col-sm-12">
         <div class="form-group">
-          <button class="btn btn-primary" (click)="loadContratos()">contratos</button>
-          <div>lista de contratos</div>
-          <!-- <pfng-list [actionTemplate]="actionTemplate" [config]="listConfig" [items]="expedients" [itemTemplate]="itemTemplate">
+            <pfng-toolbar [actionTemplate]="toolbarTemplante" [config]="toolbarConfig" (onFilterChange)="filterChanged($event)" (onSortChange)="sortChanged($event)"
+            (onViewSelect)="viewSelected($event)">
+            
+          </pfng-toolbar>
+          <pfng-list [actionTemplate]="actionTemplate" [config]="listConfig" [items]="contratos" [itemTemplate]="itemTemplate">
             <ng-template #itemTemplate let-item="item" let-index="index">
-              <div class="list-pf-left">
+              <!-- <div class="list-pf-left">
                 <span *ngIf="item.Status" class="fa fa-list-alt  list-pf-icon list-pf-icon-bordered list-pf-icon-small" tooltip="Requerimiento confirmado"
                   placement="top"></span>
                 <span *ngIf="!item.Status" class="fa fa-list-alt  list-pf-icon list-pf-icon-bordered-confirm list-pf-icon-small" tooltip="Requerimiento sin confirmar (en temporal y/o borrador)"
                   placement="top"></span>
+              </div> -->
+              <div>
+                <i class="fa fa-list-alt  list-pf-icon list-pf-icon-bordered list-pf-icon-small"></i>
               </div>
-              <div class="list-pf-content-wrapper"> -->
-                <!-- <div class="list-pf-main-content">
-                  <div class="list-pf-title">
-                    <span *ngIf="item.Status">{{item.CodRequirement}}</span>
-                    <span *ngIf="!item.Status" class="list-temporal">{{item.CodRequirement}}</span>
-                  </div>
-                  <div class="list-pf-description list-group-item-text">{{item.Description}}</div>
-                  <div class="list-pf-description list-group-item-text">{{item.TypeRequirement}}</div>
-                  <div class="list-pf-description list-group-item-text">{{item.AliasExpedient}}</div>   
-                </div> -->
-                <!-- <div class="list-pf-additional-content">                 
-                  <div>
-                    <span class="fa fa-calendar-plus-o" tooltip="Fecha de atención máxima" placement="top"></span>
-                    Plazo
-                    <strong>{{item.AtentionDate| date:"dd/MM/yy"}} </strong>
-                  </div>
-                  <div>
-                    <span class="fa fa-money" tooltip="Porcentaje de productos con ordenes generados" placement="top"></span>
-                    <strong> {{item.PercentBought|number:'1.2-2'}} % </strong> Comprado
-                  </div>
-                  <div>
-                    <span class="fa fa-truck" tooltip="Porcentaje de productos con guía de remisión" placement="top"></span>
-                    <strong> {{item.PercentSend|number:'1.2-2'}} % </strong> Enviado
-                  </div>
+              <div class="list-pf-content-wrapper"> 
+                <div class="list-pf-main-content">
+                  <!-- <div class="list-pf-title">
+                    <span *ngIf="item.Status">{{item.CodigoContrato}}</span>
+                    <span *ngIf="!item.Status" class="list-temporal">{{item.descripcionTipoContrato}}</span>
+                  </div> -->
+                  <div class="list-pf-description list-group-item-text">{{item.CodigoContrato}}</div>
+                  <div class="list-pf-description list-group-item-text">{{item.descripcionTipoContrato}}</div>
+                  <div class="list-pf-description list-group-item-text">{{item.proveedor}}</div>
+                  <div class="list-pf-description list-group-item-text">{{item.MontoContrato |  currency:'PEN':'S/':'4.2-2'}}</div>
+                  <div class="list-pf-description list-group-item-text">{{item.Referencia}}</div>   
+                </div> 
+                <div class="list-pf-additional-content">                 
                   <div>
                     <span class="fa fa-calendar" tooltip="Fecha de creación" placement="top"></span>
                     Creado
-                    <strong> {{item.CreateDate| date:"dd/MM/yy"}}</strong>
+                    <strong> {{item.FechaContrato| date:"dd/MM/yy"}}</strong>
                   </div>
-                </div> -->
-              <!-- </div>
+                </div> 
+              </div>
             </ng-template>
-            <ng-template #actionTemplate let-item="item" let-index="index">
+            <!-- <ng-template #actionTemplate let-item="item" let-index="index">
               <pfng-action class="list-pf-actions" [config]="getActionConfig(item, actionButtonTemplate)" (onActionSelect)="handleActionGrid($event, item)">
                 <ng-template #actionButtonTemplate let-action="action">
                   <span class="fa fa-pencil">&nbsp;</span>{{action.title}}
                 </ng-template>
               </pfng-action>
-            </ng-template> -->
-          <!-- </pfng-list> -->
+            </ng-template>  -->
+          </pfng-list> 
           <pfng-pagination [config]='paginationConfig' (onPageSizeChange)="handlePageSize($event)" (onPageNumberChange)="handlePageNumber($event)"></pfng-pagination>
           <br>
           <br>

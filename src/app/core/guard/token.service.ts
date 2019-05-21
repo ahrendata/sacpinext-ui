@@ -4,6 +4,8 @@ import { Injectable } from '@angular/core';
 export class TokenService {
 
     private TOKEN_KEY = 'sacpi-next';
+    private FILTER_REQUIREMENT = 'sacpi-filter';
+    private PAGING_REQUIREMENT = 'sacpi-paging';
 
     constructor() { }
 
@@ -14,7 +16,7 @@ export class TokenService {
 
     getToken(): string {
         let item = JSON.parse(sessionStorage.getItem(this.TOKEN_KEY));
-       // console.log(item);
+        // console.log(item);
         return item;
     }
     removeToken(): void {
@@ -56,4 +58,24 @@ export class TokenService {
         }
         return "";
     }
+
+    setFilterCriteriaReq(obj?: any): void {
+        console.log("set data : "+JSON.stringify(obj));
+        sessionStorage.setItem(this.FILTER_REQUIREMENT, JSON.stringify(obj));
+    }
+    getFilterCriteriaReq(): object {
+        let item = JSON.parse(sessionStorage.getItem(this.FILTER_REQUIREMENT));
+        //console.log(item);
+        return item;
+    }
+    setPagingCriteriaReq(obj?: any): void {
+        //console.log(JSON.stringify(obj));
+        sessionStorage.setItem(this.PAGING_REQUIREMENT, JSON.stringify(obj));
+    }
+    getPagingCriteriaReq(): object {
+        let item = JSON.parse(sessionStorage.getItem(this.PAGING_REQUIREMENT) != undefined ? sessionStorage.getItem(this.PAGING_REQUIREMENT) : null);
+        //console.log(item);
+        return item;
+    }
+
 }

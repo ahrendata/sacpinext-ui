@@ -117,6 +117,7 @@
                     <td class="text-center">Unidad Medida</td>
                     <td class="text-left">Descripcion</td>
                     <td class="text-right">Cantidad Comprada</td>
+                    <td class="text-right">Cantidad Enviada</td>
                   </tr>
                 </thead>
                 <tbody>
@@ -127,6 +128,7 @@
                     <td class="text-center">{{item.UnidCode}} </td>
                     <td>{{item.Observation}}</td>
                     <td class="text-right">{{item.Accumulate| number:'1.2-2'}}</td>
+                    <td class="text-right">{{item.QuantityBought| number:'1.2-2'}}</td>
                   </tr>
                 </tbody>
               </table>

@@ -46,18 +46,18 @@ export class ExpedientService {
       });
   }
 //obtener contratos
-  getAllContracts(queryParams?: URLSearchParams): Observable<Expedient[]> {
+  getAllContracts(criteria: SearchCriteria): Observable<Expedient[]> {
     const expedientsRestangular = this.restangular.all(expedientssPath+'/contracts');
     return expedientsRestangular
-      .get(queryParams)
-      .map(response => {
+      .post(criteria)
+      .map(response => {  
         const json = response.json();
-        const expedients = new Array<Expedient>();
-        json.forEach(element => {
-          const expedient = new Expedient(expedientsRestangular.one('', element['IdExpediente']));
-          expedients.push(Object.assign(expedient, element));
-        });
-        return expedients;
+        //const expedients = new Array<Expedient>();
+        // json.forEach(element => {
+        //   const expedient = new Expedient(expedientsRestangular.all(element['IdExpediente']));
+        //   expedients.push(Object.assign(expedient, element));
+        // });
+        return json;
       });
   }
 

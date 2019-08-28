@@ -218,7 +218,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
       IdTipoPedido: this.form.value.IdTipoPedido,
       IdUser: iduser,
       Details: details
-    };
+    };    
     this.dataService.requeriments().create(requerimiento).subscribe(response => {
       this.Codigo = response.CodRequirement;
       this.form.patchValue({
@@ -325,7 +325,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
   deleteFile(formControl: FormGroup, file : any, indexF, index) {
     let modal = this.bsModalService.show(ConfirmationModalComponent, { keyboard: false, backdrop: 'static' });
     (<ConfirmationModalComponent>modal.content).showConfirmationModal(
-      'Estas Seguro de Eliminar el el archivo  ',
+      'Estas Seguro de Eliminar el archivo  ',
       file.FileName
     );
     (<ConfirmationModalComponent>modal.content).onClose.subscribe(result => {

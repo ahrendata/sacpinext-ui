@@ -47,7 +47,6 @@ export class FileService {
       .map(response => {
         const data = response.json();
         return data;
-        // return Object.assign(new Requirement(restangular), data);
       });
   }
 

@@ -1,0 +1,10 @@
+<div class="input-group">
+  <label class="">
+        <span class="btn btn-default">
+          <span>Adjuntar Archivos <i class="fa fa-paperclip" aria-hidden="true"></i></span>
+            <input type="file" (change)="changeListener($event)" multiple>
+        </span>
+    </label>
+  <input  *ngIf="showFileName" type="text" class="form-control" formControlName = "FileDetails"  [(ngModel)]="file.fileName" readonly>
+
+</div>

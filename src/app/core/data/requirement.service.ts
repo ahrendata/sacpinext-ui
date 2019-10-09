@@ -6,14 +6,13 @@ import { Expedient } from './../model/expedient.model';
 
 import { SearchCriteria } from './../model/search-criteria.model';
 import { SearchResults } from './../model/search-results.model';
-// import { URLSearchParams } from '@angular/http';verifica
+// import { URLSearchParams } from '@angular/http';
 import { RestangularService } from './restangular.service';
 const requirementIdName = 'Requirement';
 const requirementsPath = 'Requirement';
 
 @Injectable()
 export class RequirementService {
-
 
   private restangular: RestangularService;
   constructor(restangular: RestangularService) {
@@ -151,4 +150,23 @@ export class RequirementService {
       });
   }
 
+  getAllSaldo(queryParams?: URLSearchParams): Observable<any[]> {
+    const restangular = this.restangular.all(requirementsPath+'/SaldosProducto');
+    return restangular
+      .postQuery(queryParams)
+      .map(response => {
+        const json = response.json();
+         return json;
+      });
+  }
+
+  getlistTipoDocumento(): Observable<any[]> {
+    const restangular = this.restangular.all(requirementsPath+'/getListTipoDocumento');
+    return restangular
+      .get()
+      .map(response => {
+        const json = response.json();
+         return json;
+      });
+  }
 }

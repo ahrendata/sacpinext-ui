@@ -33,6 +33,7 @@ import { ConfirmationModalComponent } from './components/confirmation-modal/conf
 
 import { NavigationModule, WizardModule, PaginationModule, ActionModule, ListModule, ToolbarModule } from 'patternfly-ng';
 import { ReadFileComponent } from './components/read-file/read-file.component';
+import { ReadFile2Component } from './components/read-file2/read-file2.component';
 
 
 @NgModule({
@@ -75,7 +76,8 @@ import { ReadFileComponent } from './components/read-file/read-file.component';
     EqualValidatorDirective,
     FormFieldValidationStateDirective,
     ConfirmationModalComponent,
-    ReadFileComponent
+    ReadFileComponent,
+    ReadFile2Component
   ],
   exports: [
     BsDropdownModule,
@@ -108,8 +110,8 @@ import { ReadFileComponent } from './components/read-file/read-file.component';
     FormRequiredLabelDirective,
     FormFieldValidationStateDirective,
     LoadingComponent,
-    ReadFileComponent
-
+    ReadFileComponent,
+    ReadFile2Component
   ]
 })
 export class SharedModule { }

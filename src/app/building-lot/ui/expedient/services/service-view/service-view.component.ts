@@ -241,7 +241,7 @@ export class ServiceViewComponent implements OnInit {
       }
     },
       (error) => {
-        this.notification.error('Error al descargar el archvivo, por favor intente de nuevo.', 'Error');
+        this.notification.error('Error al descargar el archivo, por favor intente de nuevo.', 'Error');
       });
   }
 

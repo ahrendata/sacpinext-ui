@@ -248,6 +248,4 @@ export class ContratosListComponent implements OnInit {
     this.loadContratos();
   }
 
- 
-
 }

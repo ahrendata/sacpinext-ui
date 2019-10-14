@@ -1,0 +1,217 @@
+<div class="row">
+  <div class="col-md-12">
+     <h1>Reporte de saldos de productos</h1>
+    <!-- <div class="row">
+      <div class="col-md-8">
+        <ol class="breadcrumb">
+          <li>
+            <a routerLink="../">Reportes</a>
+          </li>
+          <li>Reporte saldos de productos</li>
+        </ol>
+        <h1>Saldo de Productos</h1>
+      </div>
+      
+    </div> -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="control-label">Centro de Costo
+              <i class="fa fa-question-circle text-muted" tooltip="Centro de costo" placement="top"></i>
+            </label>
+            <ng-select class="ng-select-sacpi" [items]="expedients" bindLabel="Alias" bindValue="IdExpediente"
+              placeholder="Seleccione expediente" [(ngModel)]="idExpedienteSeleccionado"
+              (ngModelChange)="cambio(IdExpediente)"></ng-select>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="control-label">Fecha Inicial
+              <i class="fa fa-question-circle text-muted" tooltip="Fecha Inicial" placement="top"></i>
+            </label>
+            <div class="input-group ">
+              <input class="form-control" type="date">
+              <!-- <input  class="form-control" #dpi="bsDatepicker" bsDatepicker [(bsValue)]="bsValuei" placeholder="Seleccione una fecha"> -->
+              <span class=" btn input-group-addon" >
+                <span class="fa fa-calendar" ></span>
+              </span>
+            </div>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="control-label">Fecha Fin
+              <i class="fa fa-question-circle text-muted" tooltip="Fecha Fin" placement="top"></i>
+            </label>
+            <div class="input-group ">
+                <input class="form-control" type="date">
+              <!-- <input  class="form-control" #dpf="bsDatepicker" bsDatepicker [bsValue]="bsValuef" placeholder="Seleccione una fecha"
+                [bsConfig]="{ isAnimated: true, adaptivePosition: true, dateInputFormat: 'YYYY-MM-DD' }"> -->
+              <span class=" btn input-group-addon" >
+                <span class="fa fa-calendar"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group" style="padding-top: 7%">
+            <button class="btn btn-primary primary-action col-md-6 col-sm-6" type="button" (click)="consultar()">
+              <span class="fa fa-search"></span>
+              Consultar
+            </button>
+            <!-- <div class="col-md-1 col-sm-1"></div>
+            <button class="btn btn-primary primary-action col-md-4 col-sm-5" type="button" (click)="excel()">
+              <span class="fa fa-bar-chart"></span>
+              Excel
+            </button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="padding-15">
+      <div class="row">
+        <div class="col-sm-12">
+          <pfng-toolbar [config]="toolbarConfig" [actionTemplate]="actionTemplate"
+            (onActionSelect)="handleAction($event)" (onFilterChange)="filterChanged($event)"
+            (onSelectionChange)="handleSelectionChange($event)" (onSortChange)="handleSortChanged($event)"
+            (onViewSelect)="viewSelected($event)">
+          </pfng-toolbar>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="margin-top-10">
+            <pfng-table [columns]="columns" [config]="tableConfig" [expandRowTemplate]="expandRowTemplate" [rows]="rows"
+              (onActionSelect)="handleAction($event)" (onFilterTypeAhead)="filterQueries($event)"
+              (onPageNumberChange)="handlePageNumber($event)" (onPageSizeChange)="handlePageSize($event)"
+              (onSelectionChange)="handleSelectionChange($event)">
+            </pfng-table>
+            <!-- Column templates -->
+            <ng-template #productoTemplate let-row="row">
+              <div style="width: 600px">
+                  <span>{{row.textoCodigoProdDenominacion}}</span>
+              </div>
+            </ng-template>
+            <ng-template #uMedTemplate let-row="row">
+              <div style="text-align: center;">
+                  <span >{{row.textUnidadMedida}}</span>
+              </div>
+            </ng-template>
+            <ng-template #cantpedTemplate let-row="row">
+              <div style="text-align: right;">
+                <span>{{row.Cantidad}}</span>
+              </div>
+            </ng-template>
+            <ng-template #compradoTemplate let-row="row">
+              <div style="text-align: right;">
+                <span>{{row.CantidadOrden}}</span>
+              </div>
+            </ng-template>
+            <ng-template #parcialTemplate let-row="row" >
+              <div style="text-align: right;">
+                <span>{{row.Parcial }}</span>
+              </div>
+            </ng-template>
+            <ng-template #notaSalidaTemplate let-row="row">
+              <div style="text-align: right;">
+                <span>{{row.CantidadNotaSalida}}</span>
+              </div>
+            </ng-template>
+            <ng-template #saldoTemplate let-row="row">
+              <div style="text-align: right;">
+                <span *ngIf="row.Saldo < 0" style="color: red" class="pf-u-text-align-right">{{row.Saldo}}</span>
+                <span *ngIf="row.Saldo>=0" style="color: blue" class="pf-u-text-align-right">{{row.Saldo}}</span>
+              </div>
+            </ng-template>
+            <ng-template #centroCostoTemplate let-row="row" >
+              <div style="width: 600px">
+                  <span>{{row.Observacion}}</span>
+              </div>
+            </ng-template>
+            <ng-template #nroNotasPedidoTemplate let-row="row">
+              <span >{{row.NroNotaPedido | slice:0:14}}</span>
+            </ng-template>
+            <ng-template #expandRowTemplate let-row="row">
+              <div class="margin-left-20">
+                <div><strong>Total Notas Pedido</strong></div>
+                {{row.CodigoS10Text}}
+              </div>
+              <div class="margin-left-20">
+                <div><strong>Total Ordenes</strong></div>
+                <span>{{row.NroModifica}}</span>
+              </div>
+            </ng-template>
+             <!-- <ng-template #nroNotasPedidoTotalTemplate let-row="row">
+              {{row.CodigoS10Text}}
+            </ng-template>  -->
+            <!-- <ng-template #ordenesTemplate let-row="row">
+              <span >{{row.NroModifica | slice:0:14}}</span>
+            </ng-template>  -->
+          </div>
+
+          <div class=" row margin-top-20 " style="margin-bottom: 60px">
+              <div class=" col-md-5">
+                <h5 style="font-weight: bold">GASTO SELECCIONADO</h5>
+                <div>
+                  <div class="col-md-7">
+                    Gasto Cantidad Pedida Seleccionada :
+                    <span style="font-weight: bolder" class="pull-right">S/ {{totalCantidadPedida | number:'1.2-2' }}</span>
+                  </div>
+                  <div class="col-md-7">
+                    Gasto Cantidad Comprada Seleccionada :
+                    <span style="font-weight: bolder" class="pull-right">S/ {{totalComprado | number:'1.2-2' }}</span>
+                  </div>
+                  <div class="col-md-7">
+                    Gasto Cantidad Parcial Seleccionado :
+                    <span style="font-weight: bolder" class="pull-right">S/ {{totalParcial | number:'1.2-2' }}</span>
+                  </div>
+                  <div class="col-md-7">
+                    Gasto Cantidad Nota Salida Seleccionado :
+                    <span style="font-weight: bolder" class="pull-right">S/ {{totalNotaSalida | number:'1.2-2' }}</span>
+                  </div>
+                  <div class="col-md-7">
+                    Gasto Cantidad Saldo Seleccionado :
+                    <span style="font-weight: bolder" class="pull-right">S/ {{totalSaldo | number:'1.2-2' }}</span>
+                  </div>
+                
+                </div>
+              </div>
+
+              <div class="col-md-5">
+                  <h5 style="font-weight: bold">GASTOS TOTALES</h5>
+                  <div>
+                    <div class="col-md-7">
+                      Gasto Total Cantidad Pedida :
+                      <span style="font-weight: bolder;" class="pull-right">S/ {{gastoTotalCantidadPedida | number:'1.2-2' }}</span>
+                    </div>
+                    <div class="col-md-7">
+                      Gasto Total Cantidad Comprada :
+                      <span style="font-weight: bolder" class="pull-right">S/ {{gastoTotalComprado | number:'1.2-2' }}</span>
+                    </div>
+                    <div class="col-md-7">
+                      Gasto Total Cantidad Parcial :
+                      <span style="font-weight: bolder" class="pull-right">S/ {{gastoTotalParcial | number:'1.2-2' }}</span>
+                    </div>
+                    <div class="col-md-7">
+                      Gasto Total Cantidad Nota Salida :
+                      <span style="font-weight: bolder" class="pull-right">S/ {{gastoTotalNotaSalida | number:'1.2-2' }}</span>
+                    </div>
+                    <div class="col-md-7">
+                      Gasto Total Cantidad Saldo :
+                      <span style="font-weight: bolder" class="pull-right">S/ {{gastoTotalSaldo | number:'1.2-2' }}</span>
+                    </div>
+                  
+                  </div>
+                </div>
+          </div>
+         
+        </div>
+      </div>
+      <div>
+      </div>
+    </div>
+    <br>
+  </div>
+</div>

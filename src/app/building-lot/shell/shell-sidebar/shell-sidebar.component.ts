@@ -51,6 +51,20 @@ export class ShellSidebarComponent implements OnInit {
         badges: [{ id: 1 }]
       },
       {
+        title: 'Reportes',
+        iconStyleClass: 'fa fa-bar-chart',
+        url: 'reports',
+        badges: [{ id: 1 }],
+        mobileItem : true,
+        children:[
+          {
+            title: 'Saldos Productos',
+            url: './reports/product-balance',
+            badges: [{ id: 1 }]
+          },
+        ]
+      },
+      {
         title: 'Cuenta',
         iconStyleClass: 'fa fa-user',
         url: './acount',

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewContainerRef, TemplateRef, ViewEncapsulation, Vi
 import { Requirement } from '../../../../../core/model/requirement.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DataService } from '../../../../../core/data/data.service';
-import { ToastsManager } from 'ng2-toastr';
+import { ToastsManager } from 'ng6-toastr';
 import { URLSearchParams } from '@angular/http';
 
 //for toolbar

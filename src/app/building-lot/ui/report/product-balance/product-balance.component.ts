@@ -1,26 +1,26 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 
-import { ActionConfig } from '../../../../../../node_modules/patternfly-ng/action/action-config';
-import { EmptyStateConfig } from '../../../../../../node_modules/patternfly-ng/empty-state/empty-state-config';
-import { Filter } from '../../../../../../node_modules/patternfly-ng/filter/filter';
-import { FilterConfig } from '../../../../../../node_modules/patternfly-ng/filter/filter-config';
-import { FilterField } from '../../../../../../node_modules/patternfly-ng/filter/filter-field';
-import { FilterEvent } from '../../../../../../node_modules/patternfly-ng/filter/filter-event';
-import { FilterType } from '../../../../../../node_modules/patternfly-ng/filter/filter-type';
-import { PaginationConfig } from '../../../../../../node_modules/patternfly-ng/pagination/pagination-config';
-import { PaginationEvent } from '../../../../../../node_modules/patternfly-ng/pagination/pagination-event';
-import { SortConfig } from '../../../../../../node_modules/patternfly-ng/sort/sort-config';
-import { SortField } from '../../../../../../node_modules/patternfly-ng/sort/sort-field';
-import { SortEvent } from '../../../../../../node_modules/patternfly-ng/sort/sort-event';
-import { TableConfig } from '../../../../../../node_modules/patternfly-ng/table/basic-table/table-config';
-import { TableEvent } from '../../../../../../node_modules/patternfly-ng/table/table-event';
-import { ToolbarConfig } from '../../../../../../node_modules/patternfly-ng/toolbar/toolbar-config';
-import { ToolbarView } from '../../../../../../node_modules/patternfly-ng/toolbar/toolbar-view';
+import { ActionConfig } from 'patternfly-ng';
+import { EmptyStateConfig } from 'patternfly-ng';
+import { Filter } from 'patternfly-ng';
+import { FilterConfig } from 'patternfly-ng';
+import { FilterField } from 'patternfly-ng';
+import { FilterEvent } from 'patternfly-ng';
+import { FilterType } from 'patternfly-ng';
+import { PaginationConfig } from 'patternfly-ng';
+import { PaginationEvent } from 'patternfly-ng';
+import { SortConfig } from 'patternfly-ng';
+import { SortField } from 'patternfly-ng';
+import { SortEvent } from 'patternfly-ng';
+import { TableConfig } from 'patternfly-ng';
+import { TableEvent } from 'patternfly-ng';
+import { ToolbarConfig } from 'patternfly-ng';
+import { ToolbarView } from 'patternfly-ng';
 
 import { DataService } from '../../../../core/data/data.service';
 import { URLSearchParams } from '@angular/http';
 
-import { ToastsManager } from 'ng2-toastr';
+import { ToastsManager } from 'ng6-toastr';
 //datePicker
 
 @Component({
@@ -30,18 +30,18 @@ import { ToastsManager } from 'ng2-toastr';
 })
 export class ProductBalanceComponent implements OnInit {
 
-  @ViewChild('productoTemplate') productoTemplate: TemplateRef<any>;
-  @ViewChild('uMedTemplate') uMedTemplate: TemplateRef<any>;
-  @ViewChild('cantpedTemplate') cantpedTemplate: TemplateRef<any>;
-  @ViewChild('compradoTemplate') compradoTemplate: TemplateRef<any>;
-  @ViewChild('parcialTemplate') parcialTemplate: TemplateRef<any>;
-  @ViewChild('notaSalidaTemplate') notaSalidaTemplate: TemplateRef<any>;
-  @ViewChild('saldoTemplate') saldoTemplate: TemplateRef<any>;
-  @ViewChild('centroCostoTemplate') centroCostoTemplate: TemplateRef<any>;
-  @ViewChild('nroNotasPedidoTemplate') nroNotasPedidoTemplate: TemplateRef<any>;
+  @ViewChild('productoTemplate', {static: false}) productoTemplate: TemplateRef<any>;
+  @ViewChild('uMedTemplate', {static: false}) uMedTemplate: TemplateRef<any>;
+  @ViewChild('cantpedTemplate', {static: false}) cantpedTemplate: TemplateRef<any>;
+  @ViewChild('compradoTemplate', {static: false}) compradoTemplate: TemplateRef<any>;
+  @ViewChild('parcialTemplate', {static: false}) parcialTemplate: TemplateRef<any>;
+  @ViewChild('notaSalidaTemplate', {static: false}) notaSalidaTemplate: TemplateRef<any>;
+  @ViewChild('saldoTemplate', {static: false}) saldoTemplate: TemplateRef<any>;
+  @ViewChild('centroCostoTemplate', {static: false}) centroCostoTemplate: TemplateRef<any>;
+  @ViewChild('nroNotasPedidoTemplate', {static: false}) nroNotasPedidoTemplate: TemplateRef<any>;
   // @ViewChild('nroNotasPedidoTotalTemplate') nroNotasPedidoTotalTemplate: TemplateRef<any>;
   // @ViewChild('ordenesTemplate') ordenesTemplate: TemplateRef<any>;
-  @ViewChild('expandRowTemplate') expandRowTemplate: TemplateRef<any>;
+  @ViewChild('expandRowTemplate', {static: false}) expandRowTemplate: TemplateRef<any>;
 
   actionConfig: ActionConfig;
   actionsText: string = '';

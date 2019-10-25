@@ -3,7 +3,7 @@ import { WizardComponent, WizardStepConfig, WizardConfig, WizardEvent, WizardSte
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../../core/data/data.service';
-import { ToastsManager } from 'ng2-toastr';
+import { ToastsManager } from 'ng6-toastr';
 import { User } from '../../../core/model/user.model';
 
 @Component({
@@ -13,7 +13,7 @@ import { User } from '../../../core/model/user.model';
 })
 export class ChangePasswordComponent implements OnInit {
 
-  @ViewChild('wizard') wizard: WizardComponent;
+  @ViewChild('wizard', {static: false}) wizard: WizardComponent;
 
   data: any = {
     name: '',

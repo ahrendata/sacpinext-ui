@@ -4,7 +4,7 @@ import { DataService } from './../../../../../core/data/data.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Component, OnInit, EventEmitter, ViewContainerRef } from '@angular/core';
-import { ToastsManager } from 'ng2-toastr';
+import { ToastsManager } from 'ng6-toastr';
 import { URLSearchParams } from '@angular/http';
 
 import 'rxjs/add/operator/distinctUntilChanged';

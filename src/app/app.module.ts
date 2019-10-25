@@ -8,9 +8,9 @@ import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { Http, HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
-import { ToastModule } from 'ng2-toastr';
+import { ToastModule } from 'ng6-toastr';
 import { SharedModule } from './shared/shared.module';
-import { NotificationModule } from 'patternfly-ng';
+import { ToastNotificationModule } from 'patternfly-ng';
 
 import { ConfigService, configServiceInitializer } from './config.service';
 import { AppComponent } from './app.component';
@@ -31,7 +31,7 @@ export function restangularProviderConfigurer(restangularProvider: any, config: 
     ReactiveFormsModule,
     HttpModule,
     HttpClientModule,
-    NotificationModule,
+    ToastNotificationModule,
     BrowserAnimationsModule,
     RestangularModule.forRoot([ConfigService], restangularProviderConfigurer),
     BsDropdownModule.forRoot(),

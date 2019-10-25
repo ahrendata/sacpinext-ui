@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Component, NgModule, OnInit, EventEmitter, OnDestroy, ViewContainerRef, TemplateRef, ViewChild } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray, FormControlDirective } from '@angular/forms';
-import { ToastsManager } from 'ng2-toastr';
+import { ToastsManager } from 'ng6-toastr';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/debounceTime';

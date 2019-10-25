@@ -23,7 +23,7 @@ import { Paging } from '../../../../../core/model/paging.model';
 import { Requirement } from '../../../../../core/model/requirement.model';
 import { SearchResults } from '../../../../../core/model/search-results.model';
 import { SearchCriteriaFilter } from '../../../../../core/model/search-criteria-filter.model';
-import { ToastsManager } from 'ng2-toastr';
+import { ToastsManager } from 'ng6-toastr';
 
 import { SearchCriteria } from '../../../../../core/model/search-criteria.model';
 

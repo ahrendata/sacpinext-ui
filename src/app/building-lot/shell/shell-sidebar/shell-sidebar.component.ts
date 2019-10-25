@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DataService } from '../../../core/data/data.service';
-import { NavigationItemConfig } from 'patternfly-ng';
+import { NavigationItemBase} from 'patternfly-ng';
 
 @Component({
   selector: 'sacpi-shell-sidebar',
@@ -15,7 +15,7 @@ export class ShellSidebarComponent implements OnInit {
     private route: ActivatedRoute,
     private dataService: DataService) { }
 
-  navigationItems: NavigationItemConfig[];
+  navigationItems: NavigationItemBase[];
 
 
   ngOnInit() {
@@ -54,7 +54,7 @@ export class ShellSidebarComponent implements OnInit {
         title: 'Reportes',
         iconStyleClass: 'fa fa-bar-chart',
         url: 'reports',
-        badges: [{ id: 1 }],
+        badges: [{ id: 1,
         mobileItem : true,
         children:[
           {
@@ -62,13 +62,13 @@ export class ShellSidebarComponent implements OnInit {
             url: './reports/product-balance',
             badges: [{ id: 1 }]
           },
-        ]
+        ] }],
       },
       {
         title: 'Cuenta',
         iconStyleClass: 'fa fa-user',
         url: './acount',
-        badges: [{ id: 1 }],
+        badges: [{ id: 1 ,
         mobileItem: true,
         children: [
           {
@@ -87,11 +87,13 @@ export class ShellSidebarComponent implements OnInit {
             badges: [{ id: 3 }]
           }
         ]
+      }],
+        
       }
     ];
   }
 
-  onItemClicked($event: NavigationItemConfig): void {
+  onItemClicked($event: NavigationItemBase): void {
     if ($event.badges[0].id === 3) {
       this.dataService.users().logout();
     }

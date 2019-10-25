@@ -5,7 +5,7 @@ import { Expedient } from './../model/expedient.model';
 
 import { SearchCriteria } from './../model/search-criteria.model';
 import { SearchResults } from './../model/search-results.model';
-// import { URLSearchParams } from '@angular/http';verifica
+import { URLSearchParams } from '@angular/http';
 import { RestangularService } from './restangular.service';
 const fileIdName = 'File';
 const filePath = 'File';

@@ -13,7 +13,7 @@ import { DatePipe, CurrencyPipe } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 import { ActionConfig } from 'patternfly-ng/action';
 import { ToolbarConfig } from 'patternfly-ng/toolbar';
-import { ToastsManager } from 'ng2-toastr/src/toast-manager';
+import { ToastsManager } from 'ng6-toastr/src/toast-manager';
 
 import 'jspdf-autotable';
 import * as jsPDF from 'jspdf'

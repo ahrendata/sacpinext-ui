@@ -5,7 +5,7 @@ import { ListConfig } from 'patternfly-ng/list';
 import { DataService } from '../../../../core/data/data.service';
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ToastsManager } from 'ng2-toastr';
+import { ToastsManager } from 'ng6-toastr';
 import { URLSearchParams } from '@angular/http';
 
 //for toolbar
@@ -161,6 +161,8 @@ export class CenterCosteFilesComponent implements OnInit {
 
   //centros de costo
   loadExpedients() {
+    console.log("carga de expedientes");
+    
     this.loading = true;
     let id = this.dataService.users().getEmployeeId();
     this.idUsuario = this.dataService.users().getUserId();

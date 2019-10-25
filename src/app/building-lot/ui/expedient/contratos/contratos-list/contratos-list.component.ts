@@ -5,7 +5,7 @@ import { DataService } from './../../../../../core/data/data.service';
 import { FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { ToastsManager } from 'ng2-toastr';
+import { ToastsManager } from 'ng6-toastr';
 import { URLSearchParams } from '@angular/http';
 
 //for toolbar

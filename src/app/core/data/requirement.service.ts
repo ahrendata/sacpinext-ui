@@ -6,7 +6,7 @@ import { Expedient } from './../model/expedient.model';
 
 import { SearchCriteria } from './../model/search-criteria.model';
 import { SearchResults } from './../model/search-results.model';
-// import { URLSearchParams } from '@angular/http';
+import { URLSearchParams } from '@angular/http';
 import { RestangularService } from './restangular.service';
 const requirementIdName = 'Requirement';
 const requirementsPath = 'Requirement';

@@ -23,7 +23,7 @@ import { ConfigService } from './../config.service';
 import { LoadingService } from './loading/loading.service';
 import { BsModalService } from 'ngx-bootstrap';
 import { DialogComponent } from './dialog/dialog.component';
-import { ToastsManager } from 'ng2-toastr';
+import { ToastsManager } from 'ng6-toastr';
 import { TruncatePipe } from './../shared/pipes/truncate.pipe';
 
 @NgModule({

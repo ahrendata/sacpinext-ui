@@ -31,7 +31,7 @@ import { ButtonConfirmarComponent } from './components/button-confirmar/button-c
 import { ButtonLoginComponent } from './components/button-login/button-login.component';
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 
-import { NavigationModule, WizardModule, PaginationModule, ActionModule, ListModule, ToolbarModule } from 'patternfly-ng';
+import { VerticalNavigationModule, WizardModule, PaginationModule, ActionModule, ListModule, ToolbarModule } from 'patternfly-ng';
 import { ReadFileComponent } from './components/read-file/read-file.component';
 import { ReadFile2Component } from './components/read-file2/read-file2.component';
 
@@ -51,7 +51,7 @@ import { ReadFile2Component } from './components/read-file2/read-file2.component
     ListModule,
     ActionModule,
     PaginationModule,
-    NavigationModule,
+    VerticalNavigationModule,
     WizardModule
   ],
   declarations: [
@@ -88,7 +88,7 @@ import { ReadFile2Component } from './components/read-file2/read-file2.component
     ListModule,
     ActionModule,
     PaginationModule,
-    NavigationModule,
+    VerticalNavigationModule,
     WizardModule,
     ButtonDeleteComponent,
     ButtonSaveComponent,

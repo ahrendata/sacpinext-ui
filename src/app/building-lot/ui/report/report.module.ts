@@ -10,7 +10,7 @@ import { ProductBalanceComponent } from './product-balance/product-balance.compo
 import { TableModule } from 'patternfly-ng';
 
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+// import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 const routes: Routes = [
   { path: '', redirectTo: 'product-balance', pathMatch: 'full' },
@@ -31,7 +31,7 @@ const routes: Routes = [
     CoreModule,
     TableModule,
     BsDropdownModule.forRoot(), 
-    NgxDatatableModule
+    // NgxDatatableModule
   ],
   declarations: [
     ProductBalanceComponent

@@ -7,7 +7,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 })
 export class DialogComponent implements OnInit {
 
-  @ViewChild("modal") templateModal: TemplateRef<any>;
+  @ViewChild("modal", {static: false}) templateModal: TemplateRef<any>;
 
   @Input() title: string;
   @Input() message: string;

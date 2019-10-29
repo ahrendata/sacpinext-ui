@@ -1,27 +1,39 @@
-import { Component, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, ViewChild, TemplateRef } from '@angular/core';
 
-import { ActionConfig } from '../../../../../../node_modules/patternfly-ng/action/action-config';
-import { EmptyStateConfig } from '../../../../../../node_modules/patternfly-ng/empty-state/empty-state-config';
-import { Filter } from '../../../../../../node_modules/patternfly-ng/filter/filter';
-import { FilterConfig } from '../../../../../../node_modules/patternfly-ng/filter/filter-config';
-import { FilterField } from '../../../../../../node_modules/patternfly-ng/filter/filter-field';
-import { FilterEvent } from '../../../../../../node_modules/patternfly-ng/filter/filter-event';
-import { FilterType } from '../../../../../../node_modules/patternfly-ng/filter/filter-type';
-import { PaginationConfig } from '../../../../../../node_modules/patternfly-ng/pagination/pagination-config';
-import { PaginationEvent } from '../../../../../../node_modules/patternfly-ng/pagination/pagination-event';
-import { SortConfig } from '../../../../../../node_modules/patternfly-ng/sort/sort-config';
-import { SortField } from '../../../../../../node_modules/patternfly-ng/sort/sort-field';
-import { SortEvent } from '../../../../../../node_modules/patternfly-ng/sort/sort-event';
-import { TableConfig } from '../../../../../../node_modules/patternfly-ng/table/basic-table/table-config';
-import { TableEvent } from '../../../../../../node_modules/patternfly-ng/table/table-event';
-import { ToolbarConfig } from '../../../../../../node_modules/patternfly-ng/toolbar/toolbar-config';
-import { ToolbarView } from '../../../../../../node_modules/patternfly-ng/toolbar/toolbar-view';
-
-import { DataService } from '../../../../core/data/data.service';
+import { ToastsManager } from 'ng6-toastr';
 import { URLSearchParams } from '@angular/http';
 
-import { ToastsManager } from 'ng2-toastr';
-//datePicker
+//for toolbar
+import { ActionConfig } from 'patternfly-ng/action';
+import { Filter, FilterConfig, FilterField, FilterEvent, FilterType } from 'patternfly-ng/filter';
+import { SortConfig, SortEvent, SortField } from 'patternfly-ng/sort';
+
+import { ToolbarConfig, ToolbarView } from 'patternfly-ng/toolbar';
+
+//for list
+import { EmptyStateConfig } from 'patternfly-ng/empty-state';
+import {  ListConfig, ListEvent } from 'patternfly-ng/list';
+
+
+//for pagination
+import { PaginationConfig, PaginationEvent } from 'patternfly-ng/pagination';
+
+// ConfirmationModalComponent
+import { SearchCriteriaFilter } from '../../../../core/model/search-criteria-filter.model';
+import { Paging } from '../../../../core/model/paging.model';
+import { DataService } from '../../../../core/data/data.service';
+// import { ConfirmationModalComponent } from 'src/app/shared/components/confirmation-modal/confirmation-modal.component';
+
+import { BsModalService } from 'ngx-bootstrap';
+
+import { OrderBy } from '../../../../core/model/order-by.model';
+
+import { setTheme } from 'ngx-bootstrap/utils';
+
+import { BsLocaleService } from 'ngx-bootstrap/datepicker';
+import { defineLocale } from "ngx-bootstrap/chronos";
+import { esLocale } from "ngx-bootstrap/locale";
+import { SearchResults } from '../../../../core/model/search-results.model';
 
 @Component({
   selector: 'sacpi-product-balance',
@@ -29,48 +41,39 @@ import { ToastsManager } from 'ng2-toastr';
   styleUrls: ['./product-balance.component.scss']
 })
 export class ProductBalanceComponent implements OnInit {
-
-  @ViewChild('productoTemplate') productoTemplate: TemplateRef<any>;
-  @ViewChild('uMedTemplate') uMedTemplate: TemplateRef<any>;
-  @ViewChild('cantpedTemplate') cantpedTemplate: TemplateRef<any>;
-  @ViewChild('compradoTemplate') compradoTemplate: TemplateRef<any>;
-  @ViewChild('parcialTemplate') parcialTemplate: TemplateRef<any>;
-  @ViewChild('notaSalidaTemplate') notaSalidaTemplate: TemplateRef<any>;
-  @ViewChild('saldoTemplate') saldoTemplate: TemplateRef<any>;
-  @ViewChild('centroCostoTemplate') centroCostoTemplate: TemplateRef<any>;
-  @ViewChild('nroNotasPedidoTemplate') nroNotasPedidoTemplate: TemplateRef<any>;
-  // @ViewChild('nroNotasPedidoTotalTemplate') nroNotasPedidoTotalTemplate: TemplateRef<any>;
-  // @ViewChild('ordenesTemplate') ordenesTemplate: TemplateRef<any>;
-  @ViewChild('expandRowTemplate') expandRowTemplate: TemplateRef<any>;
-
-  actionConfig: ActionConfig;
-  actionsText: string = '';
-  allRows: any[];
-  columns: any[];
-  currentSortField: SortField;
-  emptyStateConfig: EmptyStateConfig;
-  filterConfig: FilterConfig;
-  filteredRows: any[];
+  // @ViewChild('expandTemplate', {static: false}) expandTemplate: TemplateRef<any>;
+  requirements: Array<any> = new Array<any>();//eliminar 
   filtersText: string = '';
-  isAscendingSort: boolean = true;
-  paginationConfig: PaginationConfig;
-  rows: any[];
-  rowsAvailable: boolean = true;
-  separator: Object;
-  sortConfig: SortConfig;
-  tableConfig: TableConfig;
-  toolbarConfig: ToolbarConfig;
-
-  //variables
-  loading = false;
   expedients: any[] = [];
+  archivos: any[] = [];
+  loading = false;
+  filterConfig: FilterConfig;
+  requirementType: any[] = [];
+  sortConfig: SortConfig;
+  toolbarConfig: ToolbarConfig;
+  listConfig: ListConfig;
+  paginationConfig: PaginationConfig;
+  emptyStateConfig: EmptyStateConfig;
   idExpedienteSeleccionado: any;
 
-  //datePicker
-  // datePickerConfig: Partial<BsDatepickerConfig>;
+  searchResult: SearchResults<any> = new SearchResults<any>();
+  filters: Array<SearchCriteriaFilter> = new Array<SearchCriteriaFilter>();
+  orderBy: OrderBy = {
+    name: 'textoCodigoProdDenominacion',
+    ascending: false
+  };
+  paging: Paging = {
+    page: 1,
+    pageSize: 5
+  };
 
-  bsValuei: Date = new Date();
-  bsValuef: Date = new Date();
+  centroCostoName: string = "";
+  idExpediente: number;
+  IdExpediente: number;
+  idUsuario: number;
+  idTrabajador: number;
+  allRows: any[];
+  filteredRows: any[];
 
   //totales
   totalCantidadPedida: number = 0;
@@ -86,121 +89,22 @@ export class ProductBalanceComponent implements OnInit {
   gastoTotalNotaSalida: number = 0;
   gastoTotalSaldo: number = 0;
 
-  constructor(private dataService: DataService, private notification : ToastsManager, private viewContainerRef: ViewContainerRef) {
-    // setTheme('bs3');
-    // this.datePickerConfig = Object.assign({},
-    //   { containerClass: 'theme-dark-blue' });
+  //datePicker 
+  
 
-      this.notification.setRootViewContainerRef(viewContainerRef);
+  constructor(private dataService: DataService,
+    private bsModalService: BsModalService,
+    private toastr: ToastsManager,
+    private localeService : BsLocaleService,
+    vcr: ViewContainerRef) {
+    this.toastr.setRootViewContainerRef(vcr);
+    setTheme('bs4');
   }
 
-
-  ngOnInit(): void {
-    this.columns = [
-      {
-      cellTemplate: this.productoTemplate,
-      draggable: true,
-      prop: 'textoCodigoProdDenominacion',
-      name: 'Producto',
-      resizeable: true
-    }, {
-      cellTemplate: this.uMedTemplate,
-      draggable: true,
-      prop: 'textUnidadMedida',
-      name: 'U.Med',
-      resizeable: true
-    }, {
-      cellTemplate: this.cantpedTemplate,
-      draggable: true,
-      prop: 'Cantidad',
-      name: 'Cant.Pedida',
-      resizeable: true
-    }, {
-      cellTemplate: this.compradoTemplate,
-      draggable: true,
-      prop: 'CantidadOrden',
-      name: 'Comprado',
-      resizeable: true
-    }, {
-      cellTemplate: this.parcialTemplate,
-      draggable: true,
-      prop: 'Parcial',
-      name: 'Parcial',
-      resizeable: true
-    }, {
-      cellTemplate: this.notaSalidaTemplate,
-      draggable: true,
-      prop: 'CantidadNotaSalida',
-      name: 'Nota Salida',
-      resizeable: true
-    }, {
-      cellTemplate: this.saldoTemplate,
-      draggable: true,
-      prop: 'Saldo',
-      name: 'Saldo',
-      resizeable: true
-    }, {
-      cellTemplate: this.centroCostoTemplate,
-      draggable: true,
-      prop: 'Observacion',
-      name: 'CentroCosto',
-      resizeable: true
-    }, {
-      cellTemplate: this.nroNotasPedidoTemplate,
-      draggable: true,
-      prop: 'NroNotaPedido',
-      name: 'Nro Notas Pedido',
-      resizeable: true
-    }
-    // , {
-    //   cellTemplate: this.nroNotasPedidoTotalTemplate,
-    //   draggable: true,
-    //   prop: 'CodigoS10Text',
-    //   name: 'Nro Notas Pedido Total',
-    //   resizeable: true
-    // }, {
-    //   cellTemplate: this.ordenesTemplate,
-    //   draggable: true,
-    //   prop: 'NroModifica',
-    //   name: 'Ordenes',
-    //   resizeable: true
-    // }
-    ];
-
-    this.allRows = [];
-    this.filteredRows = this.allRows;
-
-    this.paginationConfig = {
-      pageNumber: 1,
-      pageSize: 10,
-      // pageSizeIncrements: [2, 3, 4],
-      totalItems: this.filteredRows.length
-    } as PaginationConfig;
-
-    // Need to initialize for results/total counts
-    this.updateRows();
-
-    this.filterConfig = {
-      fields: [{
-        id: 'textoCodigoProdDenominacion',
-        title: 'Producto',
-        placeholder: 'filtro por denominacion de producto...',
-        type: FilterType.TEXT
-      }] as FilterField[],
-      appliedFilters: [],
-      resultsCount: this.rows.length,
-      totalCount: this.allRows.length
-    } as FilterConfig;
-
-    this.sortConfig = {
-      fields: [{
-        id: 'textoCodigoProdDenominacion',
-        title: 'Producto',
-        sortType: 'alpha'
-      }
-      ],
-      isAscending: this.isAscendingSort
-    } as SortConfig;
+  ngOnInit() {
+    //datePicker
+    defineLocale("es", esLocale);
+    this.localeService.use('es');
 
     this.emptyStateConfig = {
       iconStyleClass: 'pficon-warning-triangle-o',
@@ -208,8 +112,55 @@ export class ProductBalanceComponent implements OnInit {
       info: 'Seleccione un centro de costo y luego pulse en el boton Consultar',
     } as EmptyStateConfig;
 
+    this.allRows = [];
+    this.filteredRows = this.allRows;
+
+    this.inittoolbar();
+    this.loadExpedients();
+
+    this.listConfig = {
+      dblClick: false,
+      emptyStateConfig: this.emptyStateConfig,
+      multiSelect: false,
+      selectItems: false,
+      showCheckbox: true,
+      useExpandItems: true
+    } as ListConfig;
+
+    this.paginationConfig = {
+      pageSize: 10,
+      pageNumber: 1,
+      totalItems: this.filteredRows.length
+    } as PaginationConfig;
+
+  //  this.updateRows();
+  }
+
+  inittoolbar() {
+    // this.updateRows();
+    this.filterConfig = {
+      fields: [{
+        id: 'textoCodigoProdDenominacion',
+        title: 'Descripcion Producto',
+        placeholder: 'busqueda por descripción del Producto...',
+        type: FilterType.TEXT
+      }
+      ] as FilterField[],
+      resultsCount: this.allRows.length,
+      appliedFilters: [],
+      totalCount: this.allRows.length
+    } as FilterConfig;
+
+    this.sortConfig = {
+      fields: [{
+        id: 'textoCodigoProdDenominacion',
+        title: 'Descripcion Producto',
+        sortType: 'alpha'
+      }],
+      isAscending: false
+    } as SortConfig;
+
     this.toolbarConfig = {
-      actionConfig: this.actionConfig,
       filterConfig: this.filterConfig,
       sortConfig: this.sortConfig,
       views: [{
@@ -223,43 +174,96 @@ export class ProductBalanceComponent implements OnInit {
       }]
     } as ToolbarConfig;
 
-    this.tableConfig = {
-      emptyStateConfig: this.emptyStateConfig,
-      paginationConfig: this.paginationConfig,
-      showCheckbox: true,
-      useExpandRows: true      
-    } as TableConfig;
-
-    this.loadExpedients();
   }
 
-  // Filter
-
-  applyFilters(filters: Filter[]): void {
-   this.tableConfig.paginationConfig.pageNumber=1;
-    this.filteredRows = [];
-    if (filters && filters.length > 0) {
-      this.allRows.forEach((item) => {
-        if (this.matchesFilters(item, filters)) {
-          this.filteredRows.push(item);
+  //centros de costo
+  loadExpedients() {
+    this.loading = true;
+    let id = this.dataService.users().getEmployeeId();
+    this.idUsuario = this.dataService.users().getUserId();
+    this.idTrabajador = this.dataService.users().getEmployeeId();
+    const queryParams: URLSearchParams = new URLSearchParams();
+    queryParams.set('id', id.toString());
+    this.dataService.expedients().getAll(queryParams).subscribe((data: any[]) => {
+      this.expedients = data;
+      this.loading = false;
+      this.expedients.forEach(element => {
+        if (element.IdExpediente == this.idExpediente) {
+          this.centroCostoName = element.Alias;
         }
       });
-    } else {
-      this.filteredRows = this.allRows;
-    }
-    this.tableConfig.appliedFilters = filters; 
-    this.toolbarConfig.filterConfig.resultsCount = this.filteredRows.length;
-    this.updateRows();
+    });
+  }
+  
+  //for pagination
+  handlePageSize($event: PaginationEvent) {
+    console.log("event size "+ JSON.stringify($event));
+    this.paging.pageSize = $event.pageSize;
+     this.paginationAll();
   }
 
-  // Handle filter changes
-  filterChanged($event: FilterEvent): void {
-    this.filtersText = '';
-    $event.appliedFilters.forEach((filter) => {
-      this.filtersText += filter.field.title + ' : ' + filter.value + '\n';
-    });
-    this.applyFilters($event.appliedFilters);
+  handlePageNumber($event: PaginationEvent) {
+    console.log("event number "+ JSON.stringify($event));
+    this.paging.page = $event.pageNumber;
+    this.paginationAll();
   }
+
+  handleSortChanged($event: SortEvent): void {
+    this.currentSortField = $event.field;
+    this.isAscendingSort = $event.isAscending;
+    this.allRows.sort((item1: any, item2: any) => this.compare(item1, item2));
+    this.applyFilters(this.filterConfig.appliedFilters || []);
+  }
+
+  // Sort
+  currentSortField: SortField;
+  isAscendingSort: boolean = true;
+  compare(item1: any, item2: any): number {    
+    let compValue = 0;
+    if (this.currentSortField.id === 'textoCodigoProdDenominacion') {
+      if(item1.textoCodigoProdDenominacion){
+        compValue = item1.textoCodigoProdDenominacion.localeCompare(item2.textoCodigoProdDenominacion);
+      }
+     } 
+  
+    if (!this.isAscendingSort) {
+      compValue = compValue * -1;
+    }
+    return compValue;
+  }
+
+  // View
+  viewSelected(currentView: ToolbarView): void {
+    this.sortConfig.visible = (currentView.id === 'tableView' ? false : true);
+  }
+
+  filterChanged($event: FilterEvent): void {
+      this.filtersText = '';
+      $event.appliedFilters.forEach((filter) => {
+        this.filtersText += filter.field.title + ' : ' + filter.value + '\n';
+      });
+      this.applyFilters($event.appliedFilters);
+  }
+
+  filterRows : boolean = false;
+
+  applyFilters(filters: Filter[]): void {
+     this.filteredRows = [];
+     if (filters && filters.length > 0) {
+       this.allRows.forEach((item) => {
+         if (this.matchesFilters(item, filters)) {
+           this.filteredRows.push(item);
+         }
+       });
+     } else {
+       this.filteredRows = this.allRows;
+     }
+     this.filterRows = true;
+     this.requirements = this.filteredRows;
+     this.toolbarConfig.filterConfig.resultsCount = this.filteredRows.length;
+     this.paginationAll();
+    //  this.cambio();
+   }
 
   matchesFilter(item: any, filter: Filter): boolean {
     let match = true;
@@ -286,167 +290,79 @@ export class ProductBalanceComponent implements OnInit {
     return matches;
   }
 
-  // Pagination
-  handlePageSize($event: PaginationEvent): void {
-    this.actionsText = 'Page Size: ' + $event.pageSize + ' Selected' + '\n' + this.actionsText;
-    this.updateRows();
-  }
-
-  handlePageNumber($event: PaginationEvent): void {
-    this.actionsText = 'Page Number: ' + $event.pageNumber + ' Selected' + '\n' + this.actionsText;
-    this.updateRows();
-  }
-
-  updateRows(): void {
-    this.paginationConfig.totalItems = this.filteredRows.length;
-    this.rows = this.filteredRows.slice((this.paginationConfig.pageNumber - 1) * this.paginationConfig.pageSize,
-    this.paginationConfig.totalItems).slice(0, this.paginationConfig.pageSize);
-  }
-
-  // Sort
-  compare(item1: any, item2: any): number {    
-    let compValue = 0;
-    if (this.currentSortField.id === 'textoCodigoProdDenominacion') {
-      if(item1.textoCodigoProdDenominacion){
-        compValue = item1.textoCodigoProdDenominacion.localeCompare(item2.textoCodigoProdDenominacion);
-      }
-      
-     } 
-  
-    if (!this.isAscendingSort) {
-      compValue = compValue * -1;
-    }
-    return compValue;
-  }
-
-  // Handle sort changes
-  handleSortChanged($event: SortEvent): void { 
-    console.log("change alf" , $event);
+  search() {
+    console.log("search ");
+    console.log(" date Inicial " + (<HTMLInputElement>document.getElementById("dateInicial")).value);
+    console.log("initial " + this.dateInicial);
     
-    this.currentSortField = $event.field;
-    this.isAscendingSort = $event.isAscending;
-    this.allRows.sort((item1: any, item2: any) => this.compare(item1, item2));
-    this.applyFilters(this.filterConfig.appliedFilters || []);
-  }
-
-  // View
-  viewSelected(currentView: ToolbarView): void {
-    this.sortConfig.visible = (currentView.id === 'tableView' ? false : true);
-  }
-
-  // Selection
-  handleSelectionChange($event: TableEvent): void {
-    this.totalCantidadPedida = 0;
-    this.totalComprado = 0;
-    this.totalParcial = 0;
-    this.totalNotaSalida = 0;
-    this.totalSaldo = 0;
-
-    this.actionsText = $event.selectedRows.length + ' rows selected\r\n' + this.actionsText;
-    this.toolbarConfig.filterConfig.selectedCount = $event.selectedRows.length;
-    if ($event.selectedRows.length) {
-        $event.selectedRows.forEach(row => {
-          try {
-          if (row.Cantidad) {
-            this.totalCantidadPedida = this.totalCantidadPedida + parseFloat(row.Cantidad.replace(/,/g, ''));
-          }
-          if (row.CantidadOrden) {
-            this.totalComprado = this.totalComprado + parseFloat(row.CantidadOrden.replace(/,/g, ''));
-          }
-          if (row.Parcial) {
-            this.totalParcial = this.totalParcial + parseFloat(row.Parcial);
-          }
-          if (row.CantidadNotaSalida) {
-            this.totalNotaSalida = this.totalNotaSalida + parseFloat(row.CantidadNotaSalida.replace(/,/g, ''));
-          }
-  
-          if (row.Saldo) {
-            this.totalSaldo = this.totalSaldo + parseFloat(row.Saldo.replace(/,/g, ''));
-          }
-        } catch (error) {
-          console.log("error ", error );
-        }
-  
-        });      
-      
-    }
-  }
-
-  updateItemsAvailable(): void {
-    if (this.rowsAvailable) {
-      this.toolbarConfig.disabled = false;
-      this.toolbarConfig.filterConfig.totalCount = this.allRows.length;
-      this.filteredRows = this.allRows;
-      this.updateRows();
-    } else {
-      // Clear previously applied properties to simulate no rows available
-      this.toolbarConfig.disabled = true;
-      this.toolbarConfig.filterConfig.totalCount = 0;
-      this.filterConfig.appliedFilters = [];
-      this.rows = [];
-    }
-  }
-
-  loadExpedients() {
-    this.loading = true;
-    let id = this.dataService.users().getEmployeeId();
-    const queryParams: URLSearchParams = new URLSearchParams();
-    queryParams.set('id', id.toString());
-    this.dataService.expedients().getAll(queryParams).subscribe((data: any[]) => { this.expedients = data; this.loading = false; });
-  }
-
-  consultar() {
-    // console.log("inicio de servicio");
-    if(this.idExpedienteSeleccionado){
+    if(this.idExpedienteSeleccionado){      
       const queryParams: URLSearchParams = new URLSearchParams();
       queryParams.set('idProyecto', this.idExpedienteSeleccionado);
       queryParams.set('mayor', "");
-      queryParams.set('fechaIni', "");
-      queryParams.set('fechaFin', "");
+      queryParams.set('fechaIni', this.dateInicial);
+      queryParams.set('fechaFin', this.dateFinal);
       this.dataService.requeriments().getAllSaldo(queryParams).subscribe((data: any[]) => {        
         this.allRows = data;
-        this.rows = data;
-        this.filteredRows = this.rows;
-        this.tableConfig.paginationConfig.totalItems = data.length;
-        this.filterConfig.resultsCount = data.length;
-        this.filterConfig.totalCount = data.length;
-        this.tableConfig.paginationConfig.pageSize = 10;
-        this.updateRows();
+        this.paginationConfig.totalItems= data.length;
+        this.paginationAll();
         this.totalGeneral();
-        // this.tableConfig.showCheckbox = true;
-        // let even = new SortEvent();
-        // even.field={
-        // id : "textoCodigoProdDenominacion",
-        // sortType :"alpha",
-        // title :"Producto",
-        // };
-        //  even.isAscending = false;
-        // this.handleSortChanged(even);
       });
     }else{
-      this.notification.warning('Seleccione un centro de costo ', 'Informacion');
+      this.toastr.warning('Seleccione un centro de costo ', 'Informacion');
     }
   }
 
-  cambio() {
-    this.toolbarConfig.disabled = false;
-    this.toolbarConfig.filterConfig.totalCount = 0;
-    this.filterConfig.appliedFilters = [];
-    this.rows = [];
-    //gasto seleccionado
-    this.totalCantidadPedida = 0;
-    this.totalComprado = 0;
-    this.totalParcial = 0;
-    this.totalNotaSalida = 0;
-    this.totalSaldo = 0;
-    //gastos totales
-    this.gastoTotalCantidadPedida = 0;
-    this.gastoTotalComprado = 0;
-    this.gastoTotalParcial = 0;
-    this.gastoTotalNotaSalida = 0;
-    this.gastoTotalSaldo = 0;
-
+  paginationAll(){
+    if(this.filterRows){
+      this.paginationConfig.pageNumber =1;
+      this.paginationConfig.pageSize= 10;
+      this.paginationConfig.totalItems= this.filteredRows.length;
+      this.requirements = this.filteredRows.slice(((this.paginationConfig.pageNumber-1) * this.paginationConfig.pageSize), (this.paginationConfig.pageNumber * this.paginationConfig.pageSize));
+      this.filterRows = false;
+    }else{
+      this.paginationConfig.totalItems= this.allRows.length;
+      this.requirements = this.allRows.slice(((this.paginationConfig.pageNumber-1) * this.paginationConfig.pageSize), (this.paginationConfig.pageNumber * this.paginationConfig.pageSize));
+    }
   }
+
+    // Selection
+    handleSelectionChange($event: ListEvent): void {
+      this.totalCantidadPedida = 0;
+      this.totalComprado = 0;
+      this.totalParcial = 0;
+      this.totalNotaSalida = 0;
+      this.totalSaldo = 0;
+  
+      // this.actionsText = $event.selectedRows.length + ' rows selected\r\n' + this.actionsText;
+      this.toolbarConfig.filterConfig.selectedCount = $event.selectedItems.length;
+      if ($event.selectedItems.length) {
+          $event.selectedItems.forEach(row => {
+            try {
+            if (row.Cantidad) {
+              this.totalCantidadPedida = this.totalCantidadPedida + parseFloat(row.Cantidad.replace(/,/g, ''));
+            }
+            if (row.CantidadOrden) {
+              this.totalComprado = this.totalComprado + parseFloat(row.CantidadOrden.replace(/,/g, ''));
+            }
+            if (row.Parcial) {
+              this.totalParcial = this.totalParcial + parseFloat(row.Parcial);
+            }
+            if (row.CantidadNotaSalida) {
+              this.totalNotaSalida = this.totalNotaSalida + parseFloat(row.CantidadNotaSalida.replace(/,/g, ''));
+            }
+    
+            if (row.Saldo) {
+              this.totalSaldo = this.totalSaldo + parseFloat(row.Saldo.replace(/,/g, ''));
+            }
+          } catch (error) {
+            console.log("error ", error );
+          }
+    
+          });      
+        
+      }
+    }
+
 
   totalGeneral(){
     this.allRows.forEach(row => {
@@ -474,4 +390,43 @@ export class ProductBalanceComponent implements OnInit {
     });
   }
 
+  cambio() {
+    (<HTMLInputElement>document.getElementById("dateInicial")).value = "";
+    (<HTMLInputElement>document.getElementById("dateFinal")).value = "";
+    this.dateInicial="";
+    this.dateFinal = "";
+    this.toolbarConfig.disabled = false;
+    this.toolbarConfig.filterConfig.totalCount = 0;
+    this.filterConfig.appliedFilters = [];
+    this.allRows = [];
+    //gasto seleccionado
+    this.totalCantidadPedida = 0;
+    this.totalComprado = 0;
+    this.totalParcial = 0;
+    this.totalNotaSalida = 0;
+    this.totalSaldo = 0;
+    //gastos totales
+    this.gastoTotalCantidadPedida = 0;
+    this.gastoTotalComprado = 0;
+    this.gastoTotalParcial = 0;
+    this.gastoTotalNotaSalida = 0;
+    this.gastoTotalSaldo = 0;
+    this.paginationAll();
+
+  }
+
+  //datePicker
+  dateInicial: any ="";
+  dateFinal: any ="";
+  onValueChangeInicial(value : Date){
+    this.allRows = [];
+    this.dateInicial = value.getDate() +"/"+(value.getMonth() + 1) +"/"+ value.getFullYear();
+    this.paginationAll();
+  }
+
+  onValueChangeFinal(value : Date){
+    this.allRows=[];
+    this.dateFinal = value.getDate() +"/"+(value.getMonth() + 1 )+"/"+ value.getFullYear();
+    this.paginationAll();
+  }
 }

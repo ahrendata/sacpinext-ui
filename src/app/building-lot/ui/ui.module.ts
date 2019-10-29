@@ -13,6 +13,8 @@ import { AuthGuard } from './../../core/guard/auth.guard';
 import { SacpiUIComponent } from './ui.component';
 import { SingInComponent } from './sing-in/sing-in.component';
 
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+
 const routes: Routes = [
   {
     path: 'login',
@@ -41,6 +43,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     ShellComponentModule,
     SharedModule,
+    BsDatepickerModule.forRoot(),
   ],
   exports: [
     RouterModule,

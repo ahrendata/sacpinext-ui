@@ -12,7 +12,7 @@ import { ModalDirective } from 'ngx-bootstrap';
 })
 export class ButtonDeleteComponent implements OnInit {
 
-  @ViewChild('deleteModal')
+  @ViewChild('deleteModal', {static: false})
   private modal: ModalDirective;
 
   // Object to be deleted

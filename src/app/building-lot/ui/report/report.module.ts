@@ -6,11 +6,11 @@ import { CommonModule } from '@angular/common';
 import { CoreModule } from '../../../core/core.module';
 import { ShellComponentModule } from '../../shell/shell.module';
 import { SharedModule } from '../../../shared/shared.module';
-import { ProductBalanceComponent } from './product-balance/product-balance.component';
-import { TableModule } from 'patternfly-ng';
 
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+//import { TableModule } from 'patternfly-ng/table';
+
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ProductBalanceComponent } from './product-balance/product-balance.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'product-balance', pathMatch: 'full' },
@@ -29,9 +29,8 @@ const routes: Routes = [
     ShellComponentModule,
     SharedModule,
     CoreModule,
-    TableModule,
-    BsDropdownModule.forRoot(), 
-    NgxDatatableModule
+   // TableModule
+   BsDatepickerModule.forRoot()
   ],
   declarations: [
     ProductBalanceComponent

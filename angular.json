@@ -28,12 +28,13 @@
               "node_modules/patternfly/dist/css/patternfly-additions.min.css",
               "node_modules/patternfly-ng/dist/css/patternfly-ng.min.css",
               "node_modules/ng2-toastr/bundles/ng2-toastr.min.css",
-              "node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
+              "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
               "src/styles.scss"
             ],
             "scripts": [
               "node_modules/jspdf/dist/jspdf.min.js",
-              "node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js"
+              "node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js",
+              "node_modules/patternfly/dist/js/patternfly-settings.js"
             ]
           },
           "configurations": {
@@ -82,7 +83,8 @@
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": [
               "node_modules/jspdf/dist/jspdf.min.js",
-              "node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js"
+              "node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js",
+              "node_modules/patternfly/dist/js/patternfly-settings.js"
             ],
             "styles": [
               "node_modules/dragula/dist/dragula.min.css",
@@ -90,7 +92,7 @@
               "node_modules/patternfly/dist/css/patternfly-additions.min.css",
               "node_modules/patternfly-ng/dist/css/patternfly-ng.min.css",
               "node_modules/ng2-toastr/bundles/ng2-toastr.min.css",
-              "node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
+              "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
               "src/styles.scss"
             ],
             "assets": [

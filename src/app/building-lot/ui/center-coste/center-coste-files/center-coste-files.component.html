@@ -86,8 +86,8 @@
       <div class="row">
         <div class="col-sm-12">
           <div class="form-group">
-            <pfng-toolbar [config]="toolbarConfig" (onFilterChange)="filterChanged($event)"
-              (onSortChange)="sortChanged($event)" (onViewSelect)="viewSelected($event)">
+            <pfng-toolbar [config]="toolbarConfig" (onFilterChange)="filterChanged($event)" (onSortChange)="handleSortChanged($event)"
+            (onViewSelect)="viewSelected($event)">
 
             </pfng-toolbar>
             <pfng-list [config]="listConfig" [items]="archivos" [itemTemplate]="itemTemplate">

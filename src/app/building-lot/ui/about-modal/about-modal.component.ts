@@ -13,7 +13,7 @@ export class AboutModalComponent implements OnInit {
   aboutConfig: AboutModalConfig;
   modalRef: BsModalRef;
 
-  @ViewChild('aboutTemplate') aboutTemplate: any;
+  @ViewChild('aboutTemplate', {static: false}) aboutTemplate: any;
 
   constructor(private modalService: BsModalService) {
 

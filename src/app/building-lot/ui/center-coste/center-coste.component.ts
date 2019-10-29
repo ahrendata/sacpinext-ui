@@ -6,7 +6,7 @@ import { Component, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { URLSearchParams } from '@angular/http';
-import { ToastsManager } from 'ng2-toastr';
+import { ToastsManager } from 'ng6-toastr';
 
 import { Expedient } from './../../../core/model/expedient.model';
 import { DataService } from '../../../core/data/data.service';

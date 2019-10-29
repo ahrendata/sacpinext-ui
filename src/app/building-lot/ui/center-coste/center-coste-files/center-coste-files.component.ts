@@ -200,6 +200,7 @@ export class CenterCosteFilesComponent implements OnInit {
           if (resp.success) {
             this.toastr.success(resp.message, 'Exito');
             this.totalFiles = 0;
+            this.files.removeAt(0);
             this.getListFiles();
           } else {
             this.toastr.error('ocurrio un error mientras se guardaban sus archivos', 'Alerta');

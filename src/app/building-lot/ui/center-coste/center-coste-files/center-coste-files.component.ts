@@ -434,7 +434,7 @@ export class CenterCosteFilesComponent implements OnInit {
         if (link.download !== undefined) {
           const url = URL.createObjectURL(blob);
           link.setAttribute('href', url);
-          link.setAttribute('download', fileName);
+          link.setAttribute('download', fileName.slice(1,fileName.length));
           link.style.visibility = 'hidden';
           document.body.appendChild(link);
           link.click();

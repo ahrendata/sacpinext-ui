@@ -16,6 +16,8 @@ import { ConfigService, configServiceInitializer } from './config.service';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './core/guard/auth.guard';
 
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+
 export function restangularProviderConfigurer(restangularProvider: any, config: ConfigService) {
   restangularProvider.setBaseUrl(config.getSettings().apiEndpoint);
 }
@@ -23,7 +25,7 @@ export function restangularProviderConfigurer(restangularProvider: any, config: 
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     FormsModule,
@@ -40,7 +42,8 @@ export function restangularProviderConfigurer(restangularProvider: any, config: 
     TooltipModule.forRoot(),
     AppRoutingModule,
     SharedModule,
-    CoreModule
+    CoreModule,
+    BsDatepickerModule.forRoot()
   ],
   providers: [
     ConfigService,

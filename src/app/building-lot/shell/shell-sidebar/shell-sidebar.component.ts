@@ -62,7 +62,8 @@ export class ShellSidebarComponent implements OnInit {
             url: './reports/product-balance',
             badges: [{ id: 1 }]
           },
-        ] }],
+        ] 
+      }],
       },
       {
         title: 'Cuenta',

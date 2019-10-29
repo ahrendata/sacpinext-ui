@@ -79,6 +79,8 @@ export class CenterCosteFilesComponent implements OnInit {
   totalziseFile: number = 0;
   totalFiles: number;
 
+  allRows : any[];
+
   constructor(private router: Router, private route: ActivatedRoute,
     private formBuilder: FormBuilder, private dataService: DataService,
     private bsModalService: BsModalService,
@@ -149,11 +151,11 @@ export class CenterCosteFilesComponent implements OnInit {
         iconStyleClass: 'fa fa-th-list',
         tooltip: 'List View'
       }
-      // , {
-      //   id: 'tableView',
-      //   iconStyleClass: 'fa fa-table',
-      //   tooltip: 'Table View'
-      // }
+      , {
+        id: 'tableView',
+        iconStyleClass: 'fa fa-table',
+        tooltip: 'Table View'
+      }
     ]
     } as ToolbarConfig;
 
@@ -220,20 +222,39 @@ export class CenterCosteFilesComponent implements OnInit {
     console.log("event size "+ JSON.stringify($event));
     
     this.paging.pageSize = $event.pageSize;
-    this.getListFiles();
+    this.paginationAll();
+    // this.getListFiles();
   }
 
   handlePageNumber($event: PaginationEvent) {
     console.log("event number "+ JSON.stringify($event));
     this.paging.page = $event.pageNumber;
-    this.getListFiles();
+    // this.getListFiles();
+    this.paginationAll();
   }
 
-  sortChanged($event: SortEvent): void {
-    console.log("sortChanged " + $event);
-    this.orderBy.name = $event.field.id;
-    this.orderBy.ascending = $event.isAscending;
-    this.getListFiles();
+  handleSortChanged($event: SortEvent): void {
+    this.currentSortField = $event.field;
+    this.isAscendingSort = $event.isAscending;
+    this.allRows.sort((item1: any, item2: any) => this.compare(item1, item2));
+    this.applyFilters(this.filterConfig.appliedFilters || []);
+  }
+
+  // Sort
+  currentSortField: SortField;
+  isAscendingSort: boolean = true;
+  compare(item1: any, item2: any): number {    
+    let compValue = 0;
+    if (this.currentSortField.id === 'fileName') {
+      if(item1.fileName){
+        compValue = item1.fileName.localeCompare(item2.fileName);
+      }
+     } 
+  
+    if (!this.isAscendingSort) {
+      compValue = compValue * -1;
+    }
+    return compValue;
   }
 
   // View
@@ -250,21 +271,47 @@ export class CenterCosteFilesComponent implements OnInit {
     this.applyFilters($event.appliedFilters);
   }
 
+  filteredRows;
   applyFilters(filters: Filter[]): void {
-    this.filters = new Array<SearchCriteriaFilter>();
+    this.filteredRows = [];
     if (filters && filters.length > 0) {
-      filters.forEach((filter) => {
-        if (filter.field.type === 'text') {
-          console.log("text");
-          
-          this.filters.push(new SearchCriteriaFilter(filter.field.id, filter.value, 'like', filter.field.type));
+      this.allRows.forEach((item) => {
+        if (this.matchesFilters(item, filters)) {
+          this.filteredRows.push(item);
         }
-        // if (filter.field.type === 'select') {
-        // this.filters.push(new SearchCriteriaFilter(filter.field.id, filter.query.id, 'eq'));
-        // }
       });
+    } else {
+      this.filteredRows = this.allRows;
     }
-    // this.getListFiles();
+     this.filterRows = true;
+    // this.requirements = this.filteredRows;
+    // this.toolbarConfig.filterConfig.resultsCount = this.filteredRows.length;
+     this.paginationAll();
+  }
+
+  matchesFilters(item: any, filters: Filter[]): boolean {
+    let matches = true;
+    filters.forEach((filter) => {
+      if (!this.matchesFilter(item, filter)) {
+        matches = false;
+        return matches;
+      }
+    });
+    return matches;
+  }
+
+  matchesFilter(item: any, filter: Filter): boolean {
+    let match = true;
+    let re = new RegExp(filter.value, 'i');
+    try {
+      if (filter.field.id === 'fileName') {
+        match = item.fileName.match(re) !== null;
+      }
+      return match;
+    } catch (error) {
+      console.log("error ", error);
+    }
+
   }
 
   getIdExpedienteFromUrl() {
@@ -335,13 +382,11 @@ export class CenterCosteFilesComponent implements OnInit {
     const queryParams: URLSearchParams = new URLSearchParams();
     queryParams.set('idDocumentoOrigen', this.idExpediente.toString());
     this.dataService.files().getAll(queryParams).subscribe((data: any) => {
-      // console.log("archivos "+ JSON.stringify(data));
-      
-      // this.searchResult = data;
-      this.archivos = data;
-      this.toolbarConfig.filterConfig.resultsCount = data.length;
-      this.toolbarConfig.filterConfig.totalCount = data.length;
+      this.allRows = data;      
+      // this.toolbarConfig.filterConfig.resultsCount = data.length;
+      // this.toolbarConfig.filterConfig.totalCount = data.length;
       this.paginationConfig.totalItems = data.length;
+      this.paginationAll();
     });
   }
 
@@ -396,6 +441,20 @@ export class CenterCosteFilesComponent implements OnInit {
         }
       }
     });
+  }
+
+  filterRows : boolean = false;
+  paginationAll(){
+    if(this.filterRows){
+      this.paginationConfig.pageNumber =1;
+      // this.paginationConfig.pageSize= ;
+      this.paginationConfig.totalItems= this.filteredRows.length;
+      this.archivos = this.filteredRows.slice(((this.paginationConfig.pageNumber-1) * this.paginationConfig.pageSize), (this.paginationConfig.pageNumber * this.paginationConfig.pageSize));
+      this.filterRows = false;
+    }else{
+      this.paginationConfig.totalItems= this.allRows.length;
+      this.archivos = this.allRows.slice(((this.paginationConfig.pageNumber-1) * this.paginationConfig.pageSize), (this.paginationConfig.pageNumber * this.paginationConfig.pageSize));
+    }
   }
 
   cancelar() {

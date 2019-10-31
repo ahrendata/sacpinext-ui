@@ -199,9 +199,9 @@ export class CenterCosteFilesComponent implements OnInit {
         this.dataService.files().saveNext(this.form.value).subscribe(resp => {
           if (resp.success) {
             this.toastr.success(resp.message, 'Exito');
-            this.totalFiles = 0;
-            this.files.removeAt(0);
+            this.cancelar();
             this.getListFiles();
+            
           } else {
             this.toastr.error('ocurrio un error mientras se guardaban sus archivos', 'Alerta');
           }
@@ -462,6 +462,8 @@ export class CenterCosteFilesComponent implements OnInit {
     while (this.files.length !== 0) {
       this.files.removeAt(0);
       this.totalFiles = this.files.length;
+      this.filterConfig.appliedFilters =[];
+      this.getListFiles();
       this.totalsize();
     }
     console.log("total files ", this.files.value);

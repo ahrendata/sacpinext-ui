@@ -362,7 +362,6 @@ export class CenterCosteFilesComponent implements OnInit {
     this.totalsize();
   }
 
-  
   async totalsize() {
     var total = 0;
     await this.files.controls.forEach(element => {
@@ -406,6 +405,7 @@ export class CenterCosteFilesComponent implements OnInit {
         this.dataService.files().deleteNext(queryParams).subscribe(data => {
           if (data) {
             this.toastr.success('Su archivo se elimino correctamente!', 'Informacion');
+            this.filterConfig.appliedFilters=[];
             this.getListFiles();
           } else {
             this.toastr.error('Error al eliminar el archivo, intentelo nuevamente', 'Error');

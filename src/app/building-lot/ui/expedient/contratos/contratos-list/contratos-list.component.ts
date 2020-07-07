@@ -147,6 +147,14 @@ export class ContratosListComponent implements OnInit {
 
   loadContratos(){
     let idExpediente = this.centroCostoId;
+    // const criteria: SearchCriteria = {
+    //   id: idExpediente,
+    //   filters: this.filters.map(f => {
+    //     return new SearchCriteriaFilter(f.name, f.value, f.operator, f.type);
+    //   }),
+    //   orders: [this.orderBy],
+    //   paging: this.paging
+    // };
     const queryParams: URLSearchParams = new URLSearchParams();
     queryParams.set('idCentroCosto', idExpediente);
     this.dataService.expedients().getAllContracts(queryParams).subscribe((data : any[])=>{

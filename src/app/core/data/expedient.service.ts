@@ -61,6 +61,26 @@ export class ExpedientService {
       });
   }
 
+  searchAllContracts(criteria: SearchCriteria): Observable<SearchResults<Expedient>> {
+    const restangular = this.restangular.all(expedientssPath +'Contracts'+ '/filter');
+    return restangular
+      .post(criteria)
+      .map(response => {
+        const json = response.json();
+        const result = new SearchResults<any>();
+        const items = new Array<Expedient>();
+        json.data.forEach(element => {
+          console.log("resultado del paginado "+JSON.stringify(element));
+          
+          // const document = new Expedient(restangular.all(element['IdExpediente']));
+          // items.push(Object.assign(document, element));
+        });
+        result.items = items;
+        result.totalSize = json.count;
+        return result;
+      });
+  }
+
   search(criteria: SearchCriteria): Observable<SearchResults<Expedient>> {
     const restangular = this.restangular.all(expedientssPath + '/filter');
     return restangular

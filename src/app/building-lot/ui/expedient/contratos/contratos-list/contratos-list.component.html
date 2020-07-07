@@ -15,11 +15,11 @@
     <div class="row">
       <div class="col-sm-12">
         <div class="form-group">
-            <pfng-toolbar [actionTemplate]="toolbarTemplante" [config]="toolbarConfig" (onFilterChange)="filterChanged($event)" (onSortChange)="sortChanged($event)"
+            <pfng-toolbar  [config]="toolbarConfig" (onFilterChange)="filterChanged($event)" (onSortChange)="sortChanged($event)"
             (onViewSelect)="viewSelected($event)">
             
           </pfng-toolbar>
-          <pfng-list [actionTemplate]="actionTemplate" [config]="listConfig" [items]="contratos" [itemTemplate]="itemTemplate">
+          <pfng-list [config]="listConfig" [items]="contratos" [itemTemplate]="itemTemplate">
             <ng-template #itemTemplate let-item="item" let-index="index">
               <!-- <div class="list-pf-left">
                 <span *ngIf="item.Status" class="fa fa-list-alt  list-pf-icon list-pf-icon-bordered list-pf-icon-small" tooltip="Requerimiento confirmado"

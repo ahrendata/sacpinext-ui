@@ -301,17 +301,17 @@ export class ServiceListComponent implements OnInit {
             queryParams.set('idUser', iduser);
             this.dataService.requeriments().delete(queryParams).subscribe(
               response => {
-                this.toastr.success('El requerimiento fue eliminado correctamente.', 'Informacion');
+                this.toastr.success('El requerimiento de servicio fue eliminado correctamente.', 'Informacion');
                 this.search();
               },
               error => {
-                this.toastr.error('Ocurrio un error al eliminar este requerimiento, intentelo nuevamente.', 'Error');
+                this.toastr.error('Ocurrio un error al eliminar este requerimiento de servicio, intentelo nuevamente.', 'Error');
               }
             );
           }
         });
       } else {
-        this.toastr.warning('El requerimiento no se puede eliminar, ya se hicieron la compra de algunos productos.', 'Alerta');//
+        this.toastr.warning('El requerimiento de servicio no se puede eliminar.', 'Alerta');//
       }
     }
     else if (action.title == "Ver")
@@ -320,7 +320,7 @@ export class ServiceListComponent implements OnInit {
       if (item.StatusEdit) {
         this.router.navigate(['./', item.IdRequirement], { relativeTo: this.activatedRoute });
       } else {
-        this.toastr.warning('El requerimiento no se puede editar, las fechas no coincidden. Solo se pueden editar requerimientos generados el mismo dia.', 'Alerta');//
+        this.toastr.warning('El requerimiento de servicio no se puede editar, las fechas no coinciden. Solo se pueden editar requerimientos generados el mismo dia.', 'Alerta');//
       }
     }
   }

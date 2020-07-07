@@ -24,7 +24,7 @@ import { Paging } from '../../../../core/model/paging.model';
 import { DataService } from '../../../../core/data/data.service';
 // import { ConfirmationModalComponent } from 'src/app/shared/components/confirmation-modal/confirmation-modal.component';
 
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 import { OrderBy } from '../../../../core/model/order-by.model';
 

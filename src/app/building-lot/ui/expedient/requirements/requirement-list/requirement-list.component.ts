@@ -22,7 +22,7 @@ import { PaginationConfig, PaginationEvent } from 'patternfly-ng/pagination';
 
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { ModalDirective } from 'ngx-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ConfirmationModalComponent } from '../../../../../shared/components/confirmation-modal/confirmation-modal.component';
 import { SearchResults } from '../../../../../core/model/search-results.model';
 import { SearchCriteriaFilter } from '../../../../../core/model/search-criteria-filter.model';

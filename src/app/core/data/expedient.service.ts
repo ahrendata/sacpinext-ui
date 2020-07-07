@@ -46,7 +46,7 @@ export class ExpedientService {
       });
   }
 //obtener contratos
-  getAllContracts(criteria: SearchCriteria): Observable<Expedient[]> {
+  getAllContracts(criteria: URLSearchParams): Observable<Expedient[]> {
     const expedientsRestangular = this.restangular.all(expedientssPath+'/contracts');
     return expedientsRestangular
       .post(criteria)

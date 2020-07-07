@@ -1,6 +1,8 @@
 import { YesNoPipe } from './pipes/yes-no.pipe';
 import { ToDatePipe } from './pipes/to-date.pipe';
-import { BsDropdownModule, ModalModule, TooltipModule } from 'ngx-bootstrap';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';

@@ -1,4 +1,4 @@
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
 import { DataService } from './../../../../../core/data/data.service';
 import { Router, ActivatedRoute } from '@angular/router';

@@ -9,7 +9,7 @@ import { ShellContentComponent } from './shell-content/shell-content.component';
 import { ShellHeaderComponent } from './shell-header/shell-header.component';
 import { ShellSidebarComponent } from './shell-sidebar/shell-sidebar.component';
 import { ShellFooterComponent } from './shell-footer/shell-footer.component';
-import { AboutModalModule } from '../ui/about-modal/about-modal.module';
+import { AboutModalModule1 } from '../ui/about-modal/about-modal.module';
 
 @NgModule({
   imports: [
@@ -17,7 +17,7 @@ import { AboutModalModule } from '../ui/about-modal/about-modal.module';
     RouterModule,
     SharedModule,
     CoreModule,
-    AboutModalModule
+    AboutModalModule1
   ],
   declarations: [
     ShellContentComponent,

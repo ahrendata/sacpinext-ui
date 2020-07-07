@@ -47,7 +47,7 @@
                 </legend>
               </fieldset>
               <dl class="dl-horizontal left">
-                <dt> Descripción
+                <dt> Paquete
                   <span tooltip="Descripción del requerimiento" placement="top" class="pficon pficon-help text-muted small"></span>
                 </dt>
                 <dd *ngIf="requirement.Description">{{requirement.Description }}</dd>
@@ -73,6 +73,13 @@
                 </dt>
                 <dd *ngIf="requirement.TypeRequirement">{{requirement.TypeRequirement}}</dd>
                 <dd *ngIf="!requirement.TypeRequirement">
+                  <em>No Registrado</em>
+                </dd>
+                <dt> Especialidad
+                  <span tooltip="Especialidad de requerimiento" placement="top" class="pficon pficon-help text-muted small"></span>
+                </dt>
+                <dd *ngIf="requirement.EspecialidadRequirement">{{requirement.EspecialidadRequirement}}</dd>
+                <dd *ngIf="!requirement.EspecialidadRequirement">
                   <em>No Registrado</em>
                 </dd>
                 <dt> Centro de Costo
@@ -117,16 +124,52 @@
                     <td class="text-center">Unidad Medida</td>
                     <td class="text-left">Descripcion</td>
                     <td class="text-right">Cantidad Comprada</td>
+                    <td class="text-right">Cantidad Enviada</td>
+                    <td class="text-right">Adjuntos</td> 
                   </tr>
                 </thead>
-                <tbody>
-                  <tr *ngFor="let item of requirement.RequirementDetails; let i = index">
+                <tbody *ngFor="let item of requirement.RequirementDetails; let i = index">
+                  <tr >
                     <td class="text-center">{{i+1}}</td>
                     <td>{{item.Product}}</td>
                     <td class="text-right">{{item.Quantity| number:'1.2-2'}}</td>
                     <td class="text-center">{{item.UnidCode}} </td>
                     <td>{{item.Observation}}</td>
                     <td class="text-right">{{item.Accumulate| number:'1.2-2'}}</td>
+                    <td class="text-right">{{item.QuantityBought| number:'1.2-2'}}</td>
+                    <td class="table-view-pf-actions">
+                      <div class="refactor table-view-pf-btn" >
+                        <div *ngIf="item.FileDetails.length>0" (click)="ocultar(i)"
+                           tooltip="Ver Archivos Adjuntos">
+                          <span class="btn btn-default">
+                            <span class=""
+                              style="padding-right: 5px"></span>{{item.FileDetails.length}} <div class="fa fa-paperclip"></div>
+                          </span>
+                        </div>
+                        
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <div class="table-view-pf-actions" *ngIf="i==valor">
+                      <div *ngFor="let f of item.FileDetails, let in = index" style="width: 1000px">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-1">{{in+1}}</div>
+                           <div class="col-md-5" ><span>{{f.FileName}}</span>
+                           </div>
+                           <div class=" btn-group" style="display: -webkit-inline-box;">
+                             <button class="btn btn-default" type="button" (click)="download(f.IdRequirementFileDetails)">
+                               <span class="fa fa-download" tooltip="descargar Archivo"
+                                 placement="top"></span>
+                             </button>
+                             <button class="btn btn-default" type="button" *ngIf="f.IdRequirementFileDetails!=undefined">
+                               <span class="pficon pficon-ok"
+                                 tooltip="Documento adjunto al requerimiento" placement="top"></span>
+                             </button>
+                           </div>
+                      
+                       </div>
+                     </div>
                   </tr>
                 </tbody>
               </table>

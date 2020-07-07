@@ -2,7 +2,7 @@ import { Component, OnInit, ViewContainerRef, TemplateRef, ViewEncapsulation, Vi
 import { Requirement } from '../../../../../core/model/requirement.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DataService } from '../../../../../core/data/data.service';
-import { ToastsManager } from 'ng2-toastr';
+import { ToastsManager } from 'ng6-toastr';
 import { URLSearchParams } from '@angular/http';
 
 //for toolbar
@@ -29,6 +29,7 @@ import { SearchCriteriaFilter } from '../../../../../core/model/search-criteria-
 import { OrderBy } from '../../../../../core/model/order-by.model';
 import { Paging } from '../../../../../core/model/paging.model';
 import { SearchCriteria } from '../../../../../core/model/search-criteria.model';
+import { TokenService } from '../../../../../core/guard/token.service';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -70,11 +71,21 @@ export class RequirementListComponent implements OnInit {
     private dataService: DataService,
     private toastr: ToastsManager,
     private bsModalService: BsModalService,
-    vcr: ViewContainerRef) {
+    vcr: ViewContainerRef,
+    private token: TokenService) {
     this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit() {
+
+
+    // let criteriaFilter = this.token.getFilterCriteriaReq();
+    // console.log(JSON.stringify(criteriaFilter));
+    // this.loadCriteriaFilter(criteriaFilter as Filter[]);
+    let criteriaPaging = this.token.getPagingCriteriaReq();    //console.log(JSON.stringify(criteriaPaging));
+    if (criteriaPaging)
+      this.paging = criteriaPaging as Paging;
+
     this.loadExpediente();
     this.loadRequirementType();
     this.inittoolbar();
@@ -95,6 +106,20 @@ export class RequirementListComponent implements OnInit {
       totalItems: this.searchResult.totalSize
     } as PaginationConfig;
   }
+
+  // loadCriteriaFilter(filters: Filter[]) {
+  //   if (filters && filters.length > 0) {     
+  //     filters.forEach((filter) => {
+  //       this.filtersText += filter.field.title + ' : ' + filter.value + '\n';
+  //       if (filter.field.type === 'text') {
+  //         this.filters.push(new SearchCriteriaFilter(filter.field.id, filter.value, 'like', filter.field.type));
+  //       }
+  //       if (filter.field.type === 'select') {
+  //         this.filters.push(new SearchCriteriaFilter(filter.field.id, filter.query.id, 'eq'));
+  //       }
+  //     });
+  //   }
+  // }
 
   loadRequirementType() {
     this.dataService.requerimenttype().getAll().subscribe((data: any[]) => {
@@ -121,7 +146,7 @@ export class RequirementListComponent implements OnInit {
         title: 'Descripcion',
         placeholder: 'Filter por descripcion del requerimiento...',
         type: FilterType.TEXT
-      },{
+      }, {
         id: 'CodRequirement',
         title: 'N° Requerimiento',
         placeholder: 'Filter by N° Requerimiento...',
@@ -138,7 +163,13 @@ export class RequirementListComponent implements OnInit {
         placeholder: 'Filtrar por tipo de requerimiento...',
         type: FilterType.SELECT,
         queries: this.requirementType
-      }] as FilterField[],
+      }, {
+        id: 'Products',
+        title: 'Producto',
+        placeholder: 'Filtrar por productos del requerimiento',
+        type: FilterType.TEXT
+      }
+      ] as FilterField[],
       resultsCount: this.searchResult.totalSize,
       appliedFilters: []
     } as FilterConfig;
@@ -149,10 +180,10 @@ export class RequirementListComponent implements OnInit {
         title: 'N° Requerimiento',
         sortType: 'alpha'
       }, {
-        id:'Description',
+        id: 'Description',
         title: 'Descripción',
         sortType: 'alpha'
-      },{
+      }, {
         id: 'AliasExpedient',
         title: 'Centro de Costo',
         sortType: 'alpha'
@@ -202,6 +233,7 @@ export class RequirementListComponent implements OnInit {
     $event.appliedFilters.forEach((filter) => {
       this.filtersText += filter.field.title + ' : ' + filter.value + '\n';
     });
+    this.token.setFilterCriteriaReq($event.appliedFilters);
     this.applyFilters($event.appliedFilters);
   }
 
@@ -216,7 +248,7 @@ export class RequirementListComponent implements OnInit {
           this.filters.push(new SearchCriteriaFilter(filter.field.id, filter.query.id, 'eq'));
         }
       });
-    }
+    }   
     this.search();
   }
 
@@ -236,7 +268,7 @@ export class RequirementListComponent implements OnInit {
       }),
       orders: [this.orderBy],
       paging: this.paging
-    };
+    };   
     this.loading = true;
     this.dataService.requeriments().search(criteria).subscribe((data) => {
       this.searchResult = data;
@@ -370,11 +402,13 @@ export class RequirementListComponent implements OnInit {
   //for pagination
   handlePageSize($event: PaginationEvent) {
     this.paging.pageSize = $event.pageSize;
+    this.token.setPagingCriteriaReq(this.paging);
     this.search();
   }
 
   handlePageNumber($event: PaginationEvent) {
     this.paging.page = $event.pageNumber;
+    this.token.setPagingCriteriaReq(this.paging);
     this.search();
   }
 }

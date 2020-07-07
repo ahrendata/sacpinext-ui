@@ -1,1 +1,7 @@
 @import "_variables";
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+bs-datepicker-container,
+bs-daterangepicker-container {
+  z-index: 2000;
+}

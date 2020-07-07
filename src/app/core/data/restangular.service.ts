@@ -6,9 +6,10 @@ import { Observable } from 'rxjs/Observable';
 import { Headers } from '@angular/http';
 import { Response } from '@angular/http';
 import { Router } from '@angular/router';
-import { ToastsManager } from 'ng2-toastr';
+import { ToastsManager } from 'ng6-toastr';
 import { ConfigService } from '../../config.service';
 import { RestangularBasePath } from './restangular-base-path';
+import { URLSearchParams } from '@angular/http';
 
 export function RestangularServiceFactory(http: Http, router: Router, config: ConfigService) {
   return new RestangularService(http, router, { url: config.getSettings().apiEndpoint });

@@ -30,6 +30,18 @@
       <form [formGroup]="form" (ngSubmit)="confirmar(form)">
         <sacpi-form-fields-status [sacpiForm]="form"></sacpi-form-fields-status>
         <div class="row">
+          
+          <div class="col-md-2">
+            <div class="form-group" [sacpiFormFieldValidationState]="form.get('IdExpedient')">
+              <label class="control-label" [sacpiFormRequiredLabel]="form.get('IdExpedient')">Centro de Costo
+                <i class="fa fa-question-circle text-muted" tooltip="Centro de costo" placement="top"></i>
+              </label>
+              <ng-select formControlName="IdExpedient" class="ng-select-sacpi" [items]="expedients" bindLabel="Alias"
+                bindValue="IdExpediente" placeholder="Seleccione expediente"></ng-select>
+              <sacpi-form-field-validation-messages [sacpiFormControl]="form.get('IdExpedient')">
+              </sacpi-form-field-validation-messages>
+            </div>
+          </div>
           <div class="col-md-2">
             <div class="form-group" [sacpiFormFieldValidationState]="form.get('IdTypeRequirement')">
               <label class="control-label" [sacpiFormRequiredLabel]="form.get('IdTypeRequirement')">Tipo Requerimiento
@@ -42,23 +54,36 @@
               </sacpi-form-field-validation-messages>
             </div>
           </div>
-          <div class="col-md-2">
-            <div class="form-group" [sacpiFormFieldValidationState]="form.get('IdExpedient')">
-              <label class="control-label" [sacpiFormRequiredLabel]="form.get('IdExpedient')">Centro de Costo
-                <i class="fa fa-question-circle text-muted" tooltip="Centro de costo" placement="top"></i>
+          <div class="col-md-4">
+            <div class="form-group" [sacpiFormFieldValidationState]="form.get('IdEspecialidadRequirement')">
+              <label class="control-label" [sacpiFormRequiredLabel]="form.get('IdEspecialidadRequirement')">Especialidad
+                <i class="fa fa-question-circle text-muted" tooltip="Especialidad de requerimiento"
+                  placement="top"></i>
               </label>
-              <ng-select formControlName="IdExpedient" class="ng-select-sacpi" [items]="expedients" bindLabel="Alias"
-                bindValue="IdExpediente" placeholder="Seleccione expediente"></ng-select>
-              <sacpi-form-field-validation-messages [sacpiFormControl]="form.get('IdExpedient')">
+              <ng-select formControlName="IdEspecialidadRequirement" class="ng-select-sacpi" [items]="requirementEspecialidad"
+                bindLabel="Descryption" bindValue="IdContenedor" placeholder="Seleccione especialidad"></ng-select>
+              <sacpi-form-field-validation-messages [sacpiFormControl]="form.get('IdEspecialidadRequirement')">
               </sacpi-form-field-validation-messages>
             </div>
           </div>
+          <!-- <div class="col-md-2">
+            <div class="form-group" [sacpiFormFieldValidationState]="form.get('IdPaqueteRequirement')">
+              <label class="control-label" [sacpiFormRequiredLabel]="form.get('IdPaqueteRequirement')">Paquete de trabajo
+                <i class="fa fa-question-circle text-muted" tooltip="Paquete de trabajo"
+                  placement="top"></i>
+              </label>
+              <ng-select formControlName="IdPaqueteRequirement" class="ng-select-sacpi" [items]="requirementPaquete"
+                bindLabel="Descryption" bindValue="IdContenedor" placeholder="Seleccione el paquete de trabajo"></ng-select>
+              <sacpi-form-field-validation-messages [sacpiFormControl]="form.get('IdPaqueteRequirement')">
+              </sacpi-form-field-validation-messages>
+            </div>
+          </div> -->
           <div class="col-md-4">
             <div class="form-group" [sacpiFormFieldValidationState]="form.get('Description')">
-              <label class="control-label" [sacpiFormRequiredLabel]="form.get('Description')">Descripción
+              <label class="control-label" [sacpiFormRequiredLabel]="form.get('Description')">Paquete
                 <i class="fa fa-question-circle text-muted" tooltip="Descripción del Requerimiento" placement="top"></i>
               </label>
-              <input formControlName="Description" type="text" class="form-control">
+              <input formControlName="Description" type="text" class="form-control input-lg">
               <sacpi-form-field-validation-messages [sacpiFormControl]="form.get('Description')">
               </sacpi-form-field-validation-messages>
             </div>
@@ -94,7 +119,7 @@
                     </td>
                     <td [sacpiFormFieldValidationState]="item.get('Quantity')">
                       <input formControlName="Quantity" type="number" min="1" placeholder="0.00"
-                        class="form-control text-right">
+                        class="form-control text-right input-lg">
                       <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('Quantity')">
                       </sacpi-form-field-validation-messages>
                     </td>
@@ -105,7 +130,7 @@
                       </sacpi-form-field-validation-messages>
                     </td>
                     <td [sacpiFormFieldValidationState]="item.get('Observation')">
-                      <input formControlName="Observation" type="text" class="form-control" placeholder="Descripcion" />
+                      <input formControlName="Observation" type="text" class="form-control input-lg" placeholder="Descripcion" />
                       <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('Observation')">
                       </sacpi-form-field-validation-messages>
                     </td>
@@ -183,7 +208,7 @@
                             </button>
                             <button class="btn btn-default" type="button" *ngIf="f.IdRequirementFileDetails!=undefined">
                               <span class="pficon pficon-ok"
-                                tooltip="Archvios de requerimiento de Servicio agregado al requerimiento" placement="top"></span>
+                                tooltip="Archivos de requerimiento de Servicio agregado al requerimiento" placement="top"></span>
                             </button>
                             <button class="btn btn-default" type="button" *ngIf="f.IdRequirementFileDetails==undefined">
                               <span class="pficon pficon-warning-triangle-o"

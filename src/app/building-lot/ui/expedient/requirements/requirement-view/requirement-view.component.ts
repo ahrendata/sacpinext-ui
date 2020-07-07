@@ -13,7 +13,7 @@ import { DatePipe, CurrencyPipe } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 import { ActionConfig } from 'patternfly-ng/action';
 import { ToolbarConfig } from 'patternfly-ng/toolbar';
-import { ToastsManager } from 'ng2-toastr/src/toast-manager';
+import { ToastsManager } from 'ng6-toastr/src/toast-manager';
 
 import 'jspdf-autotable';
 import * as jsPDF from 'jspdf'
@@ -151,7 +151,7 @@ export class RequirementViewComponent implements OnInit {
         Id: { columnWidth: 7, halign: 'right' },
         Product: { columnWidth: 120 },
         Quantity: { columnWidth: 20, halign: 'right' },
-        UnidCode: { columnWidth: 13, halign: 'center' }       
+        UnidCode: { columnWidth: 13, halign: 'center' }
       },
       bodyStyles: { valign: 'middle' },
       showHeader: 'firstPage',
@@ -192,5 +192,60 @@ export class RequirementViewComponent implements OnInit {
   }
   cancel() {
     this.router.navigate(['../../'], { relativeTo: this.route });
+  }
+
+  valorAnt: number;
+  valor: number = -1;
+  ocultar(ind) {
+
+    let v = ind;
+    if (v == this.valorAnt) {
+      v = -1;
+      if (v != null) {
+        this.valor = v;
+        this.valorAnt = this.valor;
+      } else {
+        this.valor = -1;
+        this.valorAnt = this.valor;
+      }
+    } else {
+      if (v != null) {
+        this.valor = v;
+        this.valorAnt = this.valor;
+      } else {
+        this.valor = -1;
+        this.valorAnt = this.valor;
+      }
+    }
+  }
+
+  download(id) {
+    this.dataService.files().DownloadById(id).subscribe((data) => {
+      var byteString = atob(data.File);
+      var ab = new ArrayBuffer(byteString.length);
+      var ia = new Uint8Array(ab);
+      for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+      var blob = new Blob([ia]);
+      const fileName = data.FileName;
+      if (navigator.msSaveBlob) {
+        navigator.msSaveBlob(blob, fileName);
+      } else {
+        const link = document.createElement('a');
+        if (link.download !== undefined) {
+          const url = URL.createObjectURL(blob);
+          link.setAttribute('href', url);
+          link.setAttribute('download', fileName);
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      }
+    },
+      (error) => {
+        this.notification.error('Error al descargar el archivo, por favor intente de nuevo.', 'Error');
+      });
   }
 }

@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Expedient } from '../../core/model/expedient.model';
 import { Services } from '../../core/model/service.model';
 import { DataService } from '../../core/data/data.service';
-import { DOCUMENT } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'sacpi-ui',

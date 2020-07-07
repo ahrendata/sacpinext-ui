@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { SearchCriteria } from './../model/search-criteria.model';
 import { SearchResults } from './../model/search-results.model';
-import { URLSearchParams } from '@angular/http';
+import { URLSearchParams } from '@angular/http';URLSearchParams
 import { RestangularService } from './restangular.service';
 const productIdName = 'Product';
 const productsPath = 'Product';

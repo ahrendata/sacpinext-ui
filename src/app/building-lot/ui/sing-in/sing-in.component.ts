@@ -5,8 +5,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { DataService } from '../../../core/data/data.service';
 import { User } from '../../../core/model/user.model';
-import { ToastsManager } from 'ng2-toastr';
-import { DOCUMENT } from '@angular/platform-browser';
+import { ToastsManager } from 'ng6-toastr';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'sacpi-sing-in',

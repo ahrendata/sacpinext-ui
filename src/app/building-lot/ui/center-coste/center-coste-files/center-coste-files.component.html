@@ -1,0 +1,128 @@
+<h1>Lista de Archivos de {{centroCostoName}}</h1>
+<div [formGroup]="form">
+  <div class="row col-md-12">
+    <div class="col-md-4">
+      <div class="form-group ">
+        <label class="control-label">Centro de Costo
+          <i class="fa fa-question-circle text-muted" tooltip="Centro de costo" placement="top"></i>
+        </label>
+        <ng-select formControlName="idExpediente" class="ng-select-sacpi" [items]="expedients" bindLabel="Alias"
+          bindValue="IdExpediente" placeholder="Seleccione expediente" [(ngModel)]="idExpedienteSeleccionado"
+          (ngModelChange)="change()" ></ng-select>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class=" form-group ">
+        <label class="control-label">
+          <i class=" text-muted" placement="top"></i>
+        </label>
+        <sacpi-read-file2 [showFileName]="false" [asText]="false" [asDataUrl]="true" (complete)="onFileChange($event)" style="padding-top: 1px"></sacpi-read-file2>
+      </div>
+    </div>
+
+  </div>
+  <div class="" *ngIf="totalFiles>0">
+    <div class="col-md-12">
+      <table class="table table-striped table-bordered table-hover dataTable col-md-12">
+        <thead>
+          <tr>
+            <td class="text-center">#</td>
+            <td class="text-left td-siacpi">Nombre</td>
+            <td class="text-center td-siacpi col-md-1">tamaño</td>
+            <td class="text-right">TipoDocumento</td>
+            <td class="text-center col-md-1">Acciones</td>
+
+          </tr>
+        </thead>
+        <tbody formArrayName="files">
+
+          <ng-template ngFor let-item [ngForOf]="files.controls" let-i="index">
+            <tr [formGroupName]="i">
+              <td class="text-center">{{i+1}}</td>
+              <td>
+                <input type="text" formControlName="fileName" style="width: 100%; border-color: transparent; background-color: transparent" disabled>
+              </td>
+              <td>
+                <input class="text-right" type="text" formControlName="size" style="width: 100%; border-color: transparent; background-color: transparent" disabled>
+              </td>
+              <td>
+                <ng-select formControlName="tipoComprobante" class="ng-select-sacpi" [items]="tipoComprobantes"
+                  bindLabel="denominacion" bindValue="id" placeholder="Seleccione tipo Documento">
+                </ng-select>
+                  <!-- <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('tipoComprobante')">
+                  </sacpi-form-field-validation-messages> -->
+              </td>
+              <td class="text-center"> 
+                <button class="btn btn-default " type="button" (click)="deleteFile(item, i)">
+                  <span class="fa fa-trash" style="color:red;" tooltip="Eliminar Archivo" placement="top"></span>
+                </button>
+              </td>
+            </tr>
+          </ng-template>
+        </tbody>
+        <tfoot>
+            <tr>
+              <td class="text-center"><strong>Total</strong></td>
+              <td></td>
+              <td class="text-right"><strong>{{totalziseFile}} MB</strong> </td>
+            </tr>
+          </tfoot>
+      </table>
+      <div class=" col-md-3 pull-right" style="padding-top: 20px;">
+        <button class="btn btn-primary primary-action " (click)="saveFiles()">
+          <span class="fa fa-search"></span>
+          Guardar Archivos
+        </button>
+        <button class="btn btn-default default-action pull-right" (click)="cancelar()">
+            <span class="fa fa-search"></span>
+            Cancelar
+          </button>
+      </div>
+    </div>
+  </div>
+ 
+  <sacpi-loading [loading]="loading" *ngIf="totalFiles==0">
+    <div class="padding-15">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="form-group">
+            <pfng-toolbar [config]="toolbarConfig" (onFilterChange)="filterChanged($event)" (onSortChange)="handleSortChanged($event)"
+            (onViewSelect)="viewSelected($event)">
+
+            </pfng-toolbar>
+            <pfng-list [config]="listConfig" [items]="archivos" [itemTemplate]="itemTemplate">
+              <ng-template #itemTemplate let-item="item" let-index="index">
+                <div>
+                  <i class="fa fa-file-o  list-pf-icon list-pf-icon-bordered list-pf-icon-small"></i>
+                </div>
+                <div class="list-pf-content-wrapper" style="height: 20px;">
+                  <div class="list-pf-main-content" >
+                    <div class="list-pf-list list-group-item-text"> {{item.fileName}}</div>
+                    <!-- <div class="list-pf-description list-group-item-text">{{item.Proveedor}}</div>
+                    <div class="list-pf-description list-group-item-text">{{item.Referencia}}</div> -->
+                  </div>
+                  <div class="list-pf-additional-content">
+                      <div class=" btn-group" style="display: -webkit-inline-box;">
+                          <button class="btn btn-default" type="button" (click)="delete(item)">
+                            <span style="color:red;" class="fa fa-trash" tooltip="descargar Archivo"
+                              placement="top"></span>
+                          </button>
+                          <button class="btn btn-default" type="button" (click)="download(item.idFile)">
+                              <span class="fa fa-download" tooltip="descargar Archivo"
+                                placement="top"></span>
+                            </button>
+                        </div>
+                  </div>
+                </div>
+              </ng-template>
+            </pfng-list>
+            <pfng-pagination [config]='paginationConfig' (onPageSizeChange)="handlePageSize($event)"
+              (onPageNumberChange)="handlePageNumber($event)"></pfng-pagination>
+            <br>
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sacpi-loading>
+</div>

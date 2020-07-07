@@ -5,7 +5,7 @@ import { Expedient } from './../model/expedient.model';
 
 import { SearchCriteria } from './../model/search-criteria.model';
 import { SearchResults } from './../model/search-results.model';
-// import { URLSearchParams } from '@angular/http';verifica
+import { URLSearchParams } from '@angular/http';
 import { RestangularService } from './restangular.service';
 const fileIdName = 'File';
 const filePath = 'File';
@@ -26,7 +26,17 @@ export class FileService {
       .postQuery(queryParams)
       .map(response => {
         const json = response.json();
-        return Object.assign(new Requirement(restangular), json);
+        return json;
+      });  
+  }
+
+  deleteNext(queryParams?: URLSearchParams): Observable<any> {
+    const restangular = this.restangular.all(filePath + '/delete');
+    return restangular
+      .postQuery(queryParams)
+      .map(response => {
+        const json = response.json();
+        return json;
       });  
   }
 
@@ -47,17 +57,36 @@ export class FileService {
       .map(response => {
         const data = response.json();
         return data;
-        // return Object.assign(new Requirement(restangular), data);
       });
   }
 
-  // confirmar(queryParams?: URLSearchParams): Observable<any> {
-  //   const restangular = this.restangular.all(filePath + 'Confirm');
-  //   return restangular
-  //     .postQuery(queryParams)
-  //     .map(response => {
-  //       const json = response.json();
-  //       return Object.assign(new Requirement(restangular), json);
-  //     });
-  // }
+  DownloadNext(queryParams?: URLSearchParams): Observable<any> {
+    const restangular = this.restangular.all(filePath+'/download');
+    return restangular
+      .postQuery(queryParams)
+      .map(response => {
+        const data = response.json();
+        return data;
+      });
+  }
+
+  saveNext( list : any): Observable<any> {
+    const restangular = this.restangular.all(filePath + '/saveFiles');
+    return restangular
+      .post(list)
+      .map(response => {
+        const json = response.json();
+        return Object.assign(new Requirement(restangular), json);
+      });
+  }
+
+  getAll(queryParams?: URLSearchParams): Observable<any[]> {
+    const restangular = this.restangular.all(filePath+"/getAll");
+    return restangular
+      .get(queryParams)
+      .map(response => {
+        const json = response.json();
+        return json;
+      });
+  }
 }

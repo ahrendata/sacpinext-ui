@@ -1,12 +1,11 @@
 import { Paging } from './../../../../../core/model/paging.model';
 import { OrderBy } from './../../../../../core/model/order-by.model';
-import { PaginationConfig, PaginationEvent } from 'patternfly-ng/pagination';
 import { ListConfig } from 'patternfly-ng/list';
 import { DataService } from './../../../../../core/data/data.service';
 import { FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { ToastsManager } from 'ng2-toastr';
+import { ToastsManager } from 'ng6-toastr';
 import { URLSearchParams } from '@angular/http';
 
 //for toolbar
@@ -14,6 +13,9 @@ import { Action, ActionConfig } from 'patternfly-ng/action';
 import { Filter, FilterConfig, FilterField, FilterEvent, FilterType } from 'patternfly-ng/filter';
 import { SortConfig, SortField, SortEvent } from 'patternfly-ng/sort';
 import { ToolbarConfig, ToolbarView } from 'patternfly-ng/toolbar';
+
+//for pagination
+import { PaginationConfig, PaginationEvent } from 'patternfly-ng/pagination';
 
 //for list
 import { EmptyStateConfig } from 'patternfly-ng/empty-state';
@@ -43,6 +45,7 @@ export class ContratosListComponent implements OnInit {
   centroCostoId : any;
 
   searchResult: SearchResults<any> = new SearchResults<any>();
+  //searchResult: SearchResults<Requirement> = new SearchResults<Requirement>();
   filters: Array<SearchCriteriaFilter> = new Array<SearchCriteriaFilter>();
   orderBy: OrderBy = {
     name: 'CodigoContrato',
@@ -93,10 +96,9 @@ export class ContratosListComponent implements OnInit {
         id: 'Proveedor',
         title: 'Proveedor',
         placeholder: 'Filtrar por Proveedor...',
-        type: FilterType.SELECT,
-        queries: this.expedients
-      }
-     
+        type: FilterType.TEXT
+        //queries: this.expedients
+      }     
     ] as FilterField[],
       // resultsCount: this.searchResult.totalSize,
       appliedFilters: []
@@ -105,7 +107,7 @@ export class ContratosListComponent implements OnInit {
     this.sortConfig = {
       fields: [{
         id: 'CodigoContrato',
-        title: 'CodigoRequerimiento',
+        title: 'Codigo Contrato',
         sortType: 'alpha'
       }, {
         id:'TipoContrato',
@@ -147,6 +149,7 @@ export class ContratosListComponent implements OnInit {
 
   loadContratos(){
     let idExpediente = this.centroCostoId;
+<<<<<<< HEAD
     // const criteria: SearchCriteria = {
     //   id: idExpediente,
     //   filters: this.filters.map(f => {
@@ -159,30 +162,9 @@ export class ContratosListComponent implements OnInit {
     queryParams.set('idCentroCosto', idExpediente);
     this.dataService.expedients().getAllContracts(queryParams).subscribe((data : any[])=>{
       this.contratos = data;
-    });
-    // this.dataService.expedients().getAll(queryParams).subscribe((data: any[]) => { this.expedients = data; this.loading = false; });
-  }
+=======
 
-   //for pagination
-   handlePageSize($event: PaginationEvent) {
-    this.paging.pageSize = $event.pageSize;
-    // this.search();
-  }
-
-  handlePageNumber($event: PaginationEvent) {
-    this.paging.page = $event.pageNumber;
-    // this.search();
-  }
-
-  sortChanged($event: SortEvent): void {
-    console.log("sortChanged "+$event);
-    this.orderBy.name = $event.field.id;
-    this.orderBy.ascending = $event.isAscending;
-    // this.search();
-  }
-
-  search(): void {
-    let id = this.dataService.users().getEmployeeId();
+    let id = idExpediente;
     const criteria: SearchCriteria = {
       id: id,
       filters: this.filters.map(f => {
@@ -190,22 +172,65 @@ export class ContratosListComponent implements OnInit {
       }),
       orders: [this.orderBy],
       paging: this.paging
-    };
-    this.loading = true;
-    this.dataService.requeriments().searchService(criteria).subscribe((data) => {
-      this.searchResult = data;
-      this.requirements = this.searchResult.items;
-      this.toolbarConfig.filterConfig.resultsCount = this.searchResult.totalSize;
-      this.paginationConfig.totalItems = this.searchResult.totalSize;
-    },
-      error => {
-        this.toastr.error('Ocurrieron problema para mostrar el requerimiento de Servicio', 'Error');
-        this.loading = false;
-      },
-      () => {
-        this.loading = false;
-      });
+    };  
+
+    // const queryParams: URLSearchParams = new URLSearchParams();
+    // queryParams.set('idCentroCosto', idExpediente);
+    this.dataService.expedients().getAllContracts(criteria).subscribe((d:any)=>{
+      this.searchResult = d;
+      this.contratos = d.data;
+      //this.contratos = data.data;
+      this.toolbarConfig.filterConfig.resultsCount = d.count;
+      this.paginationConfig.totalItems = d.count;
+     
+>>>>>>> de0446bb05dedbb380b93aa86a4b044a3bba41e9
+    });
+    // this.dataService.expedients().getAll(queryParams).subscribe((data: any[]) => { this.expedients = data; this.loading = false; });
   }
+
+   //for pagination
+   handlePageSize($event: PaginationEvent) {
+    this.paging.pageSize = $event.pageSize;
+    this.loadContratos();
+  }
+
+  handlePageNumber($event: PaginationEvent) {
+    this.paging.page = $event.pageNumber;
+    this.loadContratos();
+  }
+
+  sortChanged($event: SortEvent): void {
+    console.log("sortChanged "+$event);
+    this.orderBy.name = $event.field.id;
+    this.orderBy.ascending = $event.isAscending;
+    this.loadContratos();
+  }
+
+  // search(): void {
+  //   let id = this.dataService.users().getEmployeeId();
+  //   const criteria: SearchCriteria = {
+  //     id: id,
+  //     filters: this.filters.map(f => {
+  //       return new SearchCriteriaFilter(f.name, f.value, f.operator, f.type);
+  //     }),
+  //     orders: [this.orderBy],
+  //     paging: this.paging
+  //   };
+  //   this.loading = true;
+  //   this.dataService.requeriments().searchService(criteria).subscribe((data) => {
+  //     this.searchResult = data;
+  //     this.requirements = this.searchResult.items;
+  //     this.toolbarConfig.filterConfig.resultsCount = this.searchResult.totalSize;
+  //     this.paginationConfig.totalItems = this.searchResult.totalSize;
+  //   },
+  //     error => {
+  //       this.toastr.error('Ocurrieron problema para mostrar el requerimiento de Servicio', 'Error');
+  //       this.loading = false;
+  //     },
+  //     () => {
+  //       this.loading = false;
+  //     });
+  // }
 
    // View
    viewSelected(currentView: ToolbarView): void {
@@ -235,9 +260,7 @@ export class ContratosListComponent implements OnInit {
         }
       });
     }
-    // this.search();
+    this.loadContratos();
   }
-
- 
 
 }

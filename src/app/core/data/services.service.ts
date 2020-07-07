@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { RestangularService } from './restangular.service';
 import { SearchCriteria } from '../model/search-criteria.model';
 import { SearchResults } from '../model/search-results.model';
-
+import { URLSearchParams } from '@angular/http';
 
 const serviceIdName = 'Service';
 const servicesPath = 'Service';

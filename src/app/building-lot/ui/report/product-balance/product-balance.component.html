@@ -66,8 +66,8 @@
     <div class="padding-15">
       <div class="row">
         <div class="col-sm-12">
-          <pfng-toolbar [config]="toolbarConfig" [actionTemplate]="actionTemplate"
-            (onActionSelect)="handleAction($event)" (onFilterChange)="filterChanged($event)"
+          <pfng-toolbar [config]="toolbarConfig"
+             (onFilterChange)="filterChanged($event)"
             (onSelectionChange)="handleSelectionChange($event)" (onSortChange)="handleSortChanged($event)"
             (onViewSelect)="viewSelected($event)">
           </pfng-toolbar>
@@ -76,7 +76,7 @@
       <div class="row">
         <div class="col-sm-12">
           <div class="form-group">             
-            <pfng-list  [actionTemplate]="actionTemplate" [config]="listConfig" [items]="requirements" (onSelectionChange)="handleSelectionChange($event)"
+            <pfng-list  [config]="listConfig" [items]="requirements" (onSelectionChange)="handleSelectionChange($event)"
               [itemTemplate]="itemTemplate" [expandTemplate]="expandTemplate" [itemHeadingTemplate]="itemHeadingTemplate">
               <ng-template #itemHeadingTemplate let-item="item">
                   <div class="list-pf-content-wrapper">
@@ -97,7 +97,7 @@
               <ng-template #itemTemplate let-item="item" let-index="index">
                 <div class="list-pf-content-wrapper">
                   <div class="list-pf-main-content">
-                    <div class="list-pf-description list-group-item-text truncate"> {{item.textoCodigoProdDenominacion}}</div>
+                    <div  class="col-md-4" class="list-pf-description list-group-item-text truncate"> {{item.textoCodigoProdDenominacion}}</div>
                     <div class="list-pf-description list-group-item-text" style="text-align: right;">{{item.textUnidadMedida}}</div>
                     <div class="list-pf-description list-group-item-text" style="text-align: right;">{{item.Cantidad}}</div> 
                     <div class="list-pf-description list-group-item-text" style="text-align: right;">{{item.CantidadOrden}}</div>

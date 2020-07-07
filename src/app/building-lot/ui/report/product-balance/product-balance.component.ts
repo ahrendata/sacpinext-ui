@@ -390,7 +390,7 @@ export class ProductBalanceComponent implements OnInit {
     });
   }
 
-  cambio() {
+  cambio(idExpediente) {
     (<HTMLInputElement>document.getElementById("dateInicial")).value = "";
     (<HTMLInputElement>document.getElementById("dateFinal")).value = "";
     this.dateInicial="";

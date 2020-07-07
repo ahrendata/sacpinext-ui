@@ -31,6 +31,8 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
   view: boolean = false;
 
   requirementType: any[] = [];
+  requirementEspecialidad: any[] = [];
+  requirementPaquete: any[] = [];
   expedients: any[] = [];
   Archivos: any[] = [];
   units: any[] = [];
@@ -83,6 +85,8 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
       AtentionDate: [null, Validators.compose([Validators.maxLength(200)])],
       IdExpedient: [null, Validators.compose([Validators.required])],
       IdTypeRequirement: [null, Validators.compose([Validators.required])],
+      IdEspecialidadRequirement: [null, Validators.compose([Validators.required])],
+      IdPaqueteRequirement: [null, Validators.compose([Validators.required])],
       Description: [null, Validators.compose([Validators.maxLength(200)])],
       IdTipoPedido: [2, Validators.compose([Validators.required])],
       detalle: this.formBuilder.array([], Validators.compose([]))
@@ -97,6 +101,8 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
     this.loadExpedients();
     this.loadUnitCodes();
     this.loadRequirementType();
+    this.loadRequirementEspecialidad();
+    //this.loadRequirementPaquete();
   }
 
   addDetalleFormControl(): void {
@@ -119,7 +125,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
   }
 
   addObservableControl(formGroup: FormGroup) {
-    if(this.accion){
+    if (this.accion) {
       setTimeout(() => this.addEnd(), 1000);
       this.accion = false;
     }
@@ -172,6 +178,22 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
     this.dataService.requerimenttype().getAll().subscribe((data: any[]) => { this.requirementType = data; this.loading = false; });
   }
 
+  loadRequirementEspecialidad() {
+    this.loading = true;
+    let id = this.dataService.users().getEmployeeId();
+    const queryParams: URLSearchParams = new URLSearchParams();
+    queryParams.set('id', id.toString());
+    this.dataService.requerimentEspecialidad().getAll(queryParams).subscribe((data: any[]) => { this.requirementEspecialidad = data; this.loading = false; });
+  }
+
+  loadRequirementPaquete() {
+    this.loading = true;
+    let id = this.dataService.users().getEmployeeId();
+    const queryParams: URLSearchParams = new URLSearchParams();
+    queryParams.set('id', id.toString());
+    this.dataService.requerimentPaquete().getAll(queryParams).subscribe((data: any[]) => { this.requirementPaquete = data; this.loading = false; });
+  }
+
   searchProduct(value: string): Observable<any[]> {
     const queryParams: URLSearchParams = new URLSearchParams();
     queryParams.set('filter', value);
@@ -214,11 +236,13 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
       IdExpedient: this.form.value.IdExpedient,
       Description: this.form.value.Description,
       IdTypeRequirement: this.form.value.IdTypeRequirement,
+      IdEspecialidadRequirement: this.form.value.IdEspecialidadRequirement,
+      //IdPaqueteRequirement: this.form.value.IdPaqueteRequirement,
       IdRequirement: this.form.value.IdRequirement,
       IdTipoPedido: this.form.value.IdTipoPedido,
       IdUser: iduser,
       Details: details
-    };    
+    };
     this.dataService.requeriments().create(requerimiento).subscribe(response => {
       this.Codigo = response.CodRequirement;
       this.form.patchValue({
@@ -235,7 +259,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
             formControl.patchValue({
               IdRequirementDetails: element.IdRequirementDetails,
               Accumulate: element.Accumulate,
-              FileDetails : element.FileDetails,
+              FileDetails: element.FileDetails,
               Status: 1
             });
           }
@@ -322,7 +346,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
     return this.form.get('detalle') as FormArray;
   }
 
-  deleteFile(formControl: FormGroup, file : any, indexF, index) {
+  deleteFile(formControl: FormGroup, file: any, indexF, index) {
     let modal = this.bsModalService.show(ConfirmationModalComponent, { keyboard: false, backdrop: 'static' });
     (<ConfirmationModalComponent>modal.content).showConfirmationModal(
       'Estas Seguro de Eliminar el archivo  ',
@@ -394,14 +418,14 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
       var ab = new ArrayBuffer(byteString.length);
       var ia = new Uint8Array(ab);
       for (var i = 0; i < byteString.length; i++) {
-          ia[i] = byteString.charCodeAt(i);
-       }
+        ia[i] = byteString.charCodeAt(i);
+      }
 
-       var blob = new Blob([ia]);
-       const fileName = data.FileName;
-       if (navigator.msSaveBlob) {
-         navigator.msSaveBlob(blob, fileName);
-       }else {
+      var blob = new Blob([ia]);
+      const fileName = data.FileName;
+      if (navigator.msSaveBlob) {
+        navigator.msSaveBlob(blob, fileName);
+      } else {
         const link = document.createElement('a');
         if (link.download !== undefined) {
           const url = URL.createObjectURL(blob);
@@ -413,7 +437,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
           document.body.removeChild(link);
         }
       }
-      
+
     })
   }
 
@@ -421,13 +445,13 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
     if (this.formup == null) {
       return;
     } else {
-        if(this.nuevo == true){
-          this.formup.patchValue({
-            File: event.data,
-            FileName: event.fileName
-          });
-          this.Archivos.push(this.formup.value);
-        }else{
+      if (this.nuevo == true) {
+        this.formup.patchValue({
+          File: event.data,
+          FileName: event.fileName
+        });
+        this.Archivos.push(this.formup.value);
+      } else {
         this.formup.patchValue({
           File: event.data,
           FileName: event.fileName
@@ -436,29 +460,29 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
         setTimeout(() => this.addObservableControl(this.formEdit), 5000);
         //this.addEnd(this.formedit);// solo es el tiempo
         this.accion = true;
-        }
+      }
     }
- }
+  }
 
-accion : boolean = false; 
-nuevo: boolean= false;// si es false es antiguo, si es true es nuevo
-formEdit : FormGroup;
-indexR : number = null;
+  accion: boolean = false;
+  nuevo: boolean = false;// si es false es antiguo, si es true es nuevo
+  formEdit: FormGroup;
+  indexR: number = null;
 
-  addFiles(formControl : FormGroup, ind ) {
+  addFiles(formControl: FormGroup, ind) {
     this.ocultar(ind);
 
-    if(formControl.value.IdRequirementDetails != null){
+    if (formControl.value.IdRequirementDetails != null) {
       this.nuevo = false;
       this.formEdit = formControl;
       this.indexR = ind;
-     }else{
-       this.nuevo = true;
-     }
-     
+    } else {
+      this.nuevo = true;
+    }
+
   }
 
-  addEnd(){
+  addEnd() {
     const formGroup = this.formBuilder.group({
       IdRequirementDetails: [this.formEdit.value.IdRequirementDetails, Validators.compose([Validators.maxLength(150)])],
       IdProduct: [this.formEdit.value.IdProduct, Validators.compose([Validators.required, Validators.minLength(1)])],
@@ -466,17 +490,17 @@ indexR : number = null;
       Quantity: [this.formEdit.value.Quantity, Validators.compose([Validators.required, Validators.minLength(1)])],
       Observation: [this.formEdit.value.Observation, Validators.compose([Validators.maxLength(150)])],
       Accumulate: [this.formEdit.value.Accumulate, Validators.compose([Validators.maxLength(150)])],
-      FileDetails:  [this.formEdit.value.FileDetails],
+      FileDetails: [this.formEdit.value.FileDetails],
       Status: [2],
       Duplicate: [0],
       Delete: [0],
-          
+
     });
 
-  this.addObservableControl(formGroup);
-  this.detalle.insert(this.indexR,formGroup);
-  this.detalle.removeAt(this.indexR+1);
-  this.saveAll();
-  this.accion = false;
+    this.addObservableControl(formGroup);
+    this.detalle.insert(this.indexR, formGroup);
+    this.detalle.removeAt(this.indexR + 1);
+    this.saveAll();
+    this.accion = false;
   }
 }

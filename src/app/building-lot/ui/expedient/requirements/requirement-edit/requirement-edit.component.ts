@@ -28,6 +28,8 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
   Codigo: string;
 
   requirementType: any[] = [];
+  requirementEspecialidad: any[] = [];
+  requirementPaquete: any[] = [];
   expedients: any[] = [];
   units: any[] = [];
   products: any[] = [];
@@ -87,7 +89,9 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
           AtentionDate: data.AtentionDate,
           IdExpedient: data.IdExpedient,
           Description: data.Description,
-          IdTypeRequirement: data.IdTypeRequirement
+          IdTypeRequirement: data.IdTypeRequirement,
+          IdEspecialidadRequirement: data.IdEspecialidadRequirement,
+          IdPaqueteRequirement: data.IdPaqueteRequirement
         });
         let detalle = data.RequirementDetails || [];
         detalle.forEach(item => {
@@ -123,6 +127,8 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
       AtentionDate: [null, Validators.compose([Validators.maxLength(200)])],
       IdExpedient: [null, Validators.compose([Validators.required])],
       IdTypeRequirement: [null, Validators.compose([Validators.required])],
+      IdEspecialidadRequirement: [null, Validators.compose([Validators.required])],
+      IdPaqueteRequirement: [null, Validators.compose([Validators.required])],
       Description: [null, Validators.compose([Validators.maxLength(200)])],
       IdTipoPedido: [2, Validators.compose([Validators.required])],
       detalle: this.formBuilder.array([], Validators.compose([]))
@@ -155,7 +161,9 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
   loadDataForm() {
     this.loadExpedients();
     this.loadUnitCodes();
-    this.loadRequirementType();
+    this.loadRequirementType();    
+    this.loadRequirementEspecialidad();
+    //this.loadRequirementPaquete();
   }
 
   addObservableControl(formGroup: FormGroup) {
@@ -212,6 +220,22 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
     this.dataService.requerimenttype().getAll().subscribe((data: any[]) => { this.requirementType = data; this.loading = false; });
   }
 
+  loadRequirementEspecialidad() {
+    this.loading = true;
+    let id = this.dataService.users().getEmployeeId();
+    const queryParams: URLSearchParams = new URLSearchParams();
+    queryParams.set('id', id.toString());
+    this.dataService.requerimentEspecialidad().getAll(queryParams).subscribe((data: any[]) => { this.requirementEspecialidad = data; this.loading = false; });
+  }
+
+  loadRequirementPaquete() {
+    this.loading = true;
+    let id = this.dataService.users().getEmployeeId();
+    const queryParams: URLSearchParams = new URLSearchParams();
+    queryParams.set('id', id.toString());
+    this.dataService.requerimentPaquete().getAll(queryParams).subscribe((data: any[]) => { this.requirementPaquete = data; this.loading = false; });
+  }
+
   searchProduct(value: string): Observable<any[]> {
     const queryParams: URLSearchParams = new URLSearchParams();
     queryParams.set('filter', value);
@@ -255,6 +279,8 @@ export class RequirementEditComponent implements OnInit, OnDestroy {
       IdExpedient: this.form.value.IdExpedient,
       Description: this.form.value.Description,
       IdTypeRequirement: this.form.value.IdTypeRequirement,
+      IdEspecialidadRequirement: this.form.value.IdEspecialidadRequirement,
+      //IdPaqueteRequirement: this.form.value.IdPaqueteRequirement,
       IdRequirement: this.form.value.IdRequirement,
       IdTipoPedido: this.form.value.IdTipoPedido,
       IdUser: iduser,

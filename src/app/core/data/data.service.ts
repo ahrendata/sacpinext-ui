@@ -6,6 +6,8 @@ import { UserService } from './user.service';
 import { UnitCodeService } from './unit-code.service';
 import { ProductService } from './product.service';
 import { RequirementTypeService } from './requirement-type.service';
+import { RequirementEspecialidadService } from './requirement-especialidad.service';
+import { RequirementPaqueteService } from './requirement-paquete.service';
 
 @Injectable()
 export class DataService {
@@ -17,7 +19,9 @@ export class DataService {
     private unitCodeService: UnitCodeService,
     private productService: ProductService,
     private requirementtype: RequirementTypeService,
-    private fileService : FileService
+    private requirementEspecialidad: RequirementEspecialidadService,
+    private requirementPaquete: RequirementPaqueteService,
+    private fileService: FileService
   ) { }
 
   expedients(): ExpedientService {
@@ -41,6 +45,13 @@ export class DataService {
   }
   requerimenttype(): RequirementTypeService {
     return this.requirementtype;
+  }
+  requerimentEspecialidad(): RequirementEspecialidadService {
+    return this.requirementEspecialidad;
+  }
+
+  requerimentPaquete(): RequirementPaqueteService {
+    return this.requirementPaquete;
   }
 
   files(): FileService {

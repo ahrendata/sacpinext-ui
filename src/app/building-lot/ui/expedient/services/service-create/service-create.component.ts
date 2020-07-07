@@ -30,6 +30,7 @@ export class ServiceCreateComponent implements OnInit {
   files = [];
 
   requirementType: any[] = [];
+  requirementEspecialidad: any[] = [];
   expedients: any[] = [];
   Archivos: any[] = [];
   requirementSub: Subscription;
@@ -123,6 +124,14 @@ export class ServiceCreateComponent implements OnInit {
   loadRequirementType() {
     this.loading = true;
     this.dataService.requerimenttype().getAll().subscribe((data: any[]) => { this.requirementType = data; this.loading = false; });
+  }
+
+  loadRequirementEspecialidad() {
+    this.loading = true;
+    let id = this.dataService.users().getEmployeeId();
+    const queryParams: URLSearchParams = new URLSearchParams();
+    queryParams.set('id', id.toString());
+    this.dataService.requerimentEspecialidad().getAll(queryParams).subscribe((data: any[]) => { this.requirementEspecialidad = data; this.loading = false; });
   }
 
   saveAll(confirm: boolean = false, home: boolean = false) {

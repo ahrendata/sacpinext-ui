@@ -86,8 +86,8 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
       IdExpedient: [null, Validators.compose([Validators.required])],
       IdTypeRequirement: [null, Validators.compose([Validators.required])],
       IdEspecialidadRequirement: [null, Validators.compose([Validators.required])],
-      IdPaqueteRequirement: [null, Validators.compose([Validators.required])],
-      Description: [null, Validators.compose([Validators.maxLength(200)])],
+      //IdPaqueteRequirement: [null, Validators.compose([Validators.required])],
+      Description: [null, Validators.compose([Validators.required,Validators.maxLength(200)])],
       IdTipoPedido: [2, Validators.compose([Validators.required])],
       detalle: this.formBuilder.array([], Validators.compose([]))
     });

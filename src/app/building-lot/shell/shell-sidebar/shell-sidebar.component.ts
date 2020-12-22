@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DataService } from '../../../core/data/data.service';
-import { NavigationItemBase} from 'patternfly-ng';
+import { NavigationItemBase } from 'patternfly-ng';
 
 @Component({
   selector: 'sacpi-shell-sidebar',
@@ -54,42 +54,54 @@ export class ShellSidebarComponent implements OnInit {
         title: 'Reportes',
         iconStyleClass: 'fa fa-bar-chart',
         url: 'reports',
-        badges: [{ id: 1,
-        mobileItem : true,
-        children:[
-          {
-            title: 'Saldos Productos',
-            url: './reports/product-balance',
-            badges: [{ id: 1 }]
-          },
-        ] 
-      }],
+        badges: [{
+          id: 1,
+          mobileItem: true,
+          children: [
+            {
+              title: 'Saldos Productos',
+              url: './reports/product-balance',
+              badges: [{ id: 1 }]
+            },
+          ]
+        }],
       },
       {
         title: 'Cuenta',
         iconStyleClass: 'fa fa-user',
         url: './acount',
-        badges: [{ id: 1 ,
-        mobileItem: true,
-        children: [
-          {
-            title: 'Administrar Cuenta',
-            url: './acount',
-            badges: [{ id: 1 }]
-          },
-          {
-            title: 'Cambiar Contraseña',
-            url: './change-password',
-            badges: [{ id: 1 }]
-          },
-          {
-            title: 'Cerrar Session',
-            url: './login',
-            badges: [{ id: 3 }]
-          }
-        ]
-      }],
-        
+        badges: [{
+          id: 1,
+          mobileItem: true,
+          children: [
+            {
+              title: 'Administrar Cuenta',
+              url: './acount',
+              badges: [{ id: 1 }]
+            },
+            {
+              title: 'Cambiar Contraseña',
+              url: './change-password',
+              badges: [{ id: 1 }]
+            },
+            {
+              title: 'Cerrar Session',
+              url: './login',
+              badges: [{ id: 3 }]
+            }
+          ]
+        }],
+
+      },
+      {
+        title: 'SCTR',
+        iconStyleClass: 'fa fa-user',
+        url: './sctr/registry',
+        badges: [{
+          id: 1,
+          mobileItem: true,
+        }],
+
       }
     ];
   }

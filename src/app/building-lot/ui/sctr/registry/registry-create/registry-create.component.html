@@ -1,0 +1,159 @@
+<div class="row">
+  <div class="col-md-12">
+
+    <!-- Title Section -->
+    <div class="row">
+      <div class="col-md-8">
+        <ol class="breadcrumb">
+          <li>
+            <a routerLink="../">Registros de SCTR</a>
+          </li>
+          <li>Crear Registro SCTR</li>
+        </ol>
+        <h1>Creacion de Registro de SCTR </h1>
+      </div>
+      <div class="col-md-4">
+        <div class="col-lg-12">
+        </div>
+      </div>
+    </div><!-- /.Title Section -->
+
+    <sacpi-loading [loading]="loading">
+      <form [formGroup]="form" (ngSubmit)="onSubmitForm(form)">
+        <sacpi-form-fields-status [sacpiForm]="form"></sacpi-form-fields-status>
+        <div class="row">
+
+          <div class="col-md-4">
+            <div class="form-group" [sacpiFormFieldValidationState]="form.get('IdExpedient')">
+              <label class="control-label" [sacpiFormRequiredLabel]="form.get('IdExpedient')">Centro de Costo
+                <i class="fa fa-question-circle text-muted" tooltip="Centro de costo" placement="top"></i>
+              </label>
+              <ng-select formControlName="IdExpedient" class="ng-select-sacpi" [items]="expedients" bindLabel="Alias"
+                bindValue="IdExpediente" placeholder="Seleccione expediente"></ng-select>
+              <sacpi-form-field-validation-messages [sacpiFormControl]="form.get('IdExpedient')">
+              </sacpi-form-field-validation-messages>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="form-group" [sacpiFormFieldValidationState]="form.get('Description')">
+              <label class="control-label" [sacpiFormRequiredLabel]="form.get('Description')">Denominación
+                <i class="fa fa-question-circle text-muted" tooltip="Descripción del SCTR" placement="top"></i>
+              </label>
+              <input formControlName="Description" type="text" class="form-control input-lg">
+              <sacpi-form-field-validation-messages [sacpiFormControl]="form.get('Description')">
+              </sacpi-form-field-validation-messages>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-striped table-bordered table-hover dataTable no-footer">
+              <thead>
+                <tr>
+                  <td class="text-center">#</td>
+                  <td class="text-center">DNI</td>
+                  <td class="text-left td-siacpi">Nombres</td>
+                  <td class="text-left">Apellido Paterno</td>
+                  <td class="text-left">Apellido Materno</td>
+                  <td class="text-center">F. Nacimiento</td>
+                  <td colspan="2" rowspan="1" class="text-center">Acciones</td>
+                </tr>
+              </thead>
+              <tbody formArrayName="detalle">
+
+                <ng-template ngFor let-item [ngForOf]="detalle.controls" let-i="index">
+                  <tr [formGroupName]="i">
+                    <td class="text-center">{{i+1}}</td>
+
+                    <td [sacpiFormFieldValidationState]="item.get('Dni')">
+                      <input formControlName="Dni" type="text" class="form-control input-lg"
+                        placeholder="DNI" />
+                      <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('Dni')">
+                      </sacpi-form-field-validation-messages>
+                    </td>
+                    
+                    <td [sacpiFormFieldValidationState]="item.get('Nombres')">
+                      <input formControlName="Nombres" type="text" class="form-control input-lg"
+                        placeholder="Nombres" />
+                      <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('Nombres')">
+                      </sacpi-form-field-validation-messages>
+                    </td>
+                    
+                    <td [sacpiFormFieldValidationState]="item.get('ApellidoPaterno')">
+                      <input formControlName="ApellidoPaterno" type="text" class="form-control input-lg"
+                        placeholder="Apellido Paterno" />
+                      <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('ApellidoPaterno')">
+                      </sacpi-form-field-validation-messages>
+                    </td>
+                    
+                    <td [sacpiFormFieldValidationState]="item.get('ApellidoMaterno')">
+                      <input formControlName="ApellidoMaterno" type="text" class="form-control input-lg"
+                        placeholder="Apellido Materno" />
+                      <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('ApellidoMaterno')">
+                      </sacpi-form-field-validation-messages>
+                    </td>
+                    
+                    <td [sacpiFormFieldValidationState]="item.get('FechaNacimiento')">
+                      <input formControlName="FechaNacimiento" type="date" class="form-control input-lg" 
+                        placeholder="F. Nacimiento" />
+                      <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('FechaNacimiento')">
+                      </sacpi-form-field-validation-messages>
+                    </td>
+                    
+                    <td class="table-view-pf-actions">
+                      <div class="table-view-pf-btn">
+                        <button class="btn btn-default" type="button" (click)="consultarPersona(item,i)">
+                          <span class="fa fa-search" tooltip="Consultar Trabajador"
+                            placement="top"></span>
+                        </button>
+                      </div>                      
+                    </td> 
+                    
+                    <td class="table-view-pf-actions">
+                      <div class="table-view-pf-btn">
+                        <button class="btn btn-default" type="button" (click)="removeDetalleFormControl(item,i)"
+                          *ngIf="item.get('Delete').value==0">
+                          <span class="fa fa-trash" style="color:red;" tooltip="Eliminar Trabajador"
+                            placement="top"></span>
+                        </button>
+                        <button class="btn btn-default" type="button" *ngIf="item.get('Delete').value==1">
+                          <span class="fa fa-spinner" tooltip="Eliminando Trabajador" placement="top"></span>
+                        </button>
+                      </div>
+                    </td>                    
+                  </tr>                  
+                </ng-template>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="10" class="text-left">
+                    <button (click)="addDetalleSctr()" type="button" class="btn btn-default">
+                      <span class="fa fa-plus"></span> Agregar Trabajador
+                    </button>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+
+        <br>
+        <!-- <sacpi-button-confirmar [sacpiForm]="form" [working]="working"></sacpi-button-confirmar> -->
+
+        <button type="submit" *ngIf="!form.valid" class="btn btn-primary" disabled>
+          <span class="fa fa-thumbs-o-up"></span><span>&nbsp;Guardar</span>
+        </button>
+        <button type="submit"  [disabled]="working" *ngIf="form.valid" class="btn btn-primary">
+          <span class="fa fa-thumbs-o-up"></span> <span [hidden]="!working">Guardando...</span>
+          <span [hidden]="working">Guardar</span>
+        </button>
+
+
+        <sacpi-button-cancel (sacpiOnCancel)="(onCancel())"></sacpi-button-cancel>
+      </form>
+    </sacpi-loading>
+    <br>
+  </div>
+</div>

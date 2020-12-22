@@ -30,7 +30,8 @@ const routes: Routes = [
       { path: 'expedients', loadChildren: 'app/building-lot/ui/expedient/expedient.module#ExpedientModule' },
       { path: 'acount', loadChildren: 'app/building-lot/ui/acount/acount.module#AcountModule' },
       { path: 'reports', loadChildren: 'app/building-lot/ui/report/report.module#ReportModule' },
-      { path: 'change-password', loadChildren: 'app/building-lot/ui/change-password/change-password.module#ChangePasswordModule' }
+      { path: 'change-password', loadChildren: 'app/building-lot/ui/change-password/change-password.module#ChangePasswordModule' },
+      { path: 'sctr', loadChildren: 'app/building-lot/ui/sctr/sctr.module#SctrModule' }
     ]
   }
 ];

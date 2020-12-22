@@ -27,6 +27,7 @@ import { ToastsManager } from 'ng6-toastr';
 import { TruncatePipe } from './../shared/pipes/truncate.pipe';
 import { RequirementEspecialidadService } from './data/requirement-especialidad.service';
 import { RequirementPaqueteService } from './data/requirement-paquete.service';
+import { SctrRegistryService } from './data/sctr-registry.service';
 
 @NgModule({
   imports: [
@@ -62,7 +63,8 @@ import { RequirementPaqueteService } from './data/requirement-paquete.service';
     TruncatePipe,
     FileService,
     RequirementEspecialidadService,
-    RequirementPaqueteService
+    RequirementPaqueteService,
+    SctrRegistryService
   ]
 })
 export class CoreModule { }

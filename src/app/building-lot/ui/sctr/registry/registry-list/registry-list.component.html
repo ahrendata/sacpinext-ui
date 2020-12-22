@@ -1,0 +1,75 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="form-group">
+      <pfng-toolbar [actionTemplate]="toolbarTemplante" [config]="toolbarConfig"
+        (onFilterChange)="filterChanged($event)" (onSortChange)="sortChanged($event)"
+        (onViewSelect)="viewSelected($event)">
+        <ng-template #toolbarTemplante>
+          <button class="btn btn-primary primary-action" type="button" (click)="nuevo()">
+            <span class="fa fa-plus"></span>
+            Crear Registro de SCTR
+          </button>
+        </ng-template>
+      </pfng-toolbar>
+    </div>
+  </div>
+</div>
+
+<sacpi-loading [loading]="loading">
+  <div class="padding-15">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group">
+          <pfng-list [actionTemplate]="actionTemplate" [config]="listConfig" [items]="sctrList"
+            [itemTemplate]="itemTemplate">
+            <ng-template #itemTemplate let-item="item" let-index="index">
+              <div class="list-pf-left">
+                <span *ngIf="item.Status" class="fa fa-list-alt  list-pf-icon list-pf-icon-bordered list-pf-icon-small"
+                  tooltip="Registro confirmado" placement="top"></span>
+                <span *ngIf="!item.Status"
+                  class="fa fa-list-alt  list-pf-icon list-pf-icon-bordered-confirm list-pf-icon-small"
+                  tooltip="Registro sin confirmar" placement="top"></span>
+              </div>
+              <div class="list-pf-content-wrapper">
+                <div class="list-pf-main-content">
+                  <!-- <div class="list-pf-title">
+                    <span *ngIf="item.Status">{{item.Codigo}}</span>
+                    <span *ngIf="!item.Status" class="list-temporal">{{item.Codigo}}</span>
+                  </div> -->
+                  <div class="list-pf-description list-group-item-text">{{item.denominacion}}</div>
+                  <div class="list-pf-description list-group-item-text">{{item.expediente}}</div>
+                  <!-- <div class="list-pf-description list-group-item-text">{{item.Estado}}</div> -->
+                </div>
+                <div class="list-pf-additional-content">
+                  <div>
+                    <span class="fa fa-calendar" tooltip="Fecha de creación" placement="top"></span>
+                    Creado
+                    <strong> {{item.fechaCreacion| date:"dd/MM/yy"}}</strong>
+                  </div>
+                  <div>
+                    <span class="fa fa-calendar" tooltip="Fecha de creación" placement="top"></span>
+                    Modificado
+                    <!-- <strong> {{item.fechaModificacion| date:"dd/MM/yy"}}</strong> -->
+                    <strong> {{item.fechaModificacion?(item.fechaModificacion| date:"dd/MM/yy"):'-'}}</strong>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template #actionTemplate let-item="item" let-index="index">
+              <pfng-action class="list-pf-actions" [config]="getActionConfig(item, actionButtonTemplate)"
+                (onActionSelect)="handleActionGrid($event, item)">
+                <ng-template #actionButtonTemplate let-action="action">
+                  <span class="fa fa-pencil">&nbsp;</span>{{action.title}}
+                </ng-template>
+              </pfng-action>
+            </ng-template>
+          </pfng-list>
+          <pfng-pagination [config]='paginationConfig' (onPageSizeChange)="handlePageSize($event)"
+            (onPageNumberChange)="handlePageNumber($event)"></pfng-pagination>
+          <br>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+</sacpi-loading>

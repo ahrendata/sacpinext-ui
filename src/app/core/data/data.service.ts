@@ -8,6 +8,7 @@ import { ProductService } from './product.service';
 import { RequirementTypeService } from './requirement-type.service';
 import { RequirementEspecialidadService } from './requirement-especialidad.service';
 import { RequirementPaqueteService } from './requirement-paquete.service';
+import { SctrRegistryService } from './sctr-registry.service';
 
 @Injectable()
 export class DataService {
@@ -21,7 +22,8 @@ export class DataService {
     private requirementtype: RequirementTypeService,
     private requirementEspecialidad: RequirementEspecialidadService,
     private requirementPaquete: RequirementPaqueteService,
-    private fileService: FileService
+    private fileService: FileService,
+    private sctrRegistryService: SctrRegistryService
   ) { }
 
   expedients(): ExpedientService {
@@ -56,5 +58,9 @@ export class DataService {
 
   files(): FileService {
     return this.fileService;
+  }
+
+  sctrRegistry(): SctrRegistryService{
+    return this.sctrRegistryService;
   }
 }

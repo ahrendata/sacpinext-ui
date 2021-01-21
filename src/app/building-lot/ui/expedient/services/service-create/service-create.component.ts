@@ -35,6 +35,7 @@ export class ServiceCreateComponent implements OnInit {
   Archivos: any[] = [];
   requirementSub: Subscription;
   search = new EventEmitter<string>();
+  specialties: any[] = [];
 
   constructor(
     private router: Router,
@@ -85,7 +86,9 @@ export class ServiceCreateComponent implements OnInit {
   loadDataForm() {
     this.loadExpedients();
     this.loadRequirementType();
+    this.loadRequirementEspecialidad();
   }
+
 
   addDetalleFormControl(): void {
     this.Archivos = [];
@@ -93,6 +96,7 @@ export class ServiceCreateComponent implements OnInit {
     const formGroup = this.formBuilder.group({
       IdRequirementDetails: [null, Validators.compose([Validators.maxLength(150)])],
       ServiceDescription: [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(500)])],
+      IdSpecialty: [null, Validators.compose([Validators.required,Validators.minLength(1)])],
       FileDetails: [this.Archivos],
       Status: [2],
       Duplicate: [0],
@@ -108,6 +112,9 @@ export class ServiceCreateComponent implements OnInit {
       this.accion = false;
     }
     formGroup.get("ServiceDescription").valueChanges.subscribe(value => {
+      formGroup.patchValue({ Status: 2 });
+    });
+    formGroup.get("IdSpecialty").valueChanges.subscribe(value => {
       formGroup.patchValue({ Status: 2 });
     });
    
@@ -131,7 +138,7 @@ export class ServiceCreateComponent implements OnInit {
     let id = this.dataService.users().getEmployeeId();
     const queryParams: URLSearchParams = new URLSearchParams();
     queryParams.set('id', id.toString());
-    this.dataService.requerimentEspecialidad().getAll(queryParams).subscribe((data: any[]) => { this.requirementEspecialidad = data; this.loading = false; });
+    this.dataService.requerimentEspecialidad().getAll(queryParams).subscribe((data: any[]) => { this.specialties = data; this.loading = false; });
   }
 
   saveAll(confirm: boolean = false, home: boolean = false) {
@@ -153,6 +160,7 @@ export class ServiceCreateComponent implements OnInit {
       details.push({
         IdRequirementDetails: element.IdRequirementDetails,
         ServiceDescription: element.ServiceDescription,
+        IdSpecialty: element.IdSpecialty.IdContenedor,
         FileDetails: element.FileDetails
       });
     });
@@ -178,6 +186,7 @@ export class ServiceCreateComponent implements OnInit {
             formControl.patchValue({
               IdRequirementDetails: element.IdRequirementDetails,
               ServiceDescription: element.ServiceDescription,
+              //IdSpecialty: element.IdSpecialty.IdContenedor,
               FileDetails : element.FileDetails,
               Status: 1
             });

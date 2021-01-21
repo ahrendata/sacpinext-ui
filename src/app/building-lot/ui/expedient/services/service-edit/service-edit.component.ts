@@ -35,7 +35,7 @@ export class ServiceEditComponent implements OnInit {
   requirementSub: Subscription;
   routingSub: Subscription;
   search = new EventEmitter<string>();
-
+  specialties: any[] = [];
 
   constructor(private router: Router, private route: ActivatedRoute,
     private formBuilder: FormBuilder, private dataService: DataService,
@@ -83,6 +83,7 @@ export class ServiceEditComponent implements OnInit {
           const formGroup = this.formBuilder.group({
             IdRequirementDetails: [item.IdRequirementDetails, Validators.compose([Validators.maxLength(150)])],
             ServiceDescription: [item.ServicioDescripcion, Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(500)])],
+            IdSpecialty: [item.Specialty, Validators.compose([Validators.required,Validators.minLength(1)])],
             FileDetails: [item.FilesDetails],
             Status: [1],
             Duplicate: [0],
@@ -126,6 +127,7 @@ export class ServiceEditComponent implements OnInit {
     const formGroup = this.formBuilder.group({
       IdRequirementDetails: [null, Validators.compose([Validators.maxLength(150)])],
       ServiceDescription: [null, Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(500)])],
+      IdSpecialty: [null, Validators.compose([Validators.required,Validators.minLength(1)])],
       FileDetails: [this.Archivos],
       Status: [2],
       Duplicate: [0],
@@ -138,6 +140,7 @@ export class ServiceEditComponent implements OnInit {
   loadDataForm() {
     this.loadExpedients();
     this.loadRequirementType();
+    this.loadRequirementEspecialidad();
   }
 
   addObservableControl(formGroup: FormGroup) {
@@ -149,7 +152,9 @@ export class ServiceEditComponent implements OnInit {
     formGroup.get("ServiceDescription").valueChanges.subscribe(value => {
       formGroup.patchValue({ Status: 2 });
     });
-
+    formGroup.get("IdSpecialty").valueChanges.subscribe(value => {
+      formGroup.patchValue({ Status: 2 });
+    });
     formGroup.get("FileDetails").valueChanges.subscribe(value => {
       formGroup.patchValue({ Status: 2 });
     });
@@ -174,6 +179,14 @@ export class ServiceEditComponent implements OnInit {
     });
   }
 
+  loadRequirementEspecialidad() {
+    this.loading = true;
+    let id = this.dataService.users().getEmployeeId();
+    const queryParams: URLSearchParams = new URLSearchParams();
+    queryParams.set('id', id.toString());
+    this.dataService.requerimentEspecialidad().getAll(queryParams).subscribe((data: any[]) => { this.specialties = data; this.loading = false; });
+  }
+
   saveAll(confirm: boolean = false, home: boolean = false) {
     let iduser = this.dataService.users().getUserId();
     if (!this.form || !this.form.value.IdExpedient || !this.form.value.IdTypeRequirement) {
@@ -193,6 +206,7 @@ export class ServiceEditComponent implements OnInit {
       details.push({
         IdRequirementDetails: element.IdRequirementDetails,
         ServiceDescription: element.ServiceDescription,
+        IdSpecialty: element.IdSpecialty.IdContenedor,
         FileDetails: element.FileDetails
       });
     });
@@ -218,6 +232,7 @@ export class ServiceEditComponent implements OnInit {
           let item = formControl.value;
           formControl.patchValue({
             IdRequirementDetails: element.IdRequirementDetails,
+            //IdSpecialty: element.IdSpecialty,
             FileDetails: element.FileDetails,
             Status: 1
           });
@@ -442,6 +457,7 @@ export class ServiceEditComponent implements OnInit {
     const formGroup = this.formBuilder.group({
       IdRequirementDetails: [this.formEdit.value.IdRequirementDetails, Validators.compose([Validators.maxLength(150)])],
       ServiceDescription: [this.formEdit.value.ServiceDescription, Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(500)])],
+      IdSpecialty: [this.formEdit.value.IdSpecialty, Validators.compose([Validators.required,Validators.minLength(1)])],
       FileDetails: [this.formEdit.value.FileDetails],
       Status: [2],
       Duplicate: [0],

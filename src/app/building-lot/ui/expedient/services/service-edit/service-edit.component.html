@@ -72,12 +72,9 @@
               <thead>
                 <tr>
                   <td class="text-center">#</td>
-                  <!-- <td class="text-left td-siacpi">Producto</td>
-                  <td class="text-right">Cantidad</td>
-                  <td class="text-center">Unidad Medida</td> -->
                   <td class="text-left">Descripcion</td>
+                  <td class="text-left ">Especialidad</td>
                   <td colspan="3" rowspan="1" class="text-center">Acciones</td>
-                  <!-- <td class="text-right">Acumulado</td> -->
                   <td class="text-right">Archivos</td>
                 </tr>
 
@@ -90,6 +87,12 @@
                       <textarea name="ServiceDescription" formControlName="ServiceDescription" type="text"
                         class="form-control"></textarea>
                       <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('ServiceDescription')">
+                      </sacpi-form-field-validation-messages>
+                    </td>
+                    <td [sacpiFormFieldValidationState]="item.get('IdSpecialty')" >
+                      <ng-select formControlName="IdSpecialty" class="ng-select-sacpi" bindLabel="Descryption"
+                         [items]="specialties" placeholder="Seleccione alguna especialidad"></ng-select>
+                      <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('IdSpecialty')">
                       </sacpi-form-field-validation-messages>
                     </td>
                     <td class="table-view-pf-actions">

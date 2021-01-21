@@ -54,7 +54,7 @@
               </sacpi-form-field-validation-messages>
             </div>
           </div>
-          <div class="col-md-4">
+          <!-- <div class="col-md-4">
             <div class="form-group" [sacpiFormFieldValidationState]="form.get('IdEspecialidadRequirement')">
               <label class="control-label" [sacpiFormRequiredLabel]="form.get('IdEspecialidadRequirement')">Especialidad
                 <i class="fa fa-question-circle text-muted" tooltip="Especialidad de requerimiento"
@@ -65,7 +65,7 @@
               <sacpi-form-field-validation-messages [sacpiFormControl]="form.get('IdEspecialidadRequirement')">
               </sacpi-form-field-validation-messages>
             </div>
-          </div>
+          </div> -->
           <!-- <div class="col-md-2">
             <div class="form-group" [sacpiFormFieldValidationState]="form.get('IdPaqueteRequirement')">
               <label class="control-label" [sacpiFormRequiredLabel]="form.get('IdPaqueteRequirement')">Paquete de trabajo
@@ -101,6 +101,7 @@
                   <td class="text-right">Cantidad</td>
                   <td class="text-center">Unidad Medida</td>
                   <td class="text-left">Descripcion</td>
+                  <td class="text-left">Especialidad</td>
                   <td colspan="3" rowspan="1" class="text-center">Acciones</td>
                   <td class="text-right">Acumulado</td>
                   <td class="text-right">Archivos</td>
@@ -132,6 +133,12 @@
                     <td [sacpiFormFieldValidationState]="item.get('Observation')">
                       <input formControlName="Observation" type="text" class="form-control input-lg" placeholder="Descripcion" />
                       <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('Observation')">
+                      </sacpi-form-field-validation-messages>
+                    </td>
+                    <td [sacpiFormFieldValidationState]="item.get('IdSpecialty')" >
+                      <ng-select formControlName="IdSpecialty" class="ng-select-sacpi" bindLabel="Descryption"
+                         [items]="specialties" placeholder="Seleccione alguna especialidad"></ng-select>
+                      <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('IdSpecialty')">
                       </sacpi-form-field-validation-messages>
                     </td>
                     <td class="table-view-pf-actions">

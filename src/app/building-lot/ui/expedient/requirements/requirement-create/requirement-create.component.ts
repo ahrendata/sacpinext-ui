@@ -37,6 +37,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
   Archivos: any[] = [];
   units: any[] = [];
   products: any[] = [];
+  specialties: any[] = [];
   requirementSub: Subscription;
   search = new EventEmitter<string>();
 
@@ -85,7 +86,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
       AtentionDate: [null, Validators.compose([Validators.maxLength(200)])],
       IdExpedient: [null, Validators.compose([Validators.required])],
       IdTypeRequirement: [null, Validators.compose([Validators.required])],
-      IdEspecialidadRequirement: [null, Validators.compose([Validators.required])],
+      //IdEspecialidadRequirement: [null, Validators.compose([Validators.required])],
       //IdPaqueteRequirement: [null, Validators.compose([Validators.required])],
       Description: [null, Validators.compose([Validators.required,Validators.maxLength(200)])],
       IdTipoPedido: [2, Validators.compose([Validators.required])],
@@ -114,6 +115,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
       IdUnidCode: [null, Validators.compose([Validators.required, Validators.minLength(1)])],
       Quantity: [null, Validators.compose([Validators.required, Validators.minLength(1)])],
       Observation: [null, Validators.compose([Validators.maxLength(500)])],
+      IdSpecialty: [null, Validators.compose([Validators.required,Validators.minLength(1)])],
       Accumulate: [null, Validators.compose([Validators.maxLength(150)])],
       FileDetails: [this.Archivos],
       Status: [2],
@@ -155,6 +157,9 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
     formGroup.get("Observation").valueChanges.subscribe(value => {
       formGroup.patchValue({ Status: 2 });
     });
+    formGroup.get("IdSpecialty").valueChanges.subscribe(value => {
+      formGroup.patchValue({ Status: 2 });
+    });
     formGroup.get("FileDetails").valueChanges.subscribe(value => {
       formGroup.patchValue({ Status: 2 });
     });
@@ -183,7 +188,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
     let id = this.dataService.users().getEmployeeId();
     const queryParams: URLSearchParams = new URLSearchParams();
     queryParams.set('id', id.toString());
-    this.dataService.requerimentEspecialidad().getAll(queryParams).subscribe((data: any[]) => { this.requirementEspecialidad = data; this.loading = false; });
+    this.dataService.requerimentEspecialidad().getAll(queryParams).subscribe((data: any[]) => { this.specialties = data; this.loading = false; });
   }
 
   loadRequirementPaquete() {
@@ -227,6 +232,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
         IdProduct: element.IdProduct.IdProducto,
         IdUnidCode: element.IdUnidCode,
         Quantity: element.Quantity,
+        IdSpecialty: element.IdSpecialty.IdContenedor,
         Observation: element.Observation,
         FileDetails: element.FileDetails
       });
@@ -236,7 +242,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
       IdExpedient: this.form.value.IdExpedient,
       Description: this.form.value.Description,
       IdTypeRequirement: this.form.value.IdTypeRequirement,
-      IdEspecialidadRequirement: this.form.value.IdEspecialidadRequirement,
+      //IdEspecialidadRequirement: this.form.value.IdEspecialidadRequirement,
       //IdPaqueteRequirement: this.form.value.IdPaqueteRequirement,
       IdRequirement: this.form.value.IdRequirement,
       IdTipoPedido: this.form.value.IdTipoPedido,
@@ -489,6 +495,7 @@ export class RequirementCreateComponent implements OnInit, OnDestroy {
       IdUnidCode: [this.formEdit.value.IdUnidCode, Validators.compose([Validators.required, Validators.minLength(1)])],
       Quantity: [this.formEdit.value.Quantity, Validators.compose([Validators.required, Validators.minLength(1)])],
       Observation: [this.formEdit.value.Observation, Validators.compose([Validators.maxLength(150)])],
+      IdSpecialty: [this.formEdit.value.IdSpecialty, Validators.compose([Validators.required,Validators.minLength(1)])],
       Accumulate: [this.formEdit.value.Accumulate, Validators.compose([Validators.maxLength(150)])],
       FileDetails: [this.formEdit.value.FileDetails],
       Status: [2],

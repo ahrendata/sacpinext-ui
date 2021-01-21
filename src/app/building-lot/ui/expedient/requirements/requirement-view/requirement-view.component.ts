@@ -130,7 +130,8 @@ export class RequirementViewComponent implements OnInit {
       { title: "Producto", dataKey: "Product" },
       { title: "Cantidad", dataKey: "Quantity" },
       { title: "Unidad Medida", dataKey: "UnidCode" },
-      { title: "Descripcion", dataKey: "Observation" }
+      { title: "Descripcion", dataKey: "Observation" },
+      { title: "Especialidad", dataKey: "Specialty" }
     ];
     let rows: any[] = [];
     let i: number = 0;
@@ -141,7 +142,8 @@ export class RequirementViewComponent implements OnInit {
         Product: element.Product,
         Quantity: this.number.transform(element.Quantity, ' ', true, '1.2-2'),
         UnidCode: element.UnidCode,
-        Observation: element.Observation || ''
+        Observation: element.Observation || '',
+        Specialty : element.Specialty || ''
       });
     });
     var doc = new jsPDF();

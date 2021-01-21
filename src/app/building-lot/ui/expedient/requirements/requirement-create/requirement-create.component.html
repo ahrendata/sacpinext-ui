@@ -98,10 +98,10 @@
                 <tr>
                   <td class="text-center">#</td>
                   <td class="text-left td-siacpi">Producto</td>
-                  <td class="text-right">Cantidad</td>
+                  <td class="text-right ">Cantidad</td>
                   <td class="text-center">Unidad Medida</td>
-                  <td class="text-left">Descripcion</td>
-                  <td class="text-left">Especialidad</td>
+                  <td class="text-left ">Descripcion</td>
+                  <td class="text-left ">Especialidad</td>
                   <td colspan="3" rowspan="1" class="text-center">Acciones</td>
                   <td class="text-right">Acumulado</td>
                   <td class="text-right">Archivos</td>
@@ -118,7 +118,7 @@
                       <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('IdProduct')">
                       </sacpi-form-field-validation-messages>
                     </td>
-                    <td [sacpiFormFieldValidationState]="item.get('Quantity')">
+                    <td [sacpiFormFieldValidationState]="item.get('Quantity')" class="personalWidth">
                       <input formControlName="Quantity" type="number" min="1" placeholder="0.00"
                         class="form-control text-right input-lg">
                       <sacpi-form-field-validation-messages [sacpiFormControl]="item.get('Quantity')">
@@ -177,7 +177,7 @@
                         </button>
                       </div>
                     </td>
-                    <td [sacpiFormFieldValidationState]="item.get('Accumulate')">
+                    <td [sacpiFormFieldValidationState]="item.get('Accumulate')" class="personalWidth">
                       <input formControlName="Accumulate" type="number" min="0" placeholder="0.00"
                         class="form-control text-right" readonly>
                     </td>
@@ -230,7 +230,7 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <td colspan="10" class="text-left">
+                  <td colspan="12" class="text-left">
                     <button (click)="addDetalleFormControl()" type="button" class="btn btn-default">
                       <span class="fa fa-plus"></span> Agregar Productos
                     </button>

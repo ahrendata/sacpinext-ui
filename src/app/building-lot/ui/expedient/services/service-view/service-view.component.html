@@ -113,6 +113,7 @@
                   <tr>
                     <td class="text-center">#</td>
                     <td class="text-left td-siacpi">Descripcion de Servicio</td>
+                    <td class="text-left td-siacpi">Especialidad</td>
                     <td class="text-right">Adjuntos</td> 
                   </tr>
                 </thead>
@@ -120,6 +121,7 @@
                   <tr >
                     <td class="text-center">{{i+1}}</td>
                     <td>{{item.ServiceDescription}}</td>
+                    <td>{{item.Specialty}}</td>
                     <td class="table-view-pf-actions">
                       <div class="refactor table-view-pf-btn" >
                         <div *ngIf="item.FileDetails.length>0" (click)="ocultar(i)"

@@ -154,5 +154,8 @@
     "@schematics/angular:directive": {
       "prefix": "sacpi"
     }
+  },
+  "cli": {
+    "analytics": "6d76795f-472d-49ba-a4ad-4e1e8c144f4a"
   }
 }

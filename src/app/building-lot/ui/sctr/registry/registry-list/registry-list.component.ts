@@ -117,8 +117,8 @@ export class RegistryListComponent implements OnInit {
   inittoolbar() {
     this.filterConfig = {
       fields: [{
-        id: 'Denominacion',
-        title: 'Denominacion',
+        id: 'denominacion',
+        title: 'Denominación',
         placeholder: 'Filter por descripcion del SCTR...',
         type: FilterType.TEXT
       }, {
@@ -141,12 +141,12 @@ export class RegistryListComponent implements OnInit {
         //   sortType: 'alpha'
         // },
         {
-          id: 'Description',
+          id: 'denominacion',
           title: 'Descripción',
           sortType: 'alpha'
         },
         {
-          id: 'AliasExpedient',
+          id: 'expediente',
           title: 'Centro de Costo',
           sortType: 'alpha'
         },
@@ -161,7 +161,7 @@ export class RegistryListComponent implements OnInit {
         //   sortType: 'alpha'
         // },
         {
-          id: 'CreateDate',
+          id: 'fechaCreacion',
           title: 'Fecha Creacion',
           sortType: 'alpha'
         },
@@ -195,6 +195,10 @@ export class RegistryListComponent implements OnInit {
 
   }
 
+  // View
+  viewSelected(currentView: ToolbarView): void {
+    this.sortConfig.visible = (currentView.id === 'tableView' ? false : true);
+  }
   // Table Actions
   getActionConfig(item: any, actionButtonTemplate: TemplateRef<any>): ActionConfig {
     let actionConfig = {
@@ -240,6 +244,16 @@ export class RegistryListComponent implements OnInit {
     //   actionConfig.moreActions[2].visible = false;
     // }
     return actionConfig;
+  }
+
+  // Filter
+  filterChanged($event: FilterEvent): void {
+    this.filtersText = '';
+    $event.appliedFilters.forEach((filter) => {
+      this.filtersText += filter.field.id + ' : ' + filter.value + '\n';
+    });
+    this.token.setFilterCriteriaReq($event.appliedFilters);
+    this.applyFilters($event.appliedFilters);
   }
 
   applyFilters(filters: Filter[]): void {
@@ -374,5 +388,18 @@ export class RegistryListComponent implements OnInit {
       default:
         break;
     }
+  }
+
+  //for pagination
+  handlePageSize($event: PaginationEvent) {
+    this.paging.pageSize = $event.pageSize;
+    this.token.setPagingCriteriaReq(this.paging);
+    this.search();
+  }
+
+  handlePageNumber($event: PaginationEvent) {
+    this.paging.page = $event.pageNumber;
+    this.token.setPagingCriteriaReq(this.paging);
+    this.search();
   }
 }
